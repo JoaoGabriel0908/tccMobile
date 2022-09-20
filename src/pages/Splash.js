@@ -1,30 +1,55 @@
-import {Text, StyleSheet, View, Image} from 'react-native'
+import {Text, StyleSheet, View, Image, ImageBackground, SafeAreaView, TouchableOpacity} from 'react-native'
 import React from 'react'
-import { render } from 'react-native/Libraries/Renderer/implementations/ReactNativeRenderer-prod'
+import Button from '../components/Button'
+import { useNavigation } from '@react-navigation/native'
+
+const fundo = '../assets/fundo.png'
 
 const Splash = () => {
-
+const navigation = useNavigation()
     return (
-    <View style={estilos.container}>
-         <Text style={estilos.text}>Bem-vindo</Text>
-        <Image 
-            source={require('../assets/fundo.png')}
-            style={estilos.fundo}
-        />
+    <SafeAreaView style={estilos.container}>
+        <ImageBackground style={estilos.imagemFundo} source={require(fundo)}>
+        <Text style={estilos.text}>Bem-vindo</Text>   
         
-    </View>
+        <TouchableOpacity style={estilos.button} activeOpacity={0.7} onPress={() => navigation.navigate('Cadastro')}>
+        <Text>Cadastro</Text>
+      
+        </TouchableOpacity>
+        </ImageBackground>
+        
+    </SafeAreaView>
   )
 }
 
 const estilos = StyleSheet.create({
     container:{
-        paddingTop: 100,
-        backgroundColor: '#fff'
+        display:'flex',
+        flexDirection:'column',
+
     },
     text:{
+        display:'flex',
         justifyContent:'center',
-        alignItems:'center'
-    }
+        textAlign:'center',
+        alignItems: 'center',
+        top: 300,
+        color: '#fff'
+    },
+    imagemFundo:{
+        width: '100%',
+        height: '100%',
+    },
+        button: {
+          height: 55,
+            width:"100%",
+            backgroundColor: '#fff',
+            justifyContent: 'center',
+            alignItems: "center",
+            marginVertical: 20,
+            borderWidth: .5,
+            borderRadius: 10,
+        }
 })
 
 export default Splash

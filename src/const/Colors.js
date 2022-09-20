@@ -4,6 +4,7 @@ const COLORS = {
     vermelhoPrincipal: '#AA1E1E',
     vermelhoEscuro2: '#920707',
     vermelhoEscuro: '#803434',
+    branco:'ff4'
 }
 
 export default COLORS;

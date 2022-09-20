@@ -1,10 +1,12 @@
 import { StyleSheet, View, Text, TouchableOpacity} from 'react-native'
 import React from 'react'
+import COLORS from '../const/Colors'
 
-const Button = () => {
+const Button = ({title, onPress}) => {
   return (
-   <TouchableOpacity style={styles.button}>
-      <Text>Cadastrar</Text>
+   <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={onPress}>
+      <Text>{title}</Text>
+      
    </TouchableOpacity>
   )
 }
@@ -12,16 +14,14 @@ const Button = () => {
 export default Button
 
 const styles = StyleSheet.create({
-
     button: {
-      backgroundColor: '#ddd',
-      with: 350,
-      height: 45,
-      justifyContent: 'center',
-      alignItems: 'center',
-      
+      height: 55,
+        width:"100%",
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: "center",
+        marginVertical: 20,
+        borderWidth: .5,
+        borderRadius: 10,
     }
-
-
-
 })

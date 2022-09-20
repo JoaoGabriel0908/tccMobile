@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, View, Image } from 'react-native'
+import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import { render } from 'react-native/Libraries/Renderer/implementations/ReactNativeRenderer-prod'
 

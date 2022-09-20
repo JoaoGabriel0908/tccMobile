@@ -1,11 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View , Image, TextInput} from 'react-native';
-import Splash from './pages/Splash';
+import React from "react";
+import { StatusBar} from 'react-native';
+
+import { NavigationContainer } from "@react-navigation/native";
+import Routes from "./src/routes";
 
 export default function App() {
   return (
-    <View>
-      <Splash/>
-    </View>
+    <NavigationContainer>
+        <StatusBar backgroundColor='#AA1E1E' barStyle="ligh-content"/>
+        <Routes/>
+    </NavigationContainer>
   );
 }
