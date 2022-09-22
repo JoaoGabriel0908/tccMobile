@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 
-import COLORS from './Colors';
-
+import COLORS from "../const/Colors";
+ 
 // Função que representa um componente
 const Input = ({label, iconName, error, onFocus = () => {}, ...props}) => {
   return (
@@ -40,7 +40,7 @@ const estilos = StyleSheet.create({
   inputContainer: {
     width:334,
     height: 55,
-    backgroundColor: COLORS.preto,
+    backgroundColor: COLORS.branco,
     flexDirection: 'row',
     borderWidth: 0.5,
     paddingHorizontal: 15,

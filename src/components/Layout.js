@@ -1,15 +1,17 @@
 import { View, Text, ImageBackground, StyleSheet } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import COLORS from "../const/Colors";
+
 
 const fundo = "../assets/fundo.png";
 
-const Layout = () => {
+export default function Layout(props) {
   return (
     <SafeAreaView style={estilos.container}>
       <ImageBackground style={estilos.imagemFundo} source={require(fundo)}>
         <View style={estilos.containerForm}>
-          
+          {props.children}
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -25,7 +27,7 @@ const estilos = StyleSheet.create({
     flex:3
   },
   containerForm: {
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS.branco,
     flex:1,
     maxHeight:'80%',
     borderTopLeftRadius: 25,
@@ -34,5 +36,3 @@ const estilos = StyleSheet.create({
     paddingEnd: "5%",
   },
 })
-
-export default Layout

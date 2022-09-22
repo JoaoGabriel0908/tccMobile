@@ -9,8 +9,8 @@ import {
 
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
-import Input from "../const/Input";
-import Layout from "../const/Layout";
+import Input from "../components/Input";
+import Layout from "../components/Layout";
 
 const fundo = "../assets/fundo.png";
 
@@ -18,9 +18,7 @@ const Cadastro = () => {
   const [text, setText] = useState("Nome Completo");
 
   return (
-    <SafeAreaView style={estilos.container}>
-      <ImageBackground style={estilos.imagemFundo} source={require(fundo)}>
-        <View style={estilos.containerForm}>
+    <Layout>
           <View>
             <Text style={estilos.text}>Cadastro</Text>
           </View>
@@ -32,9 +30,7 @@ const Cadastro = () => {
             <Input label="Senha" />
             <Input label="Confirmação de senha" />
           </View>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+        </Layout>
   );
 };
 

@@ -8,9 +8,9 @@ import {
   SafeAreaView,
 } from "react-native";
 import React from "react";
-import Layout from "../const/Layout";
+import Layout from "../components/Layout";
 
-import Input from "../const/Input";
+import Input from "../components/Input";
 
 const fundo = "../assets/fundo.png";
 
