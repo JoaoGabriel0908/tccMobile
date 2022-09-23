@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import React from "react";
 import Layout from "../components/Layout";
+import Button from "../components/Button";
 
 import Input from "../components/Input";
+import COLORS from "../const/Colors";
 
 const fundo = "../assets/fundo.png";
 
@@ -21,18 +23,22 @@ export default function Login() {
         <View style={estilos.containerForm}>
             <Text style={estilos.Text}>Entrar</Text>
             <View style={estilos.Text}>
-                <Text style={estilos.title}>CPF</Text>
-                <Input placeholder="Digite seu CPF..." style={estilos.input} />
+                <Text style={estilos.title}></Text>
+                <Input placeholder=" CPF" style={estilos.input} />
             </View>
-                <Text style={estilos.title}>Senha</Text>
-                <Input placeholder="Sua senha" style={estilos.input} />
+                <Text style={estilos.title}></Text>
+                <Input placeholder="Senha" style={estilos.input} />
 
-          <TouchableOpacity style={estilos.button}>
-            <Text style={estilos.buttonText}>Entre</Text>
-          </TouchableOpacity>
-
+                <Text style={estilos.Text}>Esqueceu a senha?</Text>
+          <View style={estilos.button}>
+          <Button title='Entre'/>
+          </View>
+          
+          <Text style={estilos.Text}>Novo por aqui? </Text>
+          
           <TouchableOpacity style={estilos.buttonRegister}>
-            <Text style={estilos.buttonText}>Novo por aqui? Cadastre-se</Text>
+            
+            <Text style={estilos.buttonText}>Cadastre-se</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -45,6 +51,7 @@ const estilos = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#FFF",
+
   },
   container: {
     flex: 1,
@@ -62,38 +69,45 @@ const estilos = StyleSheet.create({
     paddingEnd: "5%",
   },
   title: {
-    fontSize: 20,
-    marginTop: 28,
+    fontSize: 5,
+    marginTop: 30,
   },
   button: {
-    backgroundColor: "#AA1E1E",
-    width: "100%",
-    borderRadius: 4,
-    paddingVertical: 8,
-    marginTop: 14,
-    justifyContent: "center",
+    borderRadius:15,
+    paddingVertical: 15,
+    marginTop: 20,
     alignItems: "center",
-    marginTop: 50
+    color:"#ffff",
   },
   buttonText: {
-    color: "#fff",
+    display:'flex',
+    justifyContent:'center',
+    color: COLORS.vermelhoPrincipal,
     fontSize: 18,
     fontWeight: "bold",
+    
+        
   },
   buttonRegister: {
-    marginTop: 14,
-    alignSelf: "center",
+    alignItems:'center',
+    
   },
   registerText: {
-    color: "#a1a1a1",
+    color: "#ffff",
+    
   },
   Text:{
-      marginBottom:30,
-      alignItems:'center'
-
+    textAlign:"center",
+    justifyContent:"center",
+    color: COLORS.vermelhoPrincipal,
+    fontSize:18,
+    fontWeight:'bold',
+    top:20,
+    marginBottom:10
+    
+    
   },
-  buttonText:{
-    color: "#a1a1a1",
-
+  buttonEntre:{
+  
   }
 });

@@ -20,7 +20,9 @@ export default function Layout(props) {
 
 const estilos = StyleSheet.create({
   container: {
-    flex:1
+    flex:1,
+    alignContent:'center',
+    height:'100%',
   },
   imagemFundo: {
     justifyContent: "flex-end",
@@ -28,8 +30,9 @@ const estilos = StyleSheet.create({
   },
   containerForm: {
     backgroundColor: COLORS.branco,
-    flex:1,
-    maxHeight:'80%',
+    justifyContent:"flex-start",
+    height:'80%',
+    maxHeight:'100%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: "5%",

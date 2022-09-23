@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
 import Layout from "../components/Layout";
+import Button from "../components/Button";
 
 const fundo = "../assets/fundo.png";
 
@@ -19,18 +20,22 @@ const Cadastro = () => {
 
   return (
     <Layout>
-          <View>
-            <Text style={estilos.text}>Cadastro</Text>
-          </View>
-          <View style={estilos.viewForm}>
-            <Input label="Nome Completo" />
-            <Input label="E-Mail" />
-            <Input label="Cidades que pretende doar" />
-            <Input label="CPF" />
-            <Input label="Senha" />
-            <Input label="Confirmação de senha" />
-          </View>
-        </Layout>
+      <View>
+        <Text style={estilos.textTitle}>Cadastro</Text>
+      </View>
+      <View style={estilos.viewForm}>
+        <Input placeholder="Nome Completo" iconName='account'/>
+        <Input placeholder="E-Mail" iconName='email'/>
+        <Input placeholder="Cidades que pretende doar"/>
+        <Input placeholder="CPF" iconName='card-account-details'/>
+        <Input placeholder="Senha" iconName='lock'/>
+        <Input placeholder="Confirmação de senha" iconName='lock-off'/>
+        <View style={estilos.botoes}>
+          <Button title="Avançar"/>
+          <Button title="Voltar"/>
+        </View>
+      </View>
+    </Layout>
   );
 };
 
@@ -39,14 +44,16 @@ const estilos = StyleSheet.create({
     flex: 1,
   },
   viewForm: {
-    flex:1,
+    flex: 1,
   },
-  text: {
+  textTitle: {
     display: "flex",
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
     color: COLORS.vermelhoPrincipal,
+    fontWeight: 'bold',
+    fontSize: 25,
   },
   imagemFundo: {
     justifyContent: "flex-end",
@@ -55,11 +62,13 @@ const estilos = StyleSheet.create({
   containerForm: {
     backgroundColor: "#FFF",
     flex: 1,
-    maxHeight: "90%",
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: "5%",
     paddingEnd: "5%",
+  },
+  botoes:{
+    flexDirection: 'row'
   },
 });
 

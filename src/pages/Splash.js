@@ -10,6 +10,7 @@ import {
 import React from "react";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
+import COLORS from "../const/Colors";
 
 const fundo = "../assets/fundo.png";
 
@@ -20,7 +21,7 @@ const Splash = () => {
     <SafeAreaView style={estilos.container}>
       <ImageBackground style={estilos.imagemFundo} source={require(fundo)}>
         <Text style={estilos.text}>Bem-vindo</Text>
-
+        <View style={estilos.botoes}>
         <Button
           title="Cadastro"
           onPress={() => {
@@ -33,7 +34,9 @@ const Splash = () => {
             navigation.navigate("Login");
           }}
         />
+        </View>
       </ImageBackground>
+      
     </SafeAreaView>
   );
 };
@@ -55,21 +58,10 @@ const estilos = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
-  // button: {
-  //   height: 55,
-  //     width:"100%",
-  //     backgroundColor: 'blue',
-  //     justifyContent: 'center',
-  //     alignItems: "center",
-  //     marginVertical: 20,
-  //     borderWidth: .5,
-  //     borderRadius: 10,
-  // },
-  button: {
-    alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10,
-  },
+  botoes:{
+    flexDirection:'row',
+    top:570
+  }
 });
 
 export default Splash;
