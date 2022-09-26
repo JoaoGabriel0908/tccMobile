@@ -18,31 +18,31 @@ const fundo = "../assets/fundo.png";
 
 export default function Login() {
   return (
-    <SafeAreaView style={estilos.container}>
-      <ImageBackground style={estilos.imagemFundo} source={require(fundo)}>
-        <View style={estilos.containerForm}>
-            <Text style={estilos.Text}>Entrar</Text>
-            <View style={estilos.Text}>
-                <Text style={estilos.title}></Text>
-                <Input placeholder=" CPF" style={estilos.input} />
-            </View>
-                <Text style={estilos.title}></Text>
-                <Input placeholder="Senha" style={estilos.input} />
+    <Layout>
+      <Text style={estilos.Text}>Entrar</Text>
+      <View style={estilos.Text}>
+        <Text style={estilos.title}></Text>
+        <Input placeholder=" CPF"/>
+      </View>
+      
+      <Text style={estilos.title}></Text>
+      <Input style={estilos.eye}placeholder="Senha" iconName="eye" />
 
-                <Text style={estilos.Text}>Esqueceu a senha?</Text>
-          <View style={estilos.button}>
-          <Button title='Entre'/>
-          </View>
-          
-          <Text style={estilos.Text}>Novo por aqui? </Text>
-          
-          <TouchableOpacity style={estilos.buttonRegister}>
-            
-            <Text style={estilos.buttonText}>Cadastre-se</Text>
-          </TouchableOpacity>
-        </View>
-      </ImageBackground>
-    </SafeAreaView>
+      <View>
+        <TouchableOpacity style={estilos.button2}>
+          <Text style={estilos.texto}>Esqueceu a senha?</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={estilos.button}>
+        <Button style={estilos.button1}title="Entre" />
+      </View>
+
+      <Text style={estilos.Texto}>Novo por aqui? </Text>
+      <TouchableOpacity style={estilos.buttonRegister}>
+        <Text style={estilos.buttonText}>Cadastre-se</Text>
+      </TouchableOpacity>
+    </Layout>
   );
 }
 
@@ -51,7 +51,6 @@ const estilos = StyleSheet.create({
     fontSize: 28,
     fontWeight: "bold",
     color: "#FFF",
-
   },
   container: {
     flex: 1,
@@ -72,42 +71,50 @@ const estilos = StyleSheet.create({
     fontSize: 5,
     marginTop: 30,
   },
-  button: {
-    borderRadius:15,
-    paddingVertical: 15,
-    marginTop: 20,
-    alignItems: "center",
-    color:"#ffff",
+  button1: {
+    top:-200,
+    width:"100%",
   },
   buttonText: {
-    display:'flex',
-    justifyContent:'center',
+    display: "flex",
+    justifyContent: "center",
     color: COLORS.vermelhoPrincipal,
     fontSize: 18,
     fontWeight: "bold",
-    
-        
   },
   buttonRegister: {
-    alignItems:'center',
-    
+    alignItems: "center",
   },
   registerText: {
     color: "#ffff",
-    
   },
-  Text:{
-    textAlign:"center",
-    justifyContent:"center",
+  Text: {
+    textAlign: "center",
+    justifyContent: "center",
     color: COLORS.vermelhoPrincipal,
-    fontSize:18,
-    fontWeight:'bold',
-    top:20,
-    marginBottom:10
-    
-    
+    fontSize: 18,
+    fontWeight: "bold",
+    top: 20,
+    marginBottom: 10,
   },
-  buttonEntre:{
+  button2: {
+    color:COLORS.vermelhoPrincipal,
+    marginBottom:100,
+    left:220,
+    top:30
+
+  },
+  texto:{
+    color:COLORS.vermelhoPrincipal,
+    fontWeight: "bold",
+    },
+    eye:{
+      
+    },
+    Texto:{
+      top:-200,
+      left:30
+
+    }
   
-  }
 });

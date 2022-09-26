@@ -5,6 +5,7 @@ import {
   ImageBackground,
   TextInput,
   SafeAreaView,
+  Image
 } from "react-native";
 
 import React, { useState } from "react";
@@ -13,7 +14,7 @@ import Input from "../components/Input";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
 
-const fundo = "../assets/fundo.png";
+const passo1 = '../assets/Group8.png';
 
 const Cadastro = () => {
   const [text, setText] = useState("Nome Completo");
@@ -34,6 +35,7 @@ const Cadastro = () => {
           <Button title="Avançar"/>
           <Button title="Voltar"/>
         </View>
+        <Image source={require(passo1)}/>
       </View>
     </Layout>
   );
@@ -54,6 +56,7 @@ const estilos = StyleSheet.create({
     color: COLORS.vermelhoPrincipal,
     fontWeight: 'bold',
     fontSize: 25,
+    fontFamily: 'Inter-ExtraBold'
   },
   imagemFundo: {
     justifyContent: "flex-end",

@@ -56,6 +56,7 @@ const estilos = StyleSheet.create({
     color: COLORS.preto,
     flex: 1,
     marginLeft:10
+    
   },
   icon:{
     color:COLORS.vermelhoPrincipal,
