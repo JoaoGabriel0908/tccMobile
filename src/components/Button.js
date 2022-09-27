@@ -4,10 +4,15 @@ import COLORS from '../const/Colors'
 
 const Button = ({title, onPress=(() => {})}) => {
   return (
-   <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={onPress}>
+    <>
+    <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={onPress}>
       <Text style={styles.texto}>{title}</Text>
       
    </TouchableOpacity>
+   <TouchableOpacity style={styles.button01}>
+     </TouchableOpacity>
+    </>
+   
   )
 }
 
@@ -26,6 +31,12 @@ const styles = StyleSheet.create({
         borderColor: COLORS.vermelhoPrincipal,
     },
     texto:{
-      color:COLORS.branco
+      color:COLORS.branco,
+      fontSize:18,
+    },
+    button01:{
+      left:200,
+      top:-80,  
+
     }
 })

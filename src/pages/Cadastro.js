@@ -5,19 +5,23 @@ import {
   ImageBackground,
   TextInput,
   SafeAreaView,
-  Image
+  Image,
 } from "react-native";
 
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
+import { useNavigation } from "@react-navigation/native";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
+import Select from "../components/Select";
+import { Picker } from "@react-native-picker/picker";
 
-const passo1 = '../assets/Group8.png';
+const passo1 = "../assets/Group8.png";
 
 const Cadastro = () => {
   const [text, setText] = useState("Nome Completo");
+  const navigation = useNavigation();
 
   return (
     <Layout>
@@ -25,17 +29,37 @@ const Cadastro = () => {
         <Text style={estilos.textTitle}>Cadastro</Text>
       </View>
       <View style={estilos.viewForm}>
-        <Input placeholder="Nome Completo" iconName='account'/>
-        <Input placeholder="E-Mail" iconName='email'/>
-        <Input placeholder="Cidades que pretende doar"/>
-        <Input placeholder="CPF" iconName='card-account-details'/>
-        <Input placeholder="Senha" iconName='lock'/>
-        <Input placeholder="Confirmação de senha" iconName='lock-off'/>
+        <Input placeholder="Nome Completo" iconName="account" />
+        <Input placeholder="E-Mail" iconName="email" />
+        <Picker style={estilos.passo}
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLanguage(itemValue)
+          }
+        >
+          <Picker.Item label="Java" value="java" />
+          <Picker.Item label="JavaScript" value="js" />
+        </Picker>
+        <Input placeholder="CPF" iconName="card-account-details" />
+        <Input placeholder="Senha" iconName="lock" />
+        <Input placeholder="Confirmação de senha" iconName="lock-off" />
         <View style={estilos.botoes}>
-          <Button title="Avançar"/>
-          <Button title="Voltar"/>
+          <Button
+            title="Voltar"
+            onPress={() => {
+              navigation.navigate("Splash");
+            }}
+          />
+          <Button
+            title="Avançar"
+            onPress={() => {
+              navigation.navigate("Terms");
+            }}
+          />
         </View>
-        <Image source={require(passo1)}/>
+        <View style={estilos.passo}>
+          <Image source={require(passo1)} />
+        </View>
       </View>
     </Layout>
   );
@@ -47,6 +71,9 @@ const estilos = StyleSheet.create({
   },
   viewForm: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBottom: 30,
   },
   textTitle: {
     display: "flex",
@@ -54,9 +81,8 @@ const estilos = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     color: COLORS.vermelhoPrincipal,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 25,
-    fontFamily: 'Inter-ExtraBold'
   },
   imagemFundo: {
     justifyContent: "flex-end",
@@ -70,8 +96,19 @@ const estilos = StyleSheet.create({
     paddingStart: "5%",
     paddingEnd: "5%",
   },
-  botoes:{
-    flexDirection: 'row'
+  botoes: {
+    flexDirection: "row",
+    width: 265,
+    justifyContent: "space-around",
+    alignItems: "center",
+    textAlign: "center",
+  },
+  passo: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    backgroundColor: COLORS.branco,
+    resizeMode: "cover",
   },
 });
 

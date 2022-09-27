@@ -13,11 +13,19 @@ import Button from "../components/Button";
 
 import Input from "../components/Input";
 import COLORS from "../const/Colors";
+import CheckBox from "react-native-check-box";
 
 const fundo = "../assets/fundo.png";
-
+const CheckBox = ({options = [], onChange}) => {
+  return <View>
+        {options.map((op, index)=> (
+          <Text>{op?.text}</Text>
+        ))}
+    </View>
+}
 export default function Login() {
   return (
+    
     <Layout>
       <Text style={estilos.Text}>Entrar</Text>
       <View style={estilos.Text}>
@@ -29,13 +37,15 @@ export default function Login() {
       <Input style={estilos.eye}placeholder="Senha" iconName="eye" />
 
       <View>
+        <Text style={estilos.title}> Checkbox individual</Text>
+        <CheckBox options={options} onChange={op=> alert (op)} />
         <TouchableOpacity style={estilos.button2}>
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
 
-      <View style={estilos.button}>
-        <Button style={estilos.button1}title="Entre" />
+      <View style={estilos.Button01}>
+        <Button style={estilos.Button01}title="Entre" />
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>
@@ -71,16 +81,20 @@ const estilos = StyleSheet.create({
     fontSize: 5,
     marginTop: 30,
   },
-  button1: {
-    top:-200,
-    width:"100%",
+  Button01: {
+    left:100,
+    top:-160,
   },
+  
   buttonText: {
     display: "flex",
     justifyContent: "center",
     color: COLORS.vermelhoPrincipal,
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "bold",
+    top:-195,
+    left:45
+
   },
   buttonRegister: {
     alignItems: "center",
@@ -101,19 +115,21 @@ const estilos = StyleSheet.create({
     color:COLORS.vermelhoPrincipal,
     marginBottom:100,
     left:220,
-    top:30
-
   },
+  
   texto:{
     color:COLORS.vermelhoPrincipal,
     fontWeight: "bold",
-    },
+    top:-120
+  },
     eye:{
       
     },
     Texto:{
-      top:-200,
-      left:30
+      top:-175,
+      left:90,
+      fontSize: 15,
+      
 
     }
   
