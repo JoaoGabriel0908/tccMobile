@@ -13,18 +13,14 @@ import Button from "../components/Button";
 
 import Input from "../components/Input";
 import COLORS from "../const/Colors";
-import CheckBox from "react-native-check-box";
+import CheckBox from "../components/CheckBox";
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const fundo = "../assets/fundo.png";
-const CheckBox = ({options = [], onChange}) => {
-  return <View>
-        {options.map((op, index)=> (
-          <Text>{op?.text}</Text>
-        ))}
-    </View>
-}
-export default function Login() {
-  return (
+
+const Login = () => {
+  const optionsindividual = [{text:'Lembrar-me', id: 1}];
+    return(
     
     <Layout>
       <Text style={estilos.Text}>Entrar</Text>
@@ -37,11 +33,12 @@ export default function Login() {
       <Input style={estilos.eye}placeholder="Senha" iconName="eye" />
 
       <View>
-        <Text style={estilos.title}> Checkbox individual</Text>
-        <CheckBox options={options} onChange={op=> alert (op)} />
+        
+        <CheckBox options={optionsindividual} onChange={op=> alert (op)} />
         <TouchableOpacity style={estilos.button2}>
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
+
       </View>
 
       <View style={estilos.Button01}>
@@ -129,8 +126,11 @@ const estilos = StyleSheet.create({
       top:-175,
       left:90,
       fontSize: 15,
-      
-
-    }
+   },
+   CheckBox:{
+     
+   }
   
 });
+
+export default Login

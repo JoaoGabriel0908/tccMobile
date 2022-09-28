@@ -22,6 +22,7 @@ const passo1 = "../assets/Group8.png";
 const Cadastro = () => {
   const [text, setText] = useState("Nome Completo");
   const navigation = useNavigation();
+  const [selectedLanguage, setSelectedLanguage] = useState();
 
   return (
     <Layout>
@@ -31,15 +32,26 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input placeholder="Nome Completo" iconName="account" />
         <Input placeholder="E-Mail" iconName="email" />
-        <Picker style={estilos.passo}
-          selectedValue={selectedLanguage}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedLanguage(itemValue)
-          }
-        >
-          <Picker.Item label="Java" value="java" />
-          <Picker.Item label="JavaScript" value="js" />
-        </Picker>
+
+        <View style={estilos.selectContainer}>
+          <Text style={estilos.label}>Cidades em que pretende doar</Text>
+          <View style={estilos.formContainer}>
+            <Picker
+              selectedValue={selectedLanguage}
+              onValueChange={(itemValue, itemIndex) =>
+                setSelectedLanguage(itemValue)
+              }
+            >
+              <Picker.Item label="Jandira" value="Jandira" />
+              <Picker.Item label="Barueri" value="Barueri" />
+              <Picker.Item label="Itapevi" value="Itapevi" />
+              <Picker.Item label="Carapicuiba" value="Carapicuiba" />
+              <Picker.Item label="Osasco" value="Osasco" />
+              <Picker.Item label="Itapeva" value="Itapeva" />
+            </Picker>
+          </View>
+        </View>
+
         <Input placeholder="CPF" iconName="card-account-details" />
         <Input placeholder="Senha" iconName="lock" />
         <Input placeholder="Confirmação de senha" iconName="lock-off" />
@@ -110,6 +122,20 @@ const estilos = StyleSheet.create({
     backgroundColor: COLORS.branco,
     resizeMode: "cover",
   },
+  selectContainer: {
+    top:15
+  },
+  formContainer: {
+    width: 334,
+    height: 55,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+  },
+  label: {
+    
+  }
 });
 
 export default Cadastro;

@@ -36,6 +36,6 @@ const estilos = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     paddingStart: "5%",
-    paddingEnd: "5%",
+    paddingEnd: "5%"
   },
 })
