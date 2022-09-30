@@ -1,26 +1,33 @@
-import React from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import React,{useState} from 'react';
+import {View, Text, TextInput, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import COLORS from "../const/Colors";
+
  
 // Função que representa um componente
-const Input = ({label, iconName, error, onFocus = () => {}, ...props}) => {
-  return (
+const InputIcon = ({label, iconName, error, onFocus = () => {}, ...props}) => {
+   
+    const [isPassword, setIsPassword] = useState(true)
+  
+    return (
     <View style={estilos.formContainer}>
       <Text style={estilos.inputLabel}>{label}</Text>
 
         {/* Quando adicionamos [] podemos colocar mais de uma classe */}
       <View style={[estilos.inputContainer , {borderColor: error ? COLORS.vermelhoEscuro : COLORS.preto}]}>
-      <Icon name={iconName} style={estilos.icon}/>
-        <TextInput
+      <TextInput
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
             onFocus();
           }}
           {...props}
-        />
+        /> 
+
+      <TouchableOpacity>
+        <Icon name={iconName} style={estilos.icon}/>
+    </TouchableOpacity>
       </View>
 
       <Text>{error}</Text>
@@ -62,4 +69,4 @@ const estilos = StyleSheet.create({
   }
 });
 
-export default Input;
+export default InputIcon;

@@ -15,12 +15,16 @@ import Input from "../components/Input";
 import COLORS from "../const/Colors";
 import CheckBox from "../components/CheckBox";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import InputIcon from '../components/InputIcon'
 
 const fundo = "../assets/fundo.png";
 
+
+
 const Login = () => {
   const optionsindividual = [{text:'Lembrar-me', id: 1}];
-    return(
+ 
+  return(
     
     <Layout>
       <Text style={estilos.Text}>Entrar</Text>
@@ -30,7 +34,13 @@ const Login = () => {
       </View>
       
       <Text style={estilos.title}></Text>
-      <Input style={estilos.eye}placeholder="Senha" iconName="eye" />
+      <InputIcon placeholder="Senha" 
+      iconName="eye" 
+       
+    
+      >
+        
+      </InputIcon>
 
       <View>
         
@@ -91,7 +101,6 @@ const estilos = StyleSheet.create({
     fontWeight: "bold",
     top:-195,
     left:45
-
   },
   buttonRegister: {
     alignItems: "center",

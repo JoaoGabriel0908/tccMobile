@@ -20,7 +20,93 @@ import { Picker } from "@react-native-picker/picker";
 const passo1 = "../assets/Group8.png";
 
 const Cadastro = () => {
-  const [text, setText] = useState("Nome Completo");
+  const [inputs, setInputs] = React.useState({
+    // O useState sempre representa essa estrutura
+    // Chave = inputs / valor = inputs
+    nomeCompleto: "",
+    email: "",
+    cidadeDoacao: "",
+    cpf: "",
+    senha: "",
+    confirmacaoSenha: "",
+  });
+
+  // FUNÇÃO QUE MANIPULA A ENTRADA DE DADOS NA
+  // STATE NO MÉTODO OnChangeText
+  const handleOnChange = (text, input) => {
+    //O setInputs invoca o estado e passa para o prevState
+    setInputs(
+      (prevState) => (
+        console.log(prevState),
+        // console.log(input + ` ` + text)
+
+        // Injeção de dados na State
+        // Sobrepondo resultado do texto e colocando no prevState
+        { ...prevState, [input]: text }
+      )
+    );
+  };
+  // ******************** Validação dos dados de cadastro ********************
+
+  // State de erro de preenchimento
+  const [errors, setErrors] = React.useState([]);
+
+  // Função Handler que configura as mensagens de erros na state
+  // Pegando as mensagens de erros e onde ocorreu (input)
+  const handleErrors = (errorMessage, input) => {
+    // Quando usamos um par de parenteses quer dizer que estamos dando um RETURN
+    setErrors((prevState) => ({
+      ...prevState,
+      [input]: errorMessage,
+    }));
+  };
+
+  // Função de validação
+  const validate = () => {
+    let validate = true;
+
+    // Quando máo tem conteúdo o validate ficará falso e aparecerá a mensagem
+    if (!inputs.nomeCompleto) {
+      validate = false;
+      handleErrors("Informe o nome completo", "nomeCompleto");
+      // console.log('Título em branco')
+    }
+    if (!inputs.email) {
+      validate = false;
+      handleErrors("Informe o seu e-mail", "email");
+      // console.log('Descrição em branco')
+    }
+    if (!inputs.cpf) {
+      validate = false;
+      handleErrors("Informe o seu CPF", "cpf");
+      // console.log('Capa em branco')
+    }
+    if (!inputs.senha) {
+      validate = false;
+      handleErrors("Cadastre sua senha", "senha");
+      // console.log('Capa em branco')
+    }
+    if (!inputs.confirmacaoSenha) {
+      validate = false;
+      handleErrors("Informa sua senha novamente", "confirmacaoSenha");
+      // console.log('Capa em branco')
+    }
+    if (validate) {
+      // Envia os dados para a API cadastrar.
+      cadastrar();
+      console.log("Cadastrou");
+    }
+
+    console.log(errors);
+  };
+
+  // Função que cria o cadastro com o post
+  const cadastrar = () => {
+    try {
+      console.log("Cadastrou");
+    } catch (error) {}
+  };
+
   const navigation = useNavigation();
   const [selectedLanguage, setSelectedLanguage] = useState();
 
@@ -30,11 +116,27 @@ const Cadastro = () => {
         <Text style={estilos.textTitle}>Cadastro</Text>
       </View>
       <View style={estilos.viewForm}>
-        <Input placeholder="Nome Completo" iconName="account" />
-        <Input placeholder="E-Mail" iconName="email" />
+        <Input
+          placeholder="Nome Completo"
+          iconName="account"
+          error={errors.nomeCompleto}
+          onFocus={() => {
+            handleErrors(null, "nomeCompleto");
+          }}
+          onChangeText={(text) => handleOnChange(text, "nomeCompleto")}
+        />
+        <Input
+          placeholder="E-Mail"
+          iconName="email"
+          error={errors.email}
+          onFocus={() => {
+            handleErrors(null, "email");
+          }}
+          onChangeText={(text) => handleOnChange(text, "email")}
+        />
 
         <View style={estilos.selectContainer}>
-          <Text style={estilos.label}>Cidades em que pretende doar</Text>
+          <Text style={estilos.label}></Text>
           <View style={estilos.formContainer}>
             <Picker
               selectedValue={selectedLanguage}
@@ -42,7 +144,7 @@ const Cadastro = () => {
                 setSelectedLanguage(itemValue)
               }
             >
-              <Picker.Item label="Jandira" value="Jandira" />
+              <Picker.Item label="Cidade que pretende doar" value="" />
               <Picker.Item label="Barueri" value="Barueri" />
               <Picker.Item label="Itapevi" value="Itapevi" />
               <Picker.Item label="Carapicuiba" value="Carapicuiba" />
@@ -52,9 +154,33 @@ const Cadastro = () => {
           </View>
         </View>
 
-        <Input placeholder="CPF" iconName="card-account-details" />
-        <Input placeholder="Senha" iconName="lock" />
-        <Input placeholder="Confirmação de senha" iconName="lock-off" />
+        <Input
+          placeholder="CPF"
+          iconName="card-account-details"
+          error={errors.cpf}
+          onFocus={() => {
+            handleErrors(null, "cpf");
+          }}
+          onChangeText={(text) => handleOnChange(text, "cpf")}
+        />
+        <Input
+          placeholder="Senha"
+          iconName="lock"
+          error={errors.senha}
+          onFocus={() => {
+            handleErrors(null, "senha");
+          }}
+          onChangeText={(text) => handleOnChange(text, "senha")}
+        />
+        <Input
+          placeholder="Confirmação de senha"
+          iconName="lock-off"
+          error={errors.confirmacaoSenha}
+          onFocus={() => {
+            handleErrors(null, "confirmacaoSenha");
+          }}
+          onChangeText={(text) => handleOnChange(text, "confirmacaoSenha")}
+        />
         <View style={estilos.botoes}>
           <Button
             title="Voltar"
@@ -64,9 +190,7 @@ const Cadastro = () => {
           />
           <Button
             title="Avançar"
-            onPress={() => {
-              navigation.navigate("Terms");
-            }}
+            onPress={validate}
           />
         </View>
         <View style={estilos.passo}>
@@ -123,7 +247,7 @@ const estilos = StyleSheet.create({
     resizeMode: "cover",
   },
   selectContainer: {
-    top:15
+    top: 15,
   },
   formContainer: {
     width: 334,
@@ -133,9 +257,7 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
   },
-  label: {
-    
-  }
+  label: {},
 });
 
 export default Cadastro;

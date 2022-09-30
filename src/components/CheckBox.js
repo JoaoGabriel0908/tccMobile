@@ -21,14 +21,15 @@ function toggle(id){
       <View>
           {options.map((op, index) =>(
         <View style={estilos.optionContainer}>
+          
           <TouchableOpacity 
           style={estilos.touchble} 
           onPress={()=> toggle(op?.id)}>
             {selected.findIndex(i=>i === op.id) !== -1 ?  (
             <Icon name="check-bold" color={COLORS.preto} size={16} />
             ) : null}
-            
             </TouchableOpacity>
+
           <Text style={estilos.optext}>{op?.text}</Text>      
           </View>
           ))}

@@ -8,7 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 const passo1 = "../assets/Group8.png";
 
 const Terms = () => {
-  const navigate = useNavigation()
+  const navigation = useNavigation()
   return (
     <Layout>
       <View>
@@ -65,7 +65,7 @@ const Terms = () => {
           <Button
             title="Voltar"
             onPress={() => {
-              navigation.navigate("Splash");
+              navigation.navigate("Cadastro");
             }}
           />
           <Button
@@ -117,7 +117,6 @@ const estilos = StyleSheet.create({
     justifyContent: "space-between",
     paddingBottom: 30,
     flex: 1,
-    
   },
 });
 

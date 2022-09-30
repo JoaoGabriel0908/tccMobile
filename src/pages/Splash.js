@@ -34,7 +34,7 @@ const Splash = () => {
             navigation.navigate("Login");
           }}
         />
-        </View>
+      </View>
       </ImageBackground>
       
     </SafeAreaView>
@@ -51,17 +51,23 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
     textAlign: "center",
     alignItems: "center",
-    top: 300,
+    top: 350,
     color: "#fff",
+    fontSize:18,
   },
   imagemFundo: {
     width: "100%",
     height: "100%",
+    position: "relative"
   },
-  botoes:{
-    flexDirection:'row',
-    top:570
-  }
+  botoes: {
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    flexDirection: "row",
+    height: "10%",
+    position: "absolute",
+    bottom: 0,
+  },
 });
 
 export default Splash;
