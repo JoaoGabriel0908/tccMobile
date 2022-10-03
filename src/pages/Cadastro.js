@@ -20,12 +20,14 @@ import { Picker } from "@react-native-picker/picker";
 const passo1 = "../assets/Group8.png";
 
 const Cadastro = () => {
+  const navigation = useNavigation();
+  const [selectedLanguage, setSelectedLanguage] = useState();
+
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    cidadeDoacao: "",
     cpf: "",
     senha: "",
     confirmacaoSenha: "",
@@ -94,7 +96,6 @@ const Cadastro = () => {
     if (validate) {
       // Envia os dados para a API cadastrar.
       cadastrar();
-      console.log("Cadastrou");
     }
 
     console.log(errors);
@@ -104,11 +105,9 @@ const Cadastro = () => {
   const cadastrar = () => {
     try {
       console.log("Cadastrou");
+      navigation.navigate("Terms")
     } catch (error) {}
   };
-
-  const navigation = useNavigation();
-  const [selectedLanguage, setSelectedLanguage] = useState();
 
   return (
     <Layout>
@@ -183,6 +182,8 @@ const Cadastro = () => {
         />
         <View style={estilos.botoes}>
           <Button
+            back
+            textBack
             title="Voltar"
             onPress={() => {
               navigation.navigate("Splash");

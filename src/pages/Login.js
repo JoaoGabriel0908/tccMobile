@@ -36,8 +36,6 @@ const Login = () => {
       <Text style={estilos.title}></Text>
       <InputIcon placeholder="Senha" 
       iconName="eye" 
-       
-    
       >
         
       </InputIcon>

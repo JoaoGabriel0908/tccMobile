@@ -23,12 +23,15 @@ const Splash = () => {
         <Text style={estilos.text}>Bem-vindo</Text>
         <View style={estilos.botoes}>
         <Button
+          register
           title="Cadastro"
           onPress={() => {
             navigation.navigate("Cadastro");
           }}
         />
         <Button
+          textBack
+          login
           title="Login"
           onPress={() => {
             navigation.navigate("Login");
@@ -66,7 +69,8 @@ const estilos = StyleSheet.create({
     flexDirection: "row",
     height: "10%",
     position: "absolute",
-    bottom: 0,
+    bottom: 15,
+    flex: 1,
   },
 });
 

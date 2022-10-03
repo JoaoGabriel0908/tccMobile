@@ -1,42 +1,77 @@
-import { StyleSheet, View, Text, TouchableOpacity} from 'react-native'
-import React from 'react'
-import COLORS from '../const/Colors'
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React from "react";
+import COLORS from "../const/Colors";
 
-const Button = ({title, onPress=(() => {})}) => {
-  return (
-    <>
-    <TouchableOpacity style={styles.button} activeOpacity={0.7} onPress={onPress}>
-      <Text style={styles.texto}>{title}</Text>
-      
-   </TouchableOpacity>
-   <TouchableOpacity style={styles.button01}>
-     </TouchableOpacity>
-    </>
-   
-  )
-}
+const Button = ({ title, onPress = () => {}, ...props }) => {
+    const stylesButton = [styles.button];
+    if (props.back) stylesButton.push(styles.buttonBack);
+    if (props.login) stylesButton.push(styles.buttonLogin);
+    if (props.register) stylesButton.push(styles.buttonRegister);
+    
+    const stylesText = [styles.texto];
+    if (props.textBack) stylesText.push(styles.textBack);
+    return (
+        <>
+            <TouchableOpacity
+                style={stylesButton}
+                activeOpacity={0.7}
+                onPress={onPress}
+            >
+                <Text style={stylesText}>{title}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button01}></TouchableOpacity>
+        </>
+    );
+};
 
-export default Button
+export default Button;
 
 const styles = StyleSheet.create({
     button: {
         height: 55,
-        width:"50%",
-        backgroundColor: '#920707',
-        justifyContent: 'center',
+        width: "50%",
+        backgroundColor: COLORS.vermelhoEscuro2,
+        justifyContent: "center",
         alignItems: "center",
         marginVertical: 20,
-        borderWidth: .5,
+        borderWidth: 0.5,
         borderRadius: 10,
         borderColor: COLORS.vermelhoPrincipal,
     },
-    texto:{
-      color:COLORS.branco,
-      fontSize:18,
+    buttonBack: {
+        backgroundColor: "#E49E9E40",
+        color: COLORS.vermelhoEscuro2,
+        borderColor: "#E49E9E40",
     },
-    button01:{
-      left:200,
-      top:-80,  
-
-    }
-})
+    buttonLogin: {
+      backgroundColor: COLORS.branco,
+      color: COLORS.vermelhoClaro,
+      borderColor: COLORS.vermelhoClaro,
+      height: 80,
+      borderTopEndRadius: 0,
+      borderTopStartRadius: 40,
+      borderBottomEndRadius: 0,
+      borderBottomStartRadius: 0,
+    },
+    buttonRegister: {
+      backgroundColor: COLORS.vermelhoEscuro,
+      color: COLORS.branco,
+      borderColor: COLORS.vermelhoEscuro,
+      height: 80,
+      borderTopEndRadius: 40,
+      borderTopStartRadius: 0,
+      borderBottomEndRadius: 0,
+      borderBottomStartRadius: 0,
+    },
+    texto: {
+        color: COLORS.branco,
+        fontSize: 18,
+    },
+    textBack: {
+        color: COLORS.vermelhoPrincipal,
+    },
+    button01: {
+        left: 200,
+        top: -80,
+    },
+});
