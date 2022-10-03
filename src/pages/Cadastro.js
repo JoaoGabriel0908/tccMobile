@@ -117,6 +117,7 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input
           placeholder="Nome Completo"
+          type="cel-phone"
           iconName="account"
           error={errors.nomeCompleto}
           onFocus={() => {
@@ -126,6 +127,7 @@ const Cadastro = () => {
         />
         <Input
           placeholder="E-Mail"
+          type="cpf"
           iconName="email"
           error={errors.email}
           onFocus={() => {
@@ -155,6 +157,7 @@ const Cadastro = () => {
 
         <Input
           placeholder="CPF"
+          type="cpf"
           iconName="card-account-details"
           error={errors.cpf}
           onFocus={() => {
@@ -164,6 +167,7 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Senha"
+          type="cpf"
           iconName="lock"
           error={errors.senha}
           onFocus={() => {
@@ -173,6 +177,7 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Confirmação de senha"
+          type="cpf"
           iconName="lock-off"
           error={errors.confirmacaoSenha}
           onFocus={() => {

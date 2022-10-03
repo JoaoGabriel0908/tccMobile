@@ -19,8 +19,6 @@ import InputIcon from '../components/InputIcon'
 
 const fundo = "../assets/fundo.png";
 
-
-
 const Login = () => {
   const optionsindividual = [{text:'Lembrar-me', id: 1}];
  
@@ -30,11 +28,12 @@ const Login = () => {
       <Text style={estilos.Text}>Entrar</Text>
       <View style={estilos.Text}>
         <Text style={estilos.title}></Text>
-        <Input placeholder=" CPF"/>
+        <Input placeholder=" CPF" type="cpf"/>
       </View>
       
       <Text style={estilos.title}></Text>
-      <InputIcon placeholder="Senha" 
+      <InputIcon 
+      placeholder="Senha" 
       iconName="eye" 
       >
         
