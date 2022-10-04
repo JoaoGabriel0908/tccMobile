@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import COLORS from "../const/Colors";
 
 // Função que representa um componente
-const Input = ({ label, iconName, error, onFocus = () => {}, type, ...props }) => {
+const Input = ({ label, iconName, error, ref = () => {}, onFocus = () => {}, type, options, keyboardType, ...props }) => {
 
   const [cpf, setCpf] = useState('');
 
@@ -40,6 +40,11 @@ const Input = ({ label, iconName, error, onFocus = () => {}, type, ...props }) =
           {...props}
           value={cpf}
           onChangeText={text => setCpf(text)}
+          keyboardType={keyboardType}
+          options={options? options : ''}
+          ref={() => {
+            ref()
+          }}
         />
       </View>
 

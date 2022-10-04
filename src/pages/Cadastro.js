@@ -16,18 +16,28 @@ import Layout from "../components/Layout";
 import Button from "../components/Button";
 import Select from "../components/Select";
 import { Picker } from "@react-native-picker/picker";
+import apiBlood from "../service/apiBlood";
+import { useForm, Controller } from "react-hook-form";
 
 const passo1 = "../assets/Group8.png";
+/* regex que permite apenas letras no input*/
 
 const Cadastro = () => {
+  const onlyLetters = /^[A-Za-záàôãéèêícóôöúcñÁÀÂÃÉÈÍÏóôÖÖÚCN ']+$/;
+
+  let cpfField = null
+
   const navigation = useNavigation();
-  const [selectedLanguage, setSelectedLanguage] = useState();
+
+  const [cidade, setCidade] = useState(["Jandira", "Barueri", "Itapevi"]);
+  const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
 
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
+    cidadeDoacao: "",
     cpf: "",
     senha: "",
     confirmacaoSenha: "",
@@ -63,6 +73,14 @@ const Cadastro = () => {
     }));
   };
 
+  const handleErrorsPicker = (errorMessage, Picker) => {
+    // Quando usamos um par de parenteses quer dizer que estamos dando um RETURN
+    setErrors((prevState) => ({
+      ...prevState,
+      [Picker]: errorMessage,
+    }));
+  };
+
   // Função de validação
   const validate = () => {
     let validate = true;
@@ -78,7 +96,12 @@ const Cadastro = () => {
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
     }
-    if (!inputs.cpf) {
+    if (!inputs.cidadeDoacao) {
+      validate = false;
+      handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
+      // console.log('Descrição em branco')
+    }
+    if (!cpfField.isValid()) {
       validate = false;
       handleErrors("Informe o seu CPF", "cpf");
       // console.log('Capa em branco')
@@ -104,8 +127,15 @@ const Cadastro = () => {
   // Função que cria o cadastro com o post
   const cadastrar = () => {
     try {
-      console.log("Cadastrou");
-      navigation.navigate("Terms")
+      const response = apiBlood.post("/cadastrarDoador", {
+        nomeCompleto: inputs.nomeCompleto,
+        email: inputs.email,
+        cidadeDoacao: inputs.cidadeDoacao,
+        cpf: inputs.cpf,
+        senha: inputs.senha,
+        confirmacaoSenha: inputs.confirmacaoSenha,
+      });
+      navigation.navigate("Terms");
     } catch (error) {}
   };
 
@@ -117,7 +147,10 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input
           placeholder="Nome Completo"
-          type="cel-phone"
+          type={"custom"}
+          options={{
+            mask: onlyLetters,
+          }}
           iconName="account"
           error={errors.nomeCompleto}
           onFocus={() => {
@@ -127,7 +160,7 @@ const Cadastro = () => {
         />
         <Input
           placeholder="E-Mail"
-          type="cpf"
+          type="cel-phone"
           iconName="email"
           error={errors.email}
           onFocus={() => {
@@ -140,17 +173,17 @@ const Cadastro = () => {
           <Text style={estilos.label}></Text>
           <View style={estilos.formContainer}>
             <Picker
-              selectedValue={selectedLanguage}
+              onFocus={() => {
+                handleErrors(null, "cidadeDoacao");
+              }}
+              selectedValue={cidadesSelecionado}
               onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
+                setCidadesSelecionado(itemValue, "cidadeDoacao")
               }
             >
-              <Picker.Item label="Cidade que pretende doar" value="" />
-              <Picker.Item label="Barueri" value="Barueri" />
-              <Picker.Item label="Itapevi" value="Itapevi" />
-              <Picker.Item label="Carapicuiba" value="Carapicuiba" />
-              <Picker.Item label="Osasco" value="Osasco" />
-              <Picker.Item label="Itapeva" value="Itapeva" />
+              {cidade.map((city) => {
+                return <Picker.Item label={city} value={city} />;
+              })}
             </Picker>
           </View>
         </View>
@@ -164,10 +197,12 @@ const Cadastro = () => {
             handleErrors(null, "cpf");
           }}
           onChangeText={(text) => handleOnChange(text, "cpf")}
+          keyboardType="cpf"
+          ref={(ref) => cpfField = ref}
         />
         <Input
           placeholder="Senha"
-          type="cpf"
+          type={"cpf"}
           iconName="lock"
           error={errors.senha}
           onFocus={() => {
@@ -194,10 +229,7 @@ const Cadastro = () => {
               navigation.navigate("Splash");
             }}
           />
-          <Button
-            title="Avançar"
-            onPress={validate}
-          />
+          <Button title="Avançar" onPress={validate} />
         </View>
         <View style={estilos.passo}>
           <Image source={require(passo1)} />
