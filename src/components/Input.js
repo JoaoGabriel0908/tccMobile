@@ -6,13 +6,15 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { TextInputMask } from "react-native-masked-text";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { TextInputMask, TextMask } from "react-native-masked-text";
 
 import COLORS from "../const/Colors";
 
 // Função que representa um componente
-const Input = ({ label, iconName, error, ref = () => {}, onFocus = () => {}, type, options, keyboardType, ...props }) => {
+const Input = (
+  { label, iconName, error, value, mask, ref = () => {}, onFocus = () => {}, type, keyboardType, ...props }
+  ) => {
 
   const [cpf, setCpf] = useState('');
 
@@ -38,13 +40,10 @@ const Input = ({ label, iconName, error, ref = () => {}, onFocus = () => {}, typ
             onFocus();
           }}
           {...props}
-          value={cpf}
-          onChangeText={text => setCpf(text)}
+          value={value}
           keyboardType={keyboardType}
-          options={options? options : ''}
-          ref={() => {
-            ref()
-          }}
+          options={mask}
+          ref={ref}
         />
       </View>
 

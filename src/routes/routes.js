@@ -3,6 +3,7 @@ import Splash from "../pages/Splash";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Terms from "../pages/Terms";
+import Home from "../pages/Home";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,12 @@ export default function Routes() {
       <Stack.Screen
         name="Terms"
         component={Terms}
+        options={{ headerShown: false }}
+      />
+
+<Stack.Screen
+        name="Home"
+        component={Home}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

@@ -10,7 +10,7 @@ import {
 import React from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
-
+import { useNavigation } from "@react-navigation/native";
 import Input from "../components/Input";
 import COLORS from "../const/Colors";
 import CheckBox from "../components/CheckBox";
@@ -22,6 +22,7 @@ const fundo = "../assets/fundo.png";
 const Login = () => {
   const optionsindividual = [{text:'Lembrar-me', id: 1}];
  
+  const navigation = useNavigation();
   return(
     
     <Layout>
@@ -49,7 +50,7 @@ const Login = () => {
       </View>
 
       <View style={estilos.Button01}>
-        <Button style={estilos.Button01}title="Entre" />
+        <Button style={estilos.Button01}title="Entre" onPress={() => {navigation.navigate("Home")}} />
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>

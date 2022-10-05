@@ -2,12 +2,10 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
-  TextInput,
-  SafeAreaView,
   Image,
 } from "react-native";
 
+import { TextInputMask } from "react-native-masked-text";
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
@@ -18,12 +16,13 @@ import Select from "../components/Select";
 import { Picker } from "@react-native-picker/picker";
 import apiBlood from "../service/apiBlood";
 import { useForm, Controller } from "react-hook-form";
+import validarCPF from "../utils/validarCpf";
+import { onlyLetters } from "../utils/regex";
 
 const passo1 = "../assets/Group8.png";
-/* regex que permite apenas letras no input*/
 
 const Cadastro = () => {
-  const onlyLetters = /^[A-Za-záàôãéèêícóôöúcñÁÀÂÃÉÈÍÏóôÖÖÚCN ']+$/;
+  const emailVal = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
 
   let cpfField = null
 
@@ -91,7 +90,8 @@ const Cadastro = () => {
       handleErrors("Informe o nome completo", "nomeCompleto");
       // console.log('Título em branco')
     }
-    if (!inputs.email) {
+    const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i
+    if (!emailValidado.test(String(inputs.email).toLowerCase())) {
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
@@ -101,9 +101,9 @@ const Cadastro = () => {
       handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
       // console.log('Descrição em branco')
     }
-    if (!cpfField.isValid()) {
+    if (!validarCPF(inputs.cpf)) {
       validate = false;
-      handleErrors("Informe o seu CPF", "cpf");
+      handleErrors("Informe o seu CPF corretamente", "cpf");
       // console.log('Capa em branco')
     }
     if (!inputs.senha) {
@@ -147,10 +147,13 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input
           placeholder="Nome Completo"
-          type={"custom"}
-          options={{
-            mask: onlyLetters,
-          }}
+          // type={'cel-phone'}
+          // mask={{
+          //   maskType: 'BRL',
+          //   withDDD: true,
+          //   dddMask: '(99) '
+          // }}
+          value={inputs.nomeCompleto}
           iconName="account"
           error={errors.nomeCompleto}
           onFocus={() => {
@@ -160,7 +163,10 @@ const Cadastro = () => {
         />
         <Input
           placeholder="E-Mail"
-          type="cel-phone"
+          // type={"custom"}
+          // options={{
+          //   mask: emailVal,
+          // }}
           iconName="email"
           error={errors.email}
           onFocus={() => {
@@ -191,6 +197,10 @@ const Cadastro = () => {
         <Input
           placeholder="CPF"
           type="cpf"
+          values={inputs.cpf}
+          // options={{
+          //   validator: validarCPF
+          // }}
           iconName="card-account-details"
           error={errors.cpf}
           onFocus={() => {
@@ -202,7 +212,11 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Senha"
-          type={"cpf"}
+          // type={"custom"}
+          // options={{
+          //   mask: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/',
+          //   validator: null,
+          // }}
           iconName="lock"
           error={errors.senha}
           onFocus={() => {
@@ -212,7 +226,11 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Confirmação de senha"
-          type="cpf"
+          // type={"custom"}
+          // options={{
+          //   mask: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/',
+          //   validator: null,
+          // }}
           iconName="lock-off"
           error={errors.confirmacaoSenha}
           onFocus={() => {
