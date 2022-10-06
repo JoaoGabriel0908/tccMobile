@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 
-import { TextInputMask } from "react-native-masked-text";
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
@@ -24,22 +18,28 @@ const passo1 = "../assets/Group8.png";
 const Cadastro = () => {
   const emailVal = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
 
-  let cpfField = null
+  let cpfField = null;
 
   const navigation = useNavigation();
 
-  const [cidade, setCidade] = useState(["Jandira", "Barueri", "Itapevi"]);
+  const [cidade] = useState(["Jandira", "Barueri", "Itapevi"]);
   const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
+
+  const [maskType, setMaskType] = useState({
+    maskType: '',
+  })
 
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    cidadeDoacao: "",
+    cidadeDoacao: 1,
     cpf: "",
     senha: "",
     confirmacaoSenha: "",
+    sexo: 2,
+    tipo_sanguineo: 3
   });
 
   // FUNÇÃO QUE MANIPULA A ENTRADA DE DADOS NA
@@ -90,8 +90,9 @@ const Cadastro = () => {
       handleErrors("Informe o nome completo", "nomeCompleto");
       // console.log('Título em branco')
     }
-    const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i
-    if (!emailValidado.test(String(inputs.email).toLowerCase())) {
+    const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+    // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
+      if(!inputs.email){
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
@@ -101,7 +102,7 @@ const Cadastro = () => {
       handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
       // console.log('Descrição em branco')
     }
-    if (!validarCPF(inputs.cpf)) {
+    if (!inputs.cpf) {
       validate = false;
       handleErrors("Informe o seu CPF corretamente", "cpf");
       // console.log('Capa em branco')
@@ -128,15 +129,19 @@ const Cadastro = () => {
   const cadastrar = () => {
     try {
       const response = apiBlood.post("/cadastrarDoador", {
-        nomeCompleto: inputs.nomeCompleto,
+        nome_completo: inputs.nomeCompleto,
         email: inputs.email,
-        cidadeDoacao: inputs.cidadeDoacao,
+        id_cidade: inputs.cidadeDoacao,
         cpf: inputs.cpf,
         senha: inputs.senha,
         confirmacaoSenha: inputs.confirmacaoSenha,
+        id_sexo: inputs.sexo,
+        id_tipo_sanguineo: inputs.tipo_sanguineo,
       });
       navigation.navigate("Terms");
-    } catch (error) {}
+    } catch (error) {
+      error.response.data
+    }
   };
 
   return (
@@ -147,11 +152,11 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input
           placeholder="Nome Completo"
-          // type={'cel-phone'}
+          // type={"custom"}
           // mask={{
-          //   maskType: 'BRL',
+          //   maskType: "BRL",
           //   withDDD: true,
-          //   dddMask: '(99) '
+          //   dddMask: "(99) ",
           // }}
           value={inputs.nomeCompleto}
           iconName="account"
@@ -163,11 +168,12 @@ const Cadastro = () => {
         />
         <Input
           placeholder="E-Mail"
-          // type={"custom"}
-          // options={{
-          //   mask: emailVal,
-          // }}
+          type={"custom"}
+          mask={{
+            maskType: 'BRL',
+          }}
           iconName="email"
+          value={inputs.email}
           error={errors.email}
           onFocus={() => {
             handleErrors(null, "email");
@@ -183,10 +189,9 @@ const Cadastro = () => {
                 handleErrors(null, "cidadeDoacao");
               }}
               selectedValue={cidadesSelecionado}
-              onValueChange={(itemValue, itemIndex) =>
-                setCidadesSelecionado(itemValue, "cidadeDoacao")
-              }
-            >
+              onValueChange={(itemValue) =>
+                setCidadesSelecionado(itemValue)
+              }>
               {cidade.map((city) => {
                 return <Picker.Item label={city} value={city} />;
               })}
@@ -198,9 +203,9 @@ const Cadastro = () => {
           placeholder="CPF"
           type="cpf"
           values={inputs.cpf}
-          // options={{
-          //   validator: validarCPF
-          // }}
+          mask={{
+            maskType: 'BRL',
+          }}
           iconName="card-account-details"
           error={errors.cpf}
           onFocus={() => {
@@ -212,11 +217,11 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Senha"
-          // type={"custom"}
-          // options={{
-          //   mask: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/',
-          //   validator: null,
-          // }}
+          type={"custom"}
+          mask={{
+            maskType: 'BRL',
+          }}
+          values={inputs.senha}
           iconName="lock"
           error={errors.senha}
           onFocus={() => {
@@ -226,11 +231,11 @@ const Cadastro = () => {
         />
         <Input
           placeholder="Confirmação de senha"
-          // type={"custom"}
-          // options={{
-          //   mask: '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/',
-          //   validator: null,
-          // }}
+          type={"custom"}
+          mask={{
+            maskType: 'BRL',
+          }}
+          values={inputs.confirmacaoSenha}
           iconName="lock-off"
           error={errors.confirmacaoSenha}
           onFocus={() => {

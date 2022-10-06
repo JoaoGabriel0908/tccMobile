@@ -3,42 +3,39 @@ import Splash from "../pages/Splash";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Terms from "../pages/Terms";
-import Home from "../pages/Home";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 const Stack = createNativeStackNavigator();
 
+const Tab = createMaterialBottomTabNavigator();
+
 export default function Routes() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Splash"
-        component={Splash}
-        options={{ headerShown: false }}
-      />
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Splash"
+          component={Splash}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="Cadastro"
-        component={Cadastro}
-        options={{ headerShown: false }}
-      />
+        <Stack.Screen
+          name="Cadastro"
+          component={Cadastro}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="Login"
-        component={Login}
-        options={{ headerShown: false }}
-      />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="Terms"
-        component={Terms}
-        options={{ headerShown: false }}
-      />
-
-<Stack.Screen
-        name="Home"
-        component={Home}
-        options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
+        <Stack.Screen
+          name="Terms"
+          component={Terms}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+      
   );
 }

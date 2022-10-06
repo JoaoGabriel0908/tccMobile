@@ -13,7 +13,7 @@ import COLORS from "../const/Colors";
 
 // Função que representa um componente
 const Input = (
-  { label, iconName, error, value, mask, ref = () => {}, onFocus = () => {}, type, keyboardType, ...props }
+  { label, iconName, error, value, ref = () => {}, onFocus = () => {}, type, keyboardType, ...props }
   ) => {
 
   const [cpf, setCpf] = useState('');
@@ -32,8 +32,8 @@ const Input = (
         <TouchableOpacity onPress={() => setPasswordShown(!passwordShown)}>
           <Icon name={iconName} style={estilos.icon} />
         </TouchableOpacity>
-        <TextInputMask
-          type={type}
+        <TextInput
+          // type={type}
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
@@ -42,8 +42,8 @@ const Input = (
           {...props}
           value={value}
           keyboardType={keyboardType}
-          options={mask}
-          ref={ref}
+          // options={mask}
+          // ref={ref}
         />
       </View>
 
