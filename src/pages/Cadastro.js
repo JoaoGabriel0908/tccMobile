@@ -12,6 +12,7 @@ import apiBlood from "../service/apiBlood";
 import { useForm, Controller } from "react-hook-form";
 import validarCPF from "../utils/validarCpf";
 import { onlyLetters } from "../utils/regex";
+import { Formik } from "formik";
 
 const passo1 = "../assets/Group8.png";
 
@@ -26,8 +27,8 @@ const Cadastro = () => {
   const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
 
   const [maskType, setMaskType] = useState({
-    maskType: '',
-  })
+    maskType: "",
+  });
 
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
@@ -38,8 +39,8 @@ const Cadastro = () => {
     cpf: "",
     senha: "",
     confirmacaoSenha: "",
-    sexo: 2,
-    tipo_sanguineo: 3
+    sexo: 1,
+    tipo_sanguineo: 1,
   });
 
   // FUNÇÃO QUE MANIPULA A ENTRADA DE DADOS NA
@@ -92,7 +93,7 @@ const Cadastro = () => {
     }
     const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
     // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
-      if(!inputs.email){
+    if (!inputs.email) {
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
@@ -140,7 +141,7 @@ const Cadastro = () => {
       });
       navigation.navigate("Terms");
     } catch (error) {
-      error.response.data
+      error.response.data;
     }
   };
 
@@ -149,15 +150,33 @@ const Cadastro = () => {
       <View>
         <Text style={estilos.textTitle}>Cadastro</Text>
       </View>
+      <Formik
+        onSubmit={onSubmit}
+        initialValues={{
+          name: "",
+          email: "",
+          cpf: "",
+          senha: "",
+          confirmacaoSenha: "",
+        }}
+        validate={values => {
+          const errors = {};
+          if (!values.email) {
+            errors.email = 'Required';
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = 'Invalid email address';
+          }
+          return errors;
+        }}
+      >
+
+      </Formik>
       <View style={estilos.viewForm}>
         <Input
+          name="name"
           placeholder="Nome Completo"
-          // type={"custom"}
-          // mask={{
-          //   maskType: "BRL",
-          //   withDDD: true,
-          //   dddMask: "(99) ",
-          // }}
           value={inputs.nomeCompleto}
           iconName="account"
           error={errors.nomeCompleto}
@@ -167,11 +186,8 @@ const Cadastro = () => {
           onChangeText={(text) => handleOnChange(text, "nomeCompleto")}
         />
         <Input
+          name="email"
           placeholder="E-Mail"
-          type={"custom"}
-          mask={{
-            maskType: 'BRL',
-          }}
           iconName="email"
           value={inputs.email}
           error={errors.email}
@@ -189,9 +205,8 @@ const Cadastro = () => {
                 handleErrors(null, "cidadeDoacao");
               }}
               selectedValue={cidadesSelecionado}
-              onValueChange={(itemValue) =>
-                setCidadesSelecionado(itemValue)
-              }>
+              onValueChange={(itemValue) => setCidadesSelecionado(itemValue)}
+            >
               {cidade.map((city) => {
                 return <Picker.Item label={city} value={city} />;
               })}
@@ -201,11 +216,8 @@ const Cadastro = () => {
 
         <Input
           placeholder="CPF"
-          type="cpf"
+          name="cpf"
           values={inputs.cpf}
-          mask={{
-            maskType: 'BRL',
-          }}
           iconName="card-account-details"
           error={errors.cpf}
           onFocus={() => {
@@ -213,14 +225,11 @@ const Cadastro = () => {
           }}
           onChangeText={(text) => handleOnChange(text, "cpf")}
           keyboardType="cpf"
-          ref={(ref) => cpfField = ref}
+          ref={(ref) => (cpfField = ref)}
         />
         <Input
+          name="senha"
           placeholder="Senha"
-          type={"custom"}
-          mask={{
-            maskType: 'BRL',
-          }}
           values={inputs.senha}
           iconName="lock"
           error={errors.senha}
@@ -230,11 +239,8 @@ const Cadastro = () => {
           onChangeText={(text) => handleOnChange(text, "senha")}
         />
         <Input
+          name="confirmacaoSenha"
           placeholder="Confirmação de senha"
-          type={"custom"}
-          mask={{
-            maskType: 'BRL',
-          }}
           values={inputs.confirmacaoSenha}
           iconName="lock-off"
           error={errors.confirmacaoSenha}

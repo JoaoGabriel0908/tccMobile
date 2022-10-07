@@ -7,16 +7,13 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { TextInputMask, TextMask } from "react-native-masked-text";
 
 import COLORS from "../const/Colors";
 
 // Função que representa um componente
 const Input = (
-  { label, iconName, error, value, ref = () => {}, onFocus = () => {}, type, keyboardType, ...props }
+  { label, iconName, error, value, onFocus = () => {}, keyboardType, touched, handleBlur, handleSubmit, name, isSubmitting, handleChange, ...props}
   ) => {
-
-  const [cpf, setCpf] = useState('');
 
   return (
     <View style={estilos.formContainer}>
@@ -33,17 +30,15 @@ const Input = (
           <Icon name={iconName} style={estilos.icon} />
         </TouchableOpacity>
         <TextInput
-          // type={type}
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
             onFocus();
           }}
+          name={name}
           {...props}
           value={value}
           keyboardType={keyboardType}
-          // options={mask}
-          // ref={ref}
         />
       </View>
 
