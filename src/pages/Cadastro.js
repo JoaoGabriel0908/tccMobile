@@ -22,6 +22,14 @@ const Cadastro = () => {
     const [cidade] = useState(["Jandira", "Barueri", "Itapevi"]);
     const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
 
+    const [sexo, setSexo] = useState(["O", "M", "F"]);
+    const [sexoSelecionado, setSexoSelecionado] = useState([]);
+
+    const [tipoSanguineo, setTipoSanguineo] = useState(["+AB", "+A", "+B"]);
+    const [tipoSanguineoSelecionado, setTipoSanguineoSelecionado] = useState(
+        []
+    );
+
     const [maskType, setMaskType] = useState({
         maskType: "",
     });
@@ -141,7 +149,7 @@ const Cadastro = () => {
             //     senha: inputs.senha,
             //     confirmacaoSenha: inputs.confirmacaoSenha,
             //     id_sexo: inputs.sexo,
-            //     id_tipo_sanguineo: inputs.tipo_sanguineo,
+            //     id_tipo_sanguineo: inputs.tipoSanguineo,
             // });
             console.warn(inputs);
             console.log(inputs);
@@ -183,38 +191,39 @@ const Cadastro = () => {
                     keyboardType="default"
                     onChangeText={(text) => handleOnChange(text, "email")}
                 />
-                <View style={estilos.selectContainer2}>
+                <View style={estilos.selectContainerPessoal}>
                     <Text style={estilos.label}></Text>
-                    <View style={estilos.formContainer}>
+                    <View style={estilos.sexo}>
                         <Picker
+                            placeholder="Sexo"
                             onFocus={() => {
                                 handleErrors(null, "cidadeDoacao");
                             }}
-                            selectedValue={cidadesSelecionado}
-                            onValueChange={(itemValue) =>
-                                setCidadesSelecionado(itemValue)
-                            }
+                            selectedValue={sexoSelecionado}
+                            onValueChange={(itemValue) => setSexo(itemValue)}
                         >
-                            {cidade.map((city) => {
-                                return (
-                                    <Picker.Item label={city} value={city} />
-                                );
+                            {sexo.map((sex) => {
+                                return <Picker.Item label={sex} value={sex} />;
                             })}
                         </Picker>
                     </View>
-                    <View style={estilos.formContainer}>
+                    <View style={estilos.tipo_sanguineo}>
                         <Picker
+                            placeholder="Tipo sanguineo"
                             onFocus={() => {
                                 handleErrors(null, "cidadeDoacao");
                             }}
-                            selectedValue={cidadesSelecionado}
+                            selectedValue={tipoSanguineoSelecionado}
                             onValueChange={(itemValue) =>
-                                setCidadesSelecionado(itemValue)
+                                setTipoSanguineoSelecionado(itemValue)
                             }
                         >
-                            {cidade.map((city) => {
+                            {tipoSanguineo.map((sanguineo) => {
                                 return (
-                                    <Picker.Item label={city} value={city} />
+                                    <Picker.Item
+                                        label={sanguineo}
+                                        value={sanguineo}
+                                    />
                                 );
                             })}
                         </Picker>
@@ -290,9 +299,6 @@ const Cadastro = () => {
                     />
                     <Button title="Avançar" onPress={validate} />
                 </View>
-                <View style={estilos.passo}>
-                    <Image source={require(passo1)} />
-                </View>
             </View>
         </Layout>
     );
@@ -306,7 +312,7 @@ const estilos = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        paddingBottom: 30,
+        paddingBottom: 15,
     },
     textTitle: {
         display: "flex",
@@ -346,11 +352,15 @@ const estilos = StyleSheet.create({
     selectContainer: {
         top: 15,
     },
-    selectContainer2:{
-        flexDirection: 'row',
-        top: 15
+    selectContainerPessoal: {
+        flexDirection: "row",
+        top: 15,
+        width: 334,
+        marginTop: 20,
     },
     formContainer: {
+        marginTop: 10,
+        marginBottom: 10,
         width: 334,
         height: 55,
         borderColor: COLORS.preto,
@@ -358,17 +368,25 @@ const estilos = StyleSheet.create({
         paddingHorizontal: 15,
         borderRadius: 15,
     },
-    label: {},
-    sexoTiposanguineo: {
-        flexDirection: 'column',
-        width: 334,
+    sexo: {
+        width: "35%",
         height: 55,
         borderColor: COLORS.preto,
         borderWidth: 1,
         paddingHorizontal: 15,
         borderRadius: 15,
-        backgroundColor: COLORS.branco
-    }
+        backgroundColor: COLORS.branco,
+        marginRight: "5%",
+    },
+    tipo_sanguineo: {
+        width: "60%",
+        height: 55,
+        borderColor: COLORS.preto,
+        borderWidth: 1,
+        paddingHorizontal: 15,
+        borderRadius: 15,
+        backgroundColor: COLORS.branco,
+    },
 });
 
 export default Cadastro;
