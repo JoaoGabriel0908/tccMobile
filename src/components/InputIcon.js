@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Ionicons } from "@expo/vector-icons";
-import { TextInputMask, TextMasks } from "react-native-masked-text";
 
 import COLORS from "../const/Colors";
 
@@ -17,6 +16,8 @@ const InputIcon = ({
   label,
   iconName,
   error,
+  icon,
+  value,
   onFocus = () => {},
   ...props
 }) => {
@@ -40,13 +41,14 @@ const InputIcon = ({
           { borderColor: error ? COLORS.vermelhoEscuro : COLORS.preto },
         ]}
       >
+        <Icon name={icon} style={estilos.icon} />
         <TextInput
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
             onFocus();
           }}
-          value={input}
+          value={value}
           onChangeText={(texto) => setInput(texto)}
           secureTextEntry={passwordShown}
           {...props}

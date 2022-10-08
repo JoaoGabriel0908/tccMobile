@@ -31,7 +31,7 @@ const estilos = StyleSheet.create({
   },
   containerForm: {
     backgroundColor: COLORS.branco,
-    height:'80%',
+    height:'85%',
     maxHeight:'100%',
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,

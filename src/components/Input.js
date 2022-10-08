@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
 import COLORS from "../const/Colors";
+import TextInputMask from "react-native-masked-text";
 
 // Função que representa um componente
 const Input = (
-  { label, iconName, error, value, onFocus = () => {}, keyboardType, touched, handleBlur, handleSubmit, name, isSubmitting, handleChange, ...props}
+  { label, iconName, error, value, onFocus = () => {}, keyboardType, name, ...props}
   ) => {
 
   return (
@@ -41,7 +41,7 @@ const Input = (
           keyboardType={keyboardType}
         />
       </View>
-
+        
       <Text>{error}</Text>
     </View>
   );
