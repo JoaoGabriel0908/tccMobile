@@ -1,50 +1,85 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
 import { useNavigation } from "@react-navigation/native";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
-import Select from "../components/Select";
 import { Picker } from "@react-native-picker/picker";
 import apiBlood from "../service/apiBlood";
-import { useForm, Controller } from "react-hook-form";
 import validarCPF from "../utils/validarCpf";
-import { onlyLetters } from "../utils/regex";
 import InputIcon from "../components/InputIcon";
+import apiEstados from "../service/apiEstados";
+import apiCidades from "../service/apiCidades";
 
 const passo1 = "../assets/Group8.png";
 
 const Cadastro = () => {
     const navigation = useNavigation();
 
-    const [cidade] = useState(["Jandira", "Barueri", "Itapevi"]);
+    const [cidades, setCidade] = useState([]);
     const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
 
-    const [sexo, setSexo] = useState(["O", "M", "F"]);
+    const [estados, setEstado] = useState([]);
+    const [estadoSelecionado, setEstadoSelecionado] = useState([]);
+
+    const [sexo, setSexo] = useState([]);
     const [sexoSelecionado, setSexoSelecionado] = useState([]);
 
-    const [tipoSanguineo, setTipoSanguineo] = useState(["+AB", "+A", "+B"]);
-    const [tipoSanguineoSelecionado, setTipoSanguineoSelecionado] = useState(
-        []
-    );
+    const [tipoSanguineo, setTipoSanguineo] = useState([]);
+    const [tipoSanguineoSelecionado, setTipoSanguineoSelecionado] = useState([]);
 
-    const [maskType, setMaskType] = useState({
-        maskType: "",
-    });
+    useEffect(() => {
+        apiBlood.get('/listarTipoSanguineo').then(data => {
+            console.log(data);
+            setTipoSanguineo(data.data);
+          });
+    }, [])
+
+    useEffect(() => {
+        apiBlood.get('/listarSexo').then(data => {
+            console.log(data);
+            setSexo(data.data);
+          });
+    }, [])
+
+    useEffect(() => {
+        apiEstados.get('/estados').then(data => {
+            // console.log(data);
+            setEstado(data.data);
+          });
+    }, [])
+
+    useEffect(() => {
+        apiCidades.get(`/estados/${estadoSelecionado}/municipios`).then(data => {
+            // console.log(data);
+            setCidade(data.data);
+          });
+    })
+
+    function aplicar() {
+        inputs.cpf = formataCPF(inputs.cpf);
+    }
+
+    const formataCPF = (cpf) => {
+        cpf = cpf.replace(/\D/g, "");
+        cpf = cpf.replace(/^(\d{3})/g, "$1.");
+        cpf = cpf.replace(/(\d{3})(\d{3})/g, "$1.$2-");
+        return cpf;
+    };
 
     const [inputs, setInputs] = React.useState({
         // O useState sempre representa essa estrutura
         // Chave = inputs / valor = inputs
         nomeCompleto: "",
         email: "",
-        cidadeDoacao: 1,
+        cidadeDoacao: "",
         cpf: "",
         senha: "",
         confirmacaoSenha: "",
-        sexo: 1,
-        tipo_sanguineo: 1,
+        sexo: "",
+        tipo_sanguineo: "",
     });
 
     // FUNÇÃO QUE MANIPULA A ENTRADA DE DADOS NA
@@ -94,6 +129,9 @@ const Cadastro = () => {
             validate = false;
             handleErrors("Informe o nome completo", "nomeCompleto");
             // console.log('Título em branco')
+        } else if(/[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(inputs.nomeCompleto)){
+            validate = false;
+            handleErrors("Elementos especias e pontuação não são permitidos", "nomeCompleto");
         }
         if (!inputs.email) {
             validate = false;
@@ -203,7 +241,7 @@ const Cadastro = () => {
                             onValueChange={(itemValue) => setSexo(itemValue)}
                         >
                             {sexo.map((sex) => {
-                                return <Picker.Item label={sex} value={sex} />;
+                                return <Picker.Item label={sex.sigla} value={sex.id} />;
                             })}
                         </Picker>
                     </View>
@@ -221,8 +259,8 @@ const Cadastro = () => {
                             {tipoSanguineo.map((sanguineo) => {
                                 return (
                                     <Picker.Item
-                                        label={sanguineo}
-                                        value={sanguineo}
+                                        label={sanguineo.tipo_sanguineo}
+                                        value={sanguineo.id}
                                     />
                                 );
                             })}
@@ -232,21 +270,46 @@ const Cadastro = () => {
                 <View style={estilos.selectContainer}>
                     <Text style={estilos.label}></Text>
                     <View style={estilos.formContainer}>
-                        <Picker
-                            onFocus={() => {
-                                handleErrors(null, "cidadeDoacao");
-                            }}
-                            selectedValue={cidadesSelecionado}
-                            onValueChange={(itemValue) =>
-                                setCidadesSelecionado(itemValue)
-                            }
-                        >
-                            {cidade.map((city) => {
-                                return (
-                                    <Picker.Item label={city} value={city} />
-                                );
-                            })}
-                        </Picker>
+                        <View style={estilos.cidadeDoacao}>
+                            <Picker
+                                onFocus={() => {
+                                    handleErrors(null, "cidadeDoacao");
+                                }}
+                                selectedValue={cidadesSelecionado}
+                                onValueChange={(itemValue) =>
+                                    setCidadesSelecionado(itemValue)
+                                }
+                            >
+                                {cidades.map((city) => {
+                                    return (
+                                        <Picker.Item
+                                            label={city.nome}
+                                            value={city.id}
+                                        />
+                                    );
+                                })}
+                            </Picker>
+                        </View>
+                        <View style={estilos.estadoDoacao}>
+                            <Picker
+                                onFocus={() => {
+                                    handleErrors(null, "estadoDoacao");
+                                }}
+                                selectedValue={estadoSelecionado}
+                                onValueChange={(itemValue) =>
+                                    setEstadoSelecionado(itemValue)
+                                }
+                            >
+                                {estados.map((estado) => {
+                                    return (
+                                        <Picker.Item
+                                            label={estado.sigla}
+                                            value={estado.id}
+                                        />
+                                    );
+                                })}
+                            </Picker>
+                        </View>
                     </View>
                 </View>
 
@@ -260,7 +323,11 @@ const Cadastro = () => {
                         handleErrors(null, "cpf");
                     }}
                     onChangeText={(text) => handleOnChange(text, "cpf")}
-                    keyboardType="default"
+                    keyboardType="numeric"
+                    onBlur={() => {
+                        aplicar(inputs.cpf);
+                    }}
+                    maxLength={14}
                 />
                 <InputIcon
                     name="senha"
@@ -337,10 +404,11 @@ const estilos = StyleSheet.create({
     },
     botoes: {
         flexDirection: "row",
-        width: 265,
+        width: 334,
         justifyContent: "space-around",
         alignItems: "center",
         textAlign: "center",
+        marginTop: 10,
     },
     passo: {
         alignItems: "center",
@@ -356,17 +424,33 @@ const estilos = StyleSheet.create({
         flexDirection: "row",
         top: 15,
         width: 334,
-        marginTop: 20,
+        marginTop: 10,
     },
     formContainer: {
-        marginTop: 10,
-        marginBottom: 10,
         width: 334,
+        borderColor: COLORS.preto,
+        flexDirection: "row",
+        marginTop: 10,
+        bottom: 10,
+    },
+    cidadeDoacao: {
+        width: "60%",
         height: 55,
         borderColor: COLORS.preto,
         borderWidth: 1,
         paddingHorizontal: 15,
         borderRadius: 15,
+        backgroundColor: COLORS.branco,
+        marginRight: "5%",
+    },
+    estadoDoacao: {
+        width: "35%",
+        height: 55,
+        borderColor: COLORS.preto,
+        borderWidth: 1,
+        paddingHorizontal: 15,
+        borderRadius: 15,
+        backgroundColor: COLORS.branco,
     },
     sexo: {
         width: "35%",

@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#E49E9E40",
         color: COLORS.vermelhoEscuro2,
         borderColor: "#E49E9E40",
+        marginRight: '5%',
     },
     buttonLogin: {
       backgroundColor: COLORS.branco,

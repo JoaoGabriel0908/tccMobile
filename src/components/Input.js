@@ -12,7 +12,7 @@ import TextInputMask from "react-native-masked-text";
 
 // Função que representa um componente
 const Input = (
-  { label, iconName, error, value, onFocus = () => {}, keyboardType, name, ...props}
+  { label, iconName, error, value, onFocus = () => {}, keyboardType, name, maxLength, onBlur = () => {}, ...props}
   ) => {
 
   return (
@@ -30,6 +30,9 @@ const Input = (
           <Icon name={iconName} style={estilos.icon} />
         </TouchableOpacity>
         <TextInput
+          onBlur={() => {
+            onBlur()
+            }}
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
@@ -39,6 +42,7 @@ const Input = (
           {...props}
           value={value}
           keyboardType={keyboardType}
+          maxLength={maxLength}
         />
       </View>
         
