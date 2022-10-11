@@ -13,22 +13,17 @@ import InputIcon from "../components/InputIcon";
 import apiEstados from "../service/apiEstados";
 import apiCidades from "../service/apiCidades";
 
-const passo1 = "../assets/Group8.png";
-
 const Cadastro = () => {
   const navigation = useNavigation();
 
   const [cidades, setCidade] = useState([]);
-  const [cidadesSelecionado, setCidadesSelecionado] = useState([]);
 
   const [estados, setEstado] = useState([]);
   const [estadoSelecionado, setEstadoSelecionado] = useState([]);
 
-  const [sexos, setSexo] = useState([]);
-  const [sexoSelecionado, setSexoSelecionado] = useState([]);
+  const [sexo, setSexo] = useState([]);
 
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
-  const [tipoSanguineoSelecionado, setTipoSanguineoSelecionado] = useState([]);
 
   useEffect(() => {
     apiBlood.get("/listarTipoSanguineo").then((data) => {
@@ -44,30 +39,30 @@ const Cadastro = () => {
     });
   }, []);
 
-  useEffect(() => {
-    apiEstados.get("/estados").then((data) => {
-      // console.log(data);
-      setEstado(data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiEstados.get("/estados").then((data) => {
+  //     // console.log(data);
+  //     setEstado(data.data);
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    apiCidades.get(`/estados/${estadoSelecionado}/municipios`).then((data) => {
-      // console.log(data);
-      setCidade(data.data);
-    });
-  });
+  // useEffect(() => {
+  //   apiCidades.get(`/estados/${estadoSelecionado}/municipios`).then((data) => {
+  //     // console.log(data);
+  //     setCidade(data.data);
+  //   });
+  // });
 
-  function aplicar() {
-    inputs.cpf = formataCPF(inputs.cpf);
-  }
+  // function aplicar() {
+  //   inputs.cpf = formataCPF(inputs.cpf);
+  // }
 
-  const formataCPF = (cpf) => {
-    cpf = cpf.replace(/\D/g, "");
-    cpf = cpf.replace(/^(\d{3})/g, "$1.");
-    cpf = cpf.replace(/(\d{3})(\d{3})/g, "$1.$2-");
-    return cpf;
-  };
+  // const formataCPF = (cpf) => {
+  //   cpf = cpf.replace(/\D/g, "");
+  //   cpf = cpf.replace(/^(\d{3})/g, "$1.");
+  //   cpf = cpf.replace(/(\d{3})(\d{3})/g, "$1.$2-");
+  //   return cpf;
+  // };
 
   const handleChangeInputs = (key, value) => {
     setInputs({
@@ -85,7 +80,7 @@ const Cadastro = () => {
     cpf: "",
     senha: "",
     // confirmacaoSenha: "",
-    sexos: 0,
+    sexo: 0,
     tipo_sanguineo: 0,
   });
 
@@ -94,20 +89,6 @@ const Cadastro = () => {
   const handleOnChange = (text, input) => {
     //O setInputs invoca o estado e passa para o prevState
     setInputs(
-      (prevState) => (
-        console.log(prevState),
-        // console.log(input + ` ` + text)
-
-        // Injeção de dados na State
-        // Sobrepondo resultado do texto e colocando no prevState
-        { ...prevState, [input]: text }
-      )
-    );
-  };
-
-  const SelectOnChange = (text, input) => {
-    //O setInputs invoca o estado e passa para o prevState
-    setSexo(
       (prevState) => (
         console.log(prevState),
         // console.log(input + ` ` + text)
@@ -146,29 +127,67 @@ const Cadastro = () => {
     let validate = true;
 
     // Quando máo tem conteúdo o validate ficará falso e aparecerá a mensagem
+    // if (!inputs.nomeCompleto) {
+    //   validate = false;
+    //   handleErrors("Informe o nome completo", "nomeCompleto");
+    //   // console.log('Título em branco')
+    // } else if (
+    //   /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(
+    //     inputs.nomeCompleto
+    //   )
+    // ) {
+    //   validate = false;
+    //   handleErrors(
+    //     "Elementos especias e pontuação não são permitidos",
+    //     "nomeCompleto"
+    //   );
+    // }
+    // if (!inputs.email) {
+    //   validate = false;
+    //   handleErrors("Informe o seu e-mail", "email");
+    //   // console.log('Descrição em branco')
+    // }
+    // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(inputs.email)) {
+    //   validate = false;
+    //   handleErrors("Email inválido", "email");
+    // }
+    // if (!inputs.cidadeDoacao) {
+    //   validate = false;
+    //   handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
+    //   // console.log('Descrição em branco')
+    // }
+    // if (!inputs.cpf) {
+    //   validate = false;
+    //   handleErrors("Informe o seu CPF corretamente", "cpf");
+    // // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
+    // //   validate = false;
+    // //   handleErrors("CPF inválido", "cpf");
+    // } else if (validarCPF(inputs.cpf)) {
+    //   validate = false;
+    //   handleErrors("CPF inválido", "cpf");
+    // }
+    // if (!inputs.senha) {
+    //   validate = false;
+    //   handleErrors("Cadastre sua senha", "senha");
+    //   // console.log('Capa em branco')
+    // }
+    // if (!inputs.confirmacaoSenha) {
+    //   validate = false;
+    //   handleErrors("Informa sua senha novamente", "confirmacaoSenha");
+    //   // console.log('Capa em branco')
+    // }
+
     if (!inputs.nomeCompleto) {
       validate = false;
       handleErrors("Informe o nome completo", "nomeCompleto");
       // console.log('Título em branco')
-    } else if (
-      /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(
-        inputs.nomeCompleto
-      )
-    ) {
-      validate = false;
-      handleErrors(
-        "Elementos especias e pontuação não são permitidos",
-        "nomeCompleto"
-      );
     }
-    if (!inputs.email) {
+    const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+    // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
+      if(!inputs.email){
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
-    }
-    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(inputs.email)) {
-      validate = false;
-      handleErrors("Email inválido", "email");
     }
     if (!inputs.cidadeDoacao) {
       validate = false;
@@ -178,12 +197,7 @@ const Cadastro = () => {
     if (!inputs.cpf) {
       validate = false;
       handleErrors("Informe o seu CPF corretamente", "cpf");
-    } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
-      validate = false;
-      handleErrors("CPF inválido", "cpf");
-    } else if (validarCPF(inputs.cpf)) {
-      validate = false;
-      handleErrors("CPF inválido", "cpf");
+      // console.log('Capa em branco')
     }
     if (!inputs.senha) {
       validate = false;
@@ -195,28 +209,29 @@ const Cadastro = () => {
       handleErrors("Informa sua senha novamente", "confirmacaoSenha");
       // console.log('Capa em branco')
     }
+
     if (validate) {
       // Envia os dados para a API cadastrar.
       cadastrar();
+      console.log('Cadastrou')
     }
 
-    // console.log(errors);
+    console.log(errors);
   };
 
   // Função que cria o cadastro com o post
   const cadastrar = () => {
     try {
-      const response = apiBlood.post("/cadastrarDoador", {
+      const response = apiBlood.post('/cadastrarDoador', {
         nome_completo: inputs.nomeCompleto,
         email: inputs.email,
         id_cidade: inputs.cidadeDoacao,
         cpf: inputs.cpf,
         senha: inputs.senha,
-        confirmacaoSenha: inputs.confirmacaoSenha,
-        id_sexo: inputs.sexos,
+        // confirmacaoSenha: inputs.confirmacaoSenha,
+        id_sexo: inputs.sexo,
         id_tipo_sanguineo: inputs.tipo_sanguineo,
       });
-      navigation.navigate("Terms");
     } catch (error) {
       error.response.data;
     }
@@ -260,14 +275,15 @@ const Cadastro = () => {
               onFocus={() => {
                 handleErrors(null, "sexo");
               }}
-              selectedValue={sexoSelecionado}
-              onValueChange={(itemValue) => handleChangeInputs("sexos", itemValue)}
+              selectedValue={inputs.sexo}
+              onValueChange={(itemValue) => handleChangeInputs("sexo", itemValue)}
             >
-              {sexos.map((sexo) => {
+              {sexo.map((sexo) => {
                 return (
                   <Picker.Item
                     label={sexo.sexo}
                     value={sexo.Id}
+                  
                   />
                 );
               })}
@@ -277,9 +293,9 @@ const Cadastro = () => {
             <Picker
               placeholder="Tipo sanguineo"
               onFocus={() => {
-                handleErrors(null, "cidadeDoacao");
+                handleErrors(null, "tipo_sanguineo");
               }}
-              selectedValue={tipoSanguineoSelecionado}
+              selectedValue={inputs.tipo_sanguineo}
               onValueChange={(itemValue) => handleChangeInputs("tipo_sanguineo", itemValue)}
             >
               {tipoSanguineo.map((sanguineo) => {
@@ -287,6 +303,7 @@ const Cadastro = () => {
                   <Picker.Item
                     label={sanguineo.tipo_sanguineo}
                     value={sanguineo.id}
+
                   />
                 );
               })}
@@ -301,11 +318,11 @@ const Cadastro = () => {
                 onFocus={() => {
                   handleErrors(null, "cidadeDoacao");
                 }}
-                selectedValue={cidadesSelecionado}
-                onValueChange={(itemValue) => setCidadesSelecionado(itemValue)}
+                selectedValue={inputs.cidadeDoacao}
+                onValueChange={(itemValue) => handleChangeInputs("cidadeDoacao", itemValue)}
               >
                 {cidades.map((city) => {
-                  return <Picker.Item label={city.nome} value={city.id} />;
+                  return <Picker.Item label={city.nome} value={city.id}/>;
                 })}
               </Picker>
             </View>
@@ -318,7 +335,7 @@ const Cadastro = () => {
                 onValueChange={(itemValue) => setEstadoSelecionado(itemValue)}
               >
                 {estados.map((estado) => {
-                  return <Picker.Item label={estado.sigla} value={estado.id} />;
+                  return <Picker.Item label={estado.sigla} value={estado.id}/>;
                 })}
               </Picker>
             </View>
@@ -336,9 +353,9 @@ const Cadastro = () => {
           }}
           onChangeText={(text) => handleOnChange(text, "cpf")}
           keyboardType="numeric"
-          onBlur={() => {
-            aplicar(inputs.cpf);
-          }}
+          // onBlur={() => {
+          //   aplicar(inputs.cpf);
+          // }}
           maxLength={14}
         />
         <InputIcon
