@@ -1,14 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const PerfilHemo = () => {
+const Hemocentros = () => {
   return (
     <View>
-      <Text>PerfilHemo</Text>
+      <Text>Hemocentros</Text>
     </View>
   )
 }
 
-export default PerfilHemo
-
-  
+export default Hemocentros

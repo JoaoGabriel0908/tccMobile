@@ -50,7 +50,7 @@ const Login = () => {
       </View>
 
       <View style={estilos.Button01}>
-        <Button style={estilos.Button01}title="Entre" onPress={() => {navigation.navigate("Home")}} />
+        <Button style={estilos.Button01}title="Entre" onPress={() => {navigation.navigate("PaginaInicial")}} />
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>
