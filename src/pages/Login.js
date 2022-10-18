@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import React from "react";
+import React, {useState}from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
@@ -20,6 +20,29 @@ import InputIcon from '../components/InputIcon'
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
+    const [validateInput, setValidadeInput]= useState({
+      case: false,
+      number:false,
+      length:false
+    })
+     
+    
+    const secureText = (password) => {
+       const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/)
+       const regexLowercase = RegExp(/ˆ(?=.*[a-z]).+$/)
+       const regexNumber = RegExp(/ˆ(?=.*[0-9]).+$/)
+       const lenght = password.length >= 6 
+
+       setValidadeInput({
+         case: regexUppercase.test(password) && regexLowercase.test(password),
+         number: regexNumber.test(password),
+         lenght
+       })
+       
+     }
+  
+  
+  
   const optionsindividual = [{text:'Lembrar-me', id: 1}];
  
   const navigation = useNavigation();
@@ -29,13 +52,21 @@ const Login = () => {
       <Text style={estilos.Text}>Entrar</Text>
       <View style={estilos.Text}>
         <Text style={estilos.title}></Text>
-        <Input placeholder=" CPF" type="cpf"/>
+        <Input placeholder=" CPF" 
+        type="cpf"
+        onChangeText={(password) => {
+            secureText(password)
+        }}
+        />
       </View>
       
       <Text style={estilos.title}></Text>
-      <InputIcon 
+      <InputIcon source={validateInput.length}
       placeholder="Senha" 
       iconName="eye" 
+      onChangeText={(password) => {
+        secureText(password)
+    }}
       >
         
       </InputIcon>

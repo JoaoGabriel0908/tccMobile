@@ -8,6 +8,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Image
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import COLORS from "../../const/Colors";
@@ -18,9 +19,7 @@ const Campanhas = () => {
 
   useEffect(() => {
     getList();
-    return () => {
-      
-    };
+    return () => {};
   }, []);
 
   const getList = () => {
@@ -37,7 +36,35 @@ const Campanhas = () => {
       .finally(() => setIsLoading(false));
   };
 
-  renderItem = ({ item, index }) => {};
+  onClickItem = (item,index) => {
+    const newArrData = data.map((e, index) =>{
+      if(item.id == e.id){
+        return{
+          ...e,
+          selected: true
+        }
+      }
+      return{
+        ...e,
+        selected: false,
+      }
+    })
+    setData(newArrData)
+  }
+
+  renderItem = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => onClickItem}
+        style={[
+          estilos.item,
+          { marginTop: 11, height: 150, backgroundColor: item.selected ? COLORS.preto : COLORS.branco },
+        ]}
+      >
+        <Image style={estilos.imagem} source={{ url: item.url }} />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -51,18 +78,16 @@ const Campanhas = () => {
         />
       )}
       <TouchableOpacity>
-      <ScrollView scrollEventThrottle={16}>
-        <View
-          style={{ height: 200, marginTop: 20, backgroundColor: COLORS.preto }}
-        >
-          <ScrollView>
-            <View></View>
-          </ScrollView>
-        </View>
-        <View>
-          <Text>Titulo</Text>
-        </View>
-      </ScrollView>
+        <ScrollView scrollEventThrottle={16}>
+          <View
+            style={{
+              height: 200,
+              marginTop: 20,
+              backgroundColor: COLORS.preto,
+            }}
+          >
+          </View>
+        </ScrollView>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -70,13 +95,24 @@ const Campanhas = () => {
 
 const estilos = StyleSheet.create({
   container: {
-    flex: 1,
+    height: 150,
   },
   wrapButton: {
     alignItems: "center",
     marginBottom: 20,
     padding: 20,
     backgroundColor: COLORS.preto,
+  },
+  item: {
+    borderWidth: 0.5,
+    padding: 8,
+    borderRadius: 10,
+    justifyContent: "center",
+    height: 150,
+  },
+  imagem: {
+    width: 100,
+    height: 100,
   },
 });
 
