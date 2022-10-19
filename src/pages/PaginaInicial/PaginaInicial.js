@@ -97,7 +97,6 @@ const PaginaInicial = () => {
           ref={(ref) => setRefFlatList(ref)}
         />
       )}
-      <Menu/>
     </SafeAreaView>
   );
 

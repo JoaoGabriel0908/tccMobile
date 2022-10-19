@@ -9,8 +9,7 @@ import { BottomNavigation } from "react-native-paper";
 import Perfil from "../pages/Perfil";
 import Hemocentros from "../pages/Hemocentros";
 import Conquistas from "../pages/Conquistas";
-
-const Tab = createBottomTabNavigator();
+import Menu from "./BottomTabs";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,8 +42,8 @@ export default function Routes() {
         />
 
         <Stack.Screen
-          name="PaginaInicial"
-          component={PaginaInicial}
+          name="Menu"
+          component={Menu}
           options={{ headerShown: false }}
         />
 

@@ -31,12 +31,12 @@ const Login = () => {
        const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/)
        const regexLowercase = RegExp(/ˆ(?=.*[a-z]).+$/)
        const regexNumber = RegExp(/ˆ(?=.*[0-9]).+$/)
-       const lenght = password.length >= 6 
+       const length = password.length >= 6 
 
        setValidadeInput({
          case: regexUppercase.test(password) && regexLowercase.test(password),
          number: regexNumber.test(password),
-         lenght
+         length
        })
        
      }
@@ -81,7 +81,7 @@ const Login = () => {
       </View>
 
       <View style={estilos.Button01}>
-        <Button style={estilos.Button01}title="Entre" onPress={() => {navigation.navigate("PaginaInicial")}} />
+        <Button style={estilos.Button01}title="Entre" onPress={() => {navigation.navigate("Menu")}} />
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>

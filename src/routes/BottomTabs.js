@@ -1,20 +1,73 @@
 import React from "react";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { View } from "react-native";
-import { BottomTabBar } from "@react-navigation/bottom-tabs";
+import { View, Text } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
+import Conquistas from "../pages/Conquistas";
+import PaginaInicial from "../pages/PaginaInicial/PaginaInicial";
+import Hemocentros from "../pages/Hemocentros";
+import Perfil from "../pages/Perfil";
+import COLORS from "../const/Colors";
+import Cabecalho from "../components/Cabecalho";
+
+const {Navigator, Screen} = createBottomTabNavigator();
 
 export default function Menu() {
-  const navigation = useNavigation();
 
     return(
-        <View>
-            <Button onPress={() => {navigation.navigate("PaginaInicial")}}/>
-            <Button onPress={() => {navigation.navigate('Hemocentros')}}/>
-            <Button onPress={() => {navigation.navigate('Conquistas')}}/>
-            <Button onPress={() => {navigation.navigate('Perfil')}}/>
-        </View>
+        <Navigator>
+            <Screen name="PaginaInicial" 
+            component={PaginaInicial}
+            options={{
+                headerTitle: () => <Cabecalho name='Página Inicial'/>,
+                
+                tabBarIcon: ({focused}) => (
+                    <>
+                        <Icon 
+                        name="home"
+                        size={40}
+                        color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                        />
+                    </>
+                )
+            }}/>
+            <Screen name="Hemocentros" component={Hemocentros} 
+            options={{
+                tabBarIcon: ({focused}) => (
+                    <>
+                        <Icon 
+                        name="view-list-outline"
+                        size={40}
+                        color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                        />
+                    </>
+                )
+            }}/>
+            <Screen name="Conquistas" component={Conquistas}
+            options={{
+                tabBarIcon: ({focused}) => (
+                    <>
+                        <Icon 
+                        name="seal"
+                        size={40}
+                        color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                        />
+                    </>
+                )
+            }}/>
+            <Screen name="Perfil" component={Perfil}
+            options={{
+                tabBarIcon: ({focused}) => (
+                    <>
+                        <Icon 
+                        name="account"
+                        size={40}
+                        color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                        />
+                    </>
+                )
+            }}/>
+        </Navigator>
     )
 }
