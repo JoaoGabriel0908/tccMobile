@@ -15,6 +15,7 @@ import React, { useEffect, useState } from "react";
 import Campanhas from "./Campanhas";
 import COLORS from "../../const/Colors";
 import Menu from "../../routes/BottomTabs";
+import HemoPaginaInicial from "./HemoPaginaInicial";
 
 const PaginaInicial = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -42,7 +43,7 @@ const PaginaInicial = () => {
   };
 
   const onClickItem = (item, index) => {
-    setCurrentIndex(index)
+    setCurrentIndex(index);
     const newArrData = data.map((e, index) => {
       if (item.id == e.id) {
         return {
@@ -66,45 +67,56 @@ const PaginaInicial = () => {
           estilos.item,
           {
             width: 250,
-            marginLeft: 14,
+            marginRight: 14,
             marginTop: 11,
             height: 150,
-            backgroundColor: item.selected ? COLORS.preto : COLORS.vermelhoClaro,
+            backgroundColor: item.selected
+              ? COLORS.preto
+              : COLORS.vermelhoClaro,
           },
         ]}
       >
-        <Image style={estilos.imagem} source={{ url: item.url }} resizeMode='contain' />
+        <Image
+          style={estilos.imagem}
+          source={{ url: item.url }}
+          resizeMode="contain"
+        />
       </TouchableOpacity>
     );
   };
 
   const getItemLayout = (data, index) => {
-    return {length: 161, offset: 161 * index, index}
-  }
+    return { length: 161, offset: 161 * index, index };
+  };
 
   return (
-    <SafeAreaView style={estilos.container}>
-      <Text>Listagem Clinicas</Text>
-      {isLoading ? (
-        <ActivityIndicator />
-      ) : (
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={(item) => `${item.id}`}
-          horizontal
-          getItemLayout = {getItemLayout}
-          ref={(ref) => setRefFlatList(ref)}
-        />
-      )}
-    </SafeAreaView>
+    <ScrollView style={estilos.containerPagina}>
+      <ScrollView style={estilos.container}>
+        <Text style={estilos.campanhaText}>Campanhas para você</Text>
+        {isLoading ? (
+          <ActivityIndicator />
+        ) : (
+          <FlatList
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={(item) => `${item.id}`}
+            horizontal
+            getItemLayout={getItemLayout}
+            ref={(ref) => setRefFlatList(ref)}
+          />
+        )}
+        <Text style={estilos.titulo}>Título da Campanha</Text>
+        <Text style={estilos.descricao}>A solidariedade corre nas suas veias. Doe sangue!</Text>
+        <HemoPaginaInicial />
+      </ScrollView>
+    </ScrollView>
   );
-
 };
 
-
-
 const estilos = StyleSheet.create({
+  containerPagina:{
+    paddingHorizontal: 30,
+  },
   container: {
     flex: 1,
   },
@@ -124,6 +136,22 @@ const estilos = StyleSheet.create({
     width: 100,
     height: 100,
   },
+  titulo:{
+    fontWeight: '900',
+    fontSize: 16,
+  },
+  descricao:{
+    fontSize: 14,
+    textAlign: "justify",
+    backgroundColor: COLORS.vermelhoClaro,
+    marginLeft: 10
+  },
+  campanhaText:{
+    marginTop: 20,
+    fontWeight: '600',
+    fontSize: 20,
+    color: COLORS.vermelhoEscuro2
+  }
 });
 
 export default PaginaInicial;

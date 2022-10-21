@@ -12,6 +12,7 @@ import COLORS from "../const/Colors";
 import Cabecalho from "../components/Cabecalho";
 
 const {Navigator, Screen} = createBottomTabNavigator();
+const logo = "../assets/cuidados-de-saude(3)1.png";
 
 export default function Menu() {
 
@@ -20,8 +21,8 @@ export default function Menu() {
             <Screen name="PaginaInicial" 
             component={PaginaInicial}
             options={{
-                headerTitle: () => <Cabecalho name='Página Inicial'/>,
-                
+                headerTitle: () => <Cabecalho name='PaginaInicial'/>,
+                headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>
                         <Icon 
@@ -32,8 +33,10 @@ export default function Menu() {
                     </>
                 )
             }}/>
-            <Screen name="Hemocentros" component={Hemocentros} 
+            <Screen name="Hemocentro" component={Hemocentros} 
             options={{
+                headerTitle: () => <Cabecalho name='Hemocentro'/>,
+                headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>
                         <Icon 
@@ -46,6 +49,8 @@ export default function Menu() {
             }}/>
             <Screen name="Conquistas" component={Conquistas}
             options={{
+                headerTitle: () => <Cabecalho name='Conquistas'/>,
+                headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>
                         <Icon 
@@ -58,6 +63,8 @@ export default function Menu() {
             }}/>
             <Screen name="Perfil" component={Perfil}
             options={{
+                headerTitle: () => <Cabecalho name='Perfil'/>,
+                headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>
                         <Icon 

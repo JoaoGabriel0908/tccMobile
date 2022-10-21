@@ -10,6 +10,7 @@ import Perfil from "../pages/Perfil";
 import Hemocentros from "../pages/Hemocentros";
 import Conquistas from "../pages/Conquistas";
 import Menu from "./BottomTabs";
+import Cabecalho from "../components/Cabecalho";
 
 const Stack = createNativeStackNavigator();
 
@@ -50,7 +51,11 @@ export default function Routes() {
         <Stack.Screen
           name="Hemocentros"
           component={Hemocentros}
-          options={{ headerShown: false }}
+          options={{
+            title: "Hemocentros",
+            headerBackVisible: true,
+            headerBackTitle: 'Login',
+          }}
         />
 
         <Stack.Screen
