@@ -1,11 +1,8 @@
 import React from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Button from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
 import Conquistas from "../pages/Conquistas";
-import PaginaInicial from "../pages/PaginaInicial/PaginaInicial";
+import PaginaInicial from "../pages/PaginaInicial";
 import Hemocentros from "../pages/Hemocentros";
 import Perfil from "../pages/Perfil";
 import COLORS from "../const/Colors";
@@ -21,7 +18,7 @@ export default function Menu() {
             <Screen name="PaginaInicial" 
             component={PaginaInicial}
             options={{
-                headerTitle: () => <Cabecalho name='PaginaInicial'/>,
+                headerTitle: () => <Cabecalho name='Pagina Inicial'/>,
                 headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>
@@ -35,7 +32,7 @@ export default function Menu() {
             }}/>
             <Screen name="Hemocentro" component={Hemocentros} 
             options={{
-                headerTitle: () => <Cabecalho name='Hemocentro'/>,
+                headerTitle: () => <Cabecalho name='Hemocentros'/>,
                 headerTitleAlign: "center",
                 tabBarIcon: ({focused}) => (
                     <>

@@ -16,18 +16,20 @@ const Cabecalho = (props) => {
 const estilos = StyleSheet.create({
   cabecalho: {
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     flexDirection: "row",
-    width: 200,
+    width: 360,
   },
   logo: {
-    left: 100,
+    
   },
   textCabecalho: {
     left: 20,
     fontWeight: "bold",
     fontSize: 22,
     color: COLORS.vermelhoPrincipal,
+    flex: 1,
+    textAlign: "center",
   },
 });
 

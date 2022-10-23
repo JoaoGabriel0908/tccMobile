@@ -11,7 +11,7 @@ import {
   Image
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import COLORS from "../../const/Colors";
+import COLORS from "../const/Colors";
 
 const Campanhas = () => {
   const [isLoading, setIsLoading] = useState(true);

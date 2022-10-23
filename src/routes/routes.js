@@ -3,14 +3,13 @@ import Splash from "../pages/Splash";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Terms from "../pages/Terms";
-import PaginaInicial from "../pages/PaginaInicial/PaginaInicial";
+import PaginaInicial from "../pages/PaginaInicial";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { BottomNavigation } from "react-native-paper";
 import Perfil from "../pages/Perfil";
 import Hemocentros from "../pages/Hemocentros";
 import Conquistas from "../pages/Conquistas";
 import Menu from "./BottomTabs";
-import Cabecalho from "../components/Cabecalho";
 
 const Stack = createNativeStackNavigator();
 
