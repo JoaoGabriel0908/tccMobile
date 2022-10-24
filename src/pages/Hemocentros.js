@@ -8,6 +8,8 @@ import Button from "../components/Button";
 import InputIcon from "../components/InputIcon";
 
 const Hemocentros = () => {
+  const navigation = useNavigation();
+
   return (
     <>
     <View>
