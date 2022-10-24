@@ -11,7 +11,8 @@ const Perfil = () => {
       nameComplet="Leonardo Vivi"
       nameGenres="Masculino"
       gender="gender-male"
-      iconNameSangue="water"/>
+      iconNameSangue="water"
+      tipoSanguineo="AB+"/>
       <View style={estilos.dadosPerfilContainer}>
         <DadosPerfil/>
       </View>

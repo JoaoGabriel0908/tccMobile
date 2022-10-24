@@ -37,11 +37,8 @@ const Login = () => {
          case: regexUppercase.test(password) && regexLowercase.test(password),
          number: regexNumber.test(password),
          length
-       })
-       
+       }) 
      }
-  
-  
   
   const optionsindividual = [{text:'Lembrar-me', id: 1}];
  

@@ -14,10 +14,15 @@ import TextInputMask from "react-native-masked-text";
 const Input = (
   { label, iconName, error, value, onFocus = () => {}, keyboardType, name, maxLength, onBlur = () => {}, ...props}
   ) => {
+    const stylesMargin = [estilos.formContainer];
+    if (props.inputPequeno) stylesMargin.push(estilos.inputPequeno);
+
+    const stylesText = [estilos.inputLabel];
+    if (props.textPequeno) stylesText.push(estilos.textPequeno);
 
   return (
-    <View style={estilos.formContainer}>
-      <Text style={estilos.inputLabel}>{label}</Text>
+    <View style={stylesMargin}>
+      <Text style={stylesText}>{label}</Text>
 
       {/* Quando adicionamos [] podemos colocar mais de uma classe */}
       <View
@@ -57,6 +62,15 @@ const estilos = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  inputPequeno:{
+    marginBottom: 40,
+    backgroundColor: COLORS.preto,
+    height: 0,
+  },
+  textPequeno: {
+    marginVertical: 0,
+    backgroundColor: COLORS.vermelhoClaro2,
+  },
   inputLabel: {
     marginVertical: 5,
     fontSize: 15,
@@ -83,6 +97,7 @@ const estilos = StyleSheet.create({
     opacity: 0.5,
     fontSize: 30,
   },
+  
 });
 
 export default Input;

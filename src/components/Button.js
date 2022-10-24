@@ -7,6 +7,7 @@ const Button = ({ title, onPress = () => {}, ...props }) => {
     if (props.back) stylesButton.push(styles.buttonBack);
     if (props.login) stylesButton.push(styles.buttonLogin);
     if (props.register) stylesButton.push(styles.buttonRegister);
+    if (props.verMais) stylesButton.push(styles.verMais);
     
     const stylesText = [styles.texto];
     if (props.textBack) stylesText.push(styles.textBack);
@@ -19,7 +20,6 @@ const Button = ({ title, onPress = () => {}, ...props }) => {
             >
                 <Text style={stylesText}>{title}</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button01}></TouchableOpacity>
         </>
     );
 };
@@ -71,8 +71,11 @@ const styles = StyleSheet.create({
     textBack: {
         color: COLORS.vermelhoPrincipal,
     },
-    button01: {
-        left: 200,
-        top: -80,
-    },
+    verMais: {
+        backgroundColor: COLORS.vermelhoPrincipal,
+        height: 40,
+        marginTop: 0,
+        marginBottom: 2,
+        
+    }
 });
