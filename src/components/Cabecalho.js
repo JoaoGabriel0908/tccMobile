@@ -28,7 +28,7 @@ const estilos = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 22,
     color: COLORS.vermelhoPrincipal,
-    flex: 1,
+    flex: 3,
     textAlign: "center",
   },
 });

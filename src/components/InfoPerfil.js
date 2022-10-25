@@ -10,6 +10,7 @@ import {
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useNavigation } from "@react-navigation/native";
 
 const person = "../assets/Ellipse8.png";
 
@@ -21,28 +22,44 @@ const InfoPerfil = ({
   iconNameSangue,
   gender,
 }) => {
+  const navigation = useNavigation();
   return (
     <SafeAreaView style={estilos.containerGeral}>
       <SafeAreaView style={estilos.container}>
         <View style={estilos.perfil}>
-          <Icon name={iconNameSangue} style={{fontSize: 50}}/>
-          <Text style={{fontSize: 14, fontWeight: "800"}}>{tipoSanguineo}</Text>
+          <Icon name={iconNameSangue} style={{ fontSize: 50 }} />
+          <Text style={{ fontSize: 14, fontWeight: "800" }}>
+            {tipoSanguineo}
+          </Text>
         </View>
         <View>
           <View style={estilos.pessoa}>
             <Image source={require(person)} style={estilos.imagem} />
-            <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold", }}>{nameComplet}</Text>
+            <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold" }}>
+              {nameComplet}
+            </Text>
           </View>
           <Image />
         </View>
         <View style={estilos.genero}>
-          <Icon name={gender} style={{fontSize: 50}}/>
-          <Text style={{fontSize: 14, fontWeight: "800"}}>{nameGenres}</Text>
+          <Icon name={gender} style={{ fontSize: 50 }} />
+          <Text style={{ fontSize: 14, fontWeight: "800" }}>{nameGenres}</Text>
         </View>
       </SafeAreaView>
       <View style={estilos.config}>
-        <Icon name="account-edit" style={{ height: 30, fontSize: 30 }} />
-        <Text style={{ fontSize: 14, paddingRight:20 }}>Editar perfil</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("EditarPerfil");
+          }}
+          style={{
+            justifyContent: "center",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Icon name="account-edit" style={{ height: 30, fontSize: 30 }} />
+          <Text style={{ fontSize: 14, paddingRight: 20 }}>Editar perfil</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -53,7 +70,7 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: COLORS.vermelhoClaro2,
+  
     height: 230,
     justifyContent: "center",
     alignItems: "center",
@@ -81,7 +98,6 @@ const estilos = StyleSheet.create({
   config: {
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingLeft: 40,
     flexDirection: "row",
     backgroundColor: COLORS.branco,
   },

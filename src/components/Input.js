@@ -20,6 +20,9 @@ const Input = (
     const stylesText = [estilos.inputLabel];
     if (props.textPequeno) stylesText.push(estilos.textPequeno);
 
+    const stylesEditar = [estilos.inputContainer];
+    if (props.EditarPerfil) stylesEditar.push(estilos.EditarPerfil);
+
   return (
     <View style={stylesMargin}>
       <Text style={stylesText}>{label}</Text>
@@ -27,7 +30,7 @@ const Input = (
       {/* Quando adicionamos [] podemos colocar mais de uma classe */}
       <View
         style={[
-          estilos.inputContainer,
+          stylesEditar,
           { borderColor: error ? COLORS.vermelhoEscuro : COLORS.preto },
         ]}
       >
@@ -97,6 +100,8 @@ const estilos = StyleSheet.create({
     opacity: 0.5,
     fontSize: 30,
   },
+  EditarPerfil:{
+  }
   
 });
 

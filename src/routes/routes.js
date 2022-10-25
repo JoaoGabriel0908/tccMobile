@@ -3,13 +3,12 @@ import Splash from "../pages/Splash";
 import Login from "../pages/Login";
 import Cadastro from "../pages/Cadastro";
 import Terms from "../pages/Terms";
-import PaginaInicial from "../pages/PaginaInicial";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BottomNavigation } from "react-native-paper";
+import Cabecalho from "../components/Cabecalho";
 import Perfil from "../pages/Perfil";
 import Hemocentros from "../pages/Hemocentros";
 import Conquistas from "../pages/Conquistas";
 import Menu from "./BottomTabs";
+import EditarPerfil from "../pages/EditarPerfil";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,7 +52,7 @@ export default function Routes() {
           options={{
             title: "Hemocentros",
             headerBackVisible: true,
-            headerBackTitle: 'Login',
+            headerBackTitle: "Login",
           }}
         />
 
@@ -67,6 +66,25 @@ export default function Routes() {
           name="Perfil"
           component={Perfil}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="EditarPerfil"
+          component={EditarPerfil}
+          options={{
+            headerTitle: () => <Cabecalho name="Perfil"/>,
+            headerTitleAlign: "center",
+            headerBackImageSource: '../assets/Combined-Shape.png',
+            tabBarIcon: ({ focused }) => (
+              <>
+                <Icon
+                  name="account"
+                  size={40}
+                  color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                />
+              </>
+            ),
+          }}
         />
       </Stack.Navigator>
     </>

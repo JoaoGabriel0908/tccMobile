@@ -39,19 +39,25 @@ const Cadastro = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   apiEstados.get("/estados").then((data) => {
-  //     // console.log(data);
-  //     setEstado(data.data);
-  //   });
-  // }, []);
+  const buscandoCidades = () => {
+    apiBlood.get("/listarCidadePorEstado").then((data) => {
+      id: handleSelectedUf
+      // console.log(data.data);
+      setCidade(data.id);
+    });
+  };
 
-  // useEffect(() => {
-  //   apiCidades.get(`/estados/${estadoSelecionado}/municipios`).then((data) => {
-  //     // console.log(data);
-  //     setCidade(data.data);
-  //   });
-  // });
+  useEffect(() => {
+    apiBlood.get("/listarEstados").then((data) => {
+      // console.log(data.data);
+      setEstado(data.data);
+    });
+  });
+
+  function handleSelectedUf(id, item){
+    console.log(id)
+    setEstadoSelecionado(id)
+  }
 
   // function aplicar() {
   //   inputs.cpf = formataCPF(inputs.cpf);
@@ -76,10 +82,10 @@ const Cadastro = () => {
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    cidadeDoacao: 1,
+    cidadeDoacao: "Jandira, Barueri",
     cpf: "",
     senha: "",
-    // confirmacaoSenha: "",
+    confirmacaoSenha: "",
     sexo: 0,
     tipo_sanguineo: 0,
   });
@@ -232,6 +238,7 @@ const Cadastro = () => {
         id_sexo: inputs.sexo,
         id_tipo_sanguineo: inputs.tipo_sanguineo,
       });
+      console.log(response.json())
     } catch (error) {
       error.response.data;
     }
@@ -315,6 +322,7 @@ const Cadastro = () => {
           <View style={estilos.formContainer}>
             <View style={estilos.cidadeDoacao}>
               <Picker
+                onBlur={buscandoCidades}
                 onFocus={() => {
                   handleErrors(null, "cidadeDoacao");
                 }}
@@ -322,7 +330,7 @@ const Cadastro = () => {
                 onValueChange={(itemValue) => handleChangeInputs("cidadeDoacao", itemValue)}
               >
                 {cidades.map((city) => {
-                  return <Picker.Item label={city.nome} value={city.id}/>;
+                  return <Picker.Item label={city.cidade} value={city.id}/>;
                 })}
               </Picker>
             </View>
@@ -332,10 +340,10 @@ const Cadastro = () => {
                   handleErrors(null, "estadoDoacao");
                 }}
                 selectedValue={estadoSelecionado}
-                onValueChange={(itemValue) => setEstadoSelecionado(itemValue)}
+                onValueChange={(itemValue, id) => handleSelectedUf(itemValue, id)}
               >
                 {estados.map((estado) => {
-                  return <Picker.Item label={estado.sigla} value={estado.id}/>;
+                  return <Picker.Item label={estado.uf} value={estado.id}/>;
                 })}
               </Picker>
             </View>
