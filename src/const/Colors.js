@@ -6,6 +6,7 @@ const COLORS = {
     vermelhoEscuro: '#803434',
     branco:'#fffffa',
     preto:'#000001',
+    cinza:'#D9D9D9',
 }
 
 export default COLORS;

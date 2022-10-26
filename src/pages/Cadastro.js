@@ -19,7 +19,6 @@ const Cadastro = () => {
   const [cidades, setCidade] = useState([]);
 
   const [estados, setEstado] = useState([]);
-  const [estadoSelecionado, setEstadoSelecionado] = useState([]);
 
   const [sexo, setSexo] = useState([]);
 
@@ -39,25 +38,34 @@ const Cadastro = () => {
     });
   }, []);
 
-  const buscandoCidades = () => {
-    apiBlood.get("/listarCidadePorEstado").then((data) => {
-      id: handleSelectedUf
-      // console.log(data.data);
-      setCidade(data.id);
-    });
-  };
+  // console.log(estadoSelecionado.id)
 
   useEffect(() => {
     apiBlood.get("/listarEstados").then((data) => {
-      // console.log(data.data);
+      console.log(data.data[0]);
       setEstado(data.data);
     });
-  });
+  }, []);
 
-  function handleSelectedUf(id, item){
-    console.log(id)
-    setEstadoSelecionado(id)
-  }
+  useEffect(() => {
+    apiBlood.get(`/listarCidadePorEstado/${inputs.estado}`).then((data) => {
+      console.log(data.data[0]);
+      setCidade(data.data);
+    });
+  }, []);
+
+  // const buscandoCidades = () => {
+  //   apiBlood.get(`/listarCidadePorEstado/${inputs.estado}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     setCidade(data.data)
+  //   });
+  // };
+
+  // function handleSelectedUf(id){
+  //   console.log(id)
+  //   setEstadoSelecionado(id)
+  //   console.log(estadoSelecionado)
+  // }
 
   // function aplicar() {
   //   inputs.cpf = formataCPF(inputs.cpf);
@@ -72,17 +80,33 @@ const Cadastro = () => {
 
   const handleChangeInputs = (key, value) => {
     setInputs({
-    ...inputs,
-    [key]: value
-    })
-  }
+      ...inputs,
+      [key]: value,
+    });
+  };
+
+  const handleChangeEstado = (key, value) => {
+    setInputs({
+      ...inputs,
+      [key]: value,
+    }),
+    buscarCidades(value)
+  };
+
+  const buscarCidades = (id) => {
+    apiBlood.get(`/listarCidadePorEstado/${id}`).then((data) => {
+      console.log(data.data[0]);
+      setCidade(data.data);
+    });
+  };
 
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    cidadeDoacao: "Jandira, Barueri",
+    cidadeDoacao: 0,
+    estado: 0,
     cpf: "",
     senha: "",
     confirmacaoSenha: "",
@@ -190,7 +214,7 @@ const Cadastro = () => {
     }
     const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
     // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
-      if(!inputs.email){
+    if (!inputs.email) {
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
@@ -219,7 +243,7 @@ const Cadastro = () => {
     if (validate) {
       // Envia os dados para a API cadastrar.
       cadastrar();
-      console.log('Cadastrou')
+      console.log("Cadastrou");
     }
 
     console.log(errors);
@@ -228,21 +252,26 @@ const Cadastro = () => {
   // Função que cria o cadastro com o post
   const cadastrar = () => {
     try {
-      const response = apiBlood.post('/cadastrarDoador', {
+      const response = apiBlood.post("/cadastrarDoador", {
         nome_completo: inputs.nomeCompleto,
         email: inputs.email,
         id_cidade: inputs.cidadeDoacao,
+        id_estado: inputs.estado,
         cpf: inputs.cpf,
         senha: inputs.senha,
         // confirmacaoSenha: inputs.confirmacaoSenha,
         id_sexo: inputs.sexo,
         id_tipo_sanguineo: inputs.tipo_sanguineo,
       });
-      console.log(response.json())
+      console.log(response.json());
     } catch (error) {
       error.response.data;
     }
   };
+
+  useEffect(() => {
+    console.log(inputs);
+  }, [inputs.estado]);
 
   return (
     <Layout>
@@ -283,16 +312,12 @@ const Cadastro = () => {
                 handleErrors(null, "sexo");
               }}
               selectedValue={inputs.sexo}
-              onValueChange={(itemValue) => handleChangeInputs("sexo", itemValue)}
+              onValueChange={(itemValue) =>
+                handleChangeInputs("sexo", itemValue)
+              }
             >
               {sexo.map((sexo) => {
-                return (
-                  <Picker.Item
-                    label={sexo.sexo}
-                    value={sexo.Id}
-                  
-                  />
-                );
+                return <Picker.Item label={sexo.sexo} value={sexo.Id} />;
               })}
             </Picker>
           </View>
@@ -303,14 +328,15 @@ const Cadastro = () => {
                 handleErrors(null, "tipo_sanguineo");
               }}
               selectedValue={inputs.tipo_sanguineo}
-              onValueChange={(itemValue) => handleChangeInputs("tipo_sanguineo", itemValue)}
+              onValueChange={(itemValue) =>
+                handleChangeInputs("tipo_sanguineo", itemValue)
+              }
             >
               {tipoSanguineo.map((sanguineo) => {
                 return (
                   <Picker.Item
                     label={sanguineo.tipo_sanguineo}
                     value={sanguineo.id}
-
                   />
                 );
               })}
@@ -322,12 +348,14 @@ const Cadastro = () => {
           <View style={estilos.formContainer}>
             <View style={estilos.cidadeDoacao}>
               <Picker
-                onBlur={buscandoCidades}
+                // onBlur={buscandoCidades}
                 onFocus={() => {
                   handleErrors(null, "cidadeDoacao");
                 }}
                 selectedValue={inputs.cidadeDoacao}
-                onValueChange={(itemValue) => handleChangeInputs("cidadeDoacao", itemValue)}
+                onValueChange={(itemValue) =>
+                  handleChangeInputs("cidadeDoacao", itemValue)
+                }
               >
                 {cidades.map((city) => {
                   return <Picker.Item label={city.cidade} value={city.id}/>;
@@ -339,8 +367,10 @@ const Cadastro = () => {
                 onFocus={() => {
                   handleErrors(null, "estadoDoacao");
                 }}
-                selectedValue={estadoSelecionado}
-                onValueChange={(itemValue, id) => handleSelectedUf(itemValue, id)}
+                selectedValue={inputs.estado}
+                onValueChange={(itemValue) =>
+                  handleChangeEstado("estado", itemValue)
+                }
               >
                 {estados.map((estado) => {
                   return <Picker.Item label={estado.uf} value={estado.id}/>;

@@ -6,23 +6,30 @@ import {
     SafeAreaView,
     StyleSheet,
     ScrollView,
+    TextInput,
+    
     
   } from "react-native";
-import React from 'react'
+
 import Cabecalho from "../components/Cabecalho";
 import InputIcon from '../components/InputIcon';
-import Input from "../components/Input";
+import COLORS from "../const/Colors";
+import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-
-
-import COLORS from '../const/Colors'
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 
+
+
+
 const person = "../assets/Ellipse8.png";
+
 
 const EditarPerfil = () => {
   return (
     
+    
+
     <ScrollView>
       <View style={estilos.pessoa}>
             <Image source={require(person)} style={estilos.imagem} />
@@ -49,28 +56,48 @@ const EditarPerfil = () => {
         </TouchableOpacity>
       </View>
       <View style={estilos.cidadeContainer}>
-        <Text>Cidade residente</Text>
-        <Input inputPequeno EditarPerfil/>
+        <Text style={estilos.title}>Nome completo</Text>
+        <TextInput style={estilos.input}/>
       </View>
       <View style={estilos.nascimentoContainer}>
-        <Text>Data nascimento</Text>
-        <Input inputPequeno />
+
+      <Text style={estilos.title}>Genero</Text>
+      <View>
+      <Picker
+              placeholder="Sexo"
+              onFocus={() => {
+                handleErrors(null, "sexo");
+              }}
+              selectedValue={inputs.sexo}
+              onValueChange={(itemValue) =>
+                handleChangeInputs("sexo", itemValue)
+              }
+            >
+              {sexo.map((sexo) => {
+                return <Picker.Item label={sexo.sexo} value={sexo.Id} />;
+              })}
+            </Picker>
+      </View>
+      
+      <TextInput style={estilos.input}/>
       </View>
       <View>
         <View>
-          <Text textPequeno>E-mail</Text>
-          <Input inputPequeno />
+       
+        <Text style={estilos.title}>Tipo sanguíneo</Text>
+        
+        <TextInput style={estilos.input}/>
         </View>
         <View>
-          <Text>Celular</Text>
-          <Input inputPequeno />
+        <Text style={estilos.title}>Data nascimento</Text>
+            <TextInput style={estilos.input}/>
         </View>
         <View>
           <Text></Text>
           
         </View>
         <View style={estilos.cidadesEscolhidos}>
-          <Text>Cidades que pretendem doar</Text>
+        <Text style={estilos.subtitle}>Localização</Text>
           <View style={estilos.cidades}></View>
         </View>
       </View>
@@ -94,9 +121,37 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     color: COLORS.preto,
     fontWeight: "bold",
-    fontSize: 15,
-  }
-
+    fontSize: 18,
+  },
+title:{
+  fontWeight: "regular",
+  left:50,
+  marginBottom:10,
+  fontSize: 15,
+},
+input:{
+  width: 334,
+  height: 55,
+  backgroundColor: COLORS.cinza,
+  flexDirection: "row",
+  paddingHorizontal: 15,
+  alignItems: "center",
+  borderRadius: 15,
+  justifyContent: "center",
+  left:35
+},
+subtitle:{
+  fontWeight: "bold",
+  left:50,
+  fontSize: 25,
+},
+icon: {
+  color: COLORS.vermelhoPrincipal,
+  opacity: 0.5,
+  fontSize: 15,
+  left:40,
+  top:50
+},
 })
 
   

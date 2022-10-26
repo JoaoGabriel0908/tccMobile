@@ -64,6 +64,7 @@ const estilos = StyleSheet.create({
     marginBottom: 40,
     flex: 1,
     alignItems: "center",
+    marginBottom:40
   },
   inputPequeno:{
     marginBottom: 40,
@@ -101,6 +102,8 @@ const estilos = StyleSheet.create({
     fontSize: 30,
   },
   EditarPerfil:{
+   
+    
   }
   
 });
