@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView, FlatList } from "react-native";
 
 import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
@@ -10,8 +10,7 @@ import { Picker } from "@react-native-picker/picker";
 import apiBlood from "../service/apiBlood";
 import validarCPF from "../utils/validarCpf";
 import InputIcon from "../components/InputIcon";
-import apiEstados from "../service/apiEstados";
-import apiCidades from "../service/apiCidades";
+import Select from "../components/Select";
 
 const Cadastro = () => {
   const navigation = useNavigation();
@@ -38,7 +37,7 @@ const Cadastro = () => {
     });
   }, []);
 
-  // console.log(estadoSelecionado.id)
+  // console.log(id_estadoSelecionado.id)
 
   useEffect(() => {
     apiBlood.get("/listarEstados").then((data) => {
@@ -48,14 +47,14 @@ const Cadastro = () => {
   }, []);
 
   useEffect(() => {
-    apiBlood.get(`/listarCidadePorEstado/${inputs.estado}`).then((data) => {
+    apiBlood.get(`/listarCidadesPorEstado/${inputs.id_estado}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data);
     });
   }, []);
 
   // const buscandoCidades = () => {
-  //   apiBlood.get(`/listarCidadePorEstado/${inputs.estado}`).then((data) => {
+  //   apiBlood.get(`/listarCidadePorid_Estado/${inputs.id_estado}`).then((data) => {
   //     console.log(data.data[0]);
   //     setCidade(data.data)
   //   });
@@ -63,8 +62,8 @@ const Cadastro = () => {
 
   // function handleSelectedUf(id){
   //   console.log(id)
-  //   setEstadoSelecionado(id)
-  //   console.log(estadoSelecionado)
+  //   setid_EstadoSelecionado(id)
+  //   console.log(id_estadoSelecionado)
   // }
 
   // function aplicar() {
@@ -86,41 +85,48 @@ const Cadastro = () => {
   };
 
   const handleChangeEstado = (key, value) => {
+    buscarCidades(value)
     setInputs({
       ...inputs,
       [key]: value,
-    }),
-    buscarCidades(value)
+    })
   };
 
+  // const handleSelectedUf = (event) => {
+  //   const uf = event
+  //   setCidade(uf )
+  // }
+
   const buscarCidades = (id) => {
-    apiBlood.get(`/listarCidadePorEstado/${id}`).then((data) => {
+    apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data);
     });
   };
+
+  // console.log(cidades)
 
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    cidadeDoacao: 0,
-    estado: 0,
+    id_cidade_doacao: 0,
+    id_estado: 0,
     cpf: "",
     senha: "",
-    confirmacaoSenha: "",
-    sexo: 0,
-    tipo_sanguineo: 0,
+    // confirmacaoSenha: "",
+    id_sexo: 0,
+    id_tipo_sanguineo: 0,
   });
 
   // FUNÇÃO QUE MANIPULA A ENTRADA DE DADOS NA
   // STATE NO MÉTODO OnChangeText
   const handleOnChange = (text, input) => {
-    //O setInputs invoca o estado e passa para o prevState
+    //O setInputs invoca o id_estado e passa para o prevState
     setInputs(
       (prevState) => (
-        console.log(prevState),
+        // console.log(prevState),
         // console.log(input + ` ` + text)
 
         // Injeção de dados na State
@@ -181,9 +187,9 @@ const Cadastro = () => {
     //   validate = false;
     //   handleErrors("Email inválido", "email");
     // }
-    // if (!inputs.cidadeDoacao) {
+    // if (!inputs.id_cidade_doacao) {
     //   validate = false;
-    //   handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
+    //   handleErrorsPicker("Informe a cidade de doação", "id_cidade_doacao");
     //   // console.log('Descrição em branco')
     // }
     // if (!inputs.cpf) {
@@ -219,9 +225,9 @@ const Cadastro = () => {
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
     }
-    if (!inputs.cidadeDoacao) {
+    if (!inputs.id_cidade_doacao) {
       validate = false;
-      handleErrorsPicker("Informe a cidade de doação", "cidadeDoacao");
+      handleErrorsPicker("Informe a cidade de doação", "id_cidade_doacao");
       // console.log('Descrição em branco')
     }
     if (!inputs.cpf) {
@@ -241,6 +247,7 @@ const Cadastro = () => {
     }
 
     if (validate) {
+      console.log(inputs)
       // Envia os dados para a API cadastrar.
       cadastrar();
       console.log("Cadastrou");
@@ -255,23 +262,33 @@ const Cadastro = () => {
       const response = apiBlood.post("/cadastrarDoador", {
         nome_completo: inputs.nomeCompleto,
         email: inputs.email,
-        id_cidade: inputs.cidadeDoacao,
-        id_estado: inputs.estado,
+        id_cidade: inputs.id_cidade_doacao,
+        id_estado: inputs.id_estado,
         cpf: inputs.cpf,
         senha: inputs.senha,
         // confirmacaoSenha: inputs.confirmacaoSenha,
-        id_sexo: inputs.sexo,
-        id_tipo_sanguineo: inputs.tipo_sanguineo,
+        id_sexo: inputs.id_sexo,
+        id_tipo_sanguineo: inputs.id_tipo_sanguineo,
       });
-      console.log(response.json());
     } catch (error) {
       error.response.data;
     }
   };
 
+
+
   useEffect(() => {
-    console.log(inputs);
-  }, [inputs.estado]);
+    buscarCidades(inputs.id_estado)
+    console.log(cidades)
+  }, [inputs.id_estado]);
+
+  const renderItem = ({item, index}) => {
+  return (
+    <View>
+      <Text>Item demo</Text>
+    </View>
+  )
+  }
 
   return (
     <Layout>
@@ -305,15 +322,15 @@ const Cadastro = () => {
         />
         <View style={estilos.selectContainerPessoal}>
           <Text style={estilos.label}></Text>
-          <View style={estilos.sexo}>
+          <View style={estilos.id_sexo}>
             <Picker
-              placeholder="Sexo"
+              placeholder="id_Sexo"
               onFocus={() => {
-                handleErrors(null, "sexo");
+                handleErrors(null, "id_sexo");
               }}
-              selectedValue={inputs.sexo}
+              selectedValue={inputs.id_sexo}
               onValueChange={(itemValue) =>
-                handleChangeInputs("sexo", itemValue)
+                handleChangeInputs("id_sexo", itemValue)
               }
             >
               {sexo.map((sexo) => {
@@ -321,15 +338,15 @@ const Cadastro = () => {
               })}
             </Picker>
           </View>
-          <View style={estilos.tipo_sanguineo}>
+          <View style={estilos.id_tipo_sanguineo}>
             <Picker
               placeholder="Tipo sanguineo"
               onFocus={() => {
-                handleErrors(null, "tipo_sanguineo");
+                handleErrors(null, "id_tipo_sanguineo");
               }}
-              selectedValue={inputs.tipo_sanguineo}
+              selectedValue={inputs.id_tipo_sanguineo}
               onValueChange={(itemValue) =>
-                handleChangeInputs("tipo_sanguineo", itemValue)
+                handleChangeInputs("id_tipo_sanguineo", itemValue)
               }
             >
               {tipoSanguineo.map((sanguineo) => {
@@ -344,36 +361,38 @@ const Cadastro = () => {
           </View>
         </View>
         <View style={estilos.selectContainer}>
-          <Text style={estilos.label}></Text>
+          <Text style={estilos.label}>Cidades que pretende doar</Text>
           <View style={estilos.formContainer}>
-            <View style={estilos.cidadeDoacao}>
-              <Picker
+            <View style={estilos.id_cidade_doacao}>
+              {/* <Picker
                 // onBlur={buscandoCidades}
                 onFocus={() => {
-                  handleErrors(null, "cidadeDoacao");
+                  handleErrors(null, "id_cidade_doacao");
                 }}
-                selectedValue={inputs.cidadeDoacao}
+                selectedValue={inputs.id_cidade_doacao}
                 onValueChange={(itemValue) =>
-                  handleChangeInputs("cidadeDoacao", itemValue)
+                  handleChangeInputs("id_cidade_doacao", itemValue)
                 }
               >
                 {cidades.map((city) => {
                   return <Picker.Item label={city.cidade} value={city.id}/>;
                 })}
-              </Picker>
+              </Picker> */}
+              <Select options={cidades} keyExtractor={item=> `key-${item.id}`} renderItem={renderItem} onChangeSelect={(id)=> alert(id)} data={cidades} text="Selecione a cidade de doação"/>
+              
             </View>
-            <View style={estilos.estadoDoacao}>
+            <View style={estilos.id_estadoDoacao}>
               <Picker
                 onFocus={() => {
-                  handleErrors(null, "estadoDoacao");
+                  handleErrors(null, "id_estadoDoacao");
                 }}
-                selectedValue={inputs.estado}
+                selectedValue={inputs.id_estado}
                 onValueChange={(itemValue) =>
-                  handleChangeEstado("estado", itemValue)
+                  handleChangeEstado("id_estado", itemValue)
                 }
               >
-                {estados.map((estado) => {
-                  return <Picker.Item label={estado.uf} value={estado.id}/>;
+                {estados.map((id_estado) => {
+                  return <Picker.Item label={id_estado.uf} value={id_estado.id}/>;
                 })}
               </Picker>
             </View>
@@ -498,7 +517,24 @@ const estilos = StyleSheet.create({
     marginTop: 10,
     bottom: 10,
   },
-  cidadeDoacao: {
+  id_cidade_doacao: {
+    width: "60%",
+    height: 55,
+    borderColor: COLORS.preto,
+    borderRadius: 15,
+    backgroundColor: COLORS.branco,
+    marginRight: "5%",
+  },
+  id_estadoDoacao: {
+    width: "35%",
+    height: 55,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    backgroundColor: COLORS.branco,
+  },
+  id_sexo: {
     width: "60%",
     height: 55,
     borderColor: COLORS.preto,
@@ -508,27 +544,8 @@ const estilos = StyleSheet.create({
     backgroundColor: COLORS.branco,
     marginRight: "5%",
   },
-  estadoDoacao: {
+  id_tipo_sanguineo: {
     width: "35%",
-    height: 55,
-    borderColor: COLORS.preto,
-    borderWidth: 1,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    backgroundColor: COLORS.branco,
-  },
-  sexo: {
-    width: "35%",
-    height: 55,
-    borderColor: COLORS.preto,
-    borderWidth: 1,
-    paddingHorizontal: 15,
-    borderRadius: 15,
-    backgroundColor: COLORS.branco,
-    marginRight: "5%",
-  },
-  tipo_sanguineo: {
-    width: "60%",
     height: 55,
     borderColor: COLORS.preto,
     borderWidth: 1,
