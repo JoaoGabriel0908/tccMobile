@@ -42,7 +42,6 @@ const Select = ({ option, onChangeSelect, text, renderItem, data, keyExtractor= 
             <Text>{text}</Text>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
-              <FlatList style={estilos.list} keyExtractor={() => {}} renderItem={renderItem} data={data}/>
             </TouchableOpacity>
           </View>
         </SafeAreaView>
