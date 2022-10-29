@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  Alert,
+} from "react-native";
 
 import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
@@ -11,6 +18,8 @@ import apiBlood from "../service/apiBlood";
 import validarCPF from "../utils/validarCpf";
 import InputIcon from "../components/InputIcon";
 import Select from "../components/Select";
+import Checkbox from "expo-checkbox";
+// import CheckBox from '@react-native-community/checkbox';
 
 const Cadastro = () => {
   const navigation = useNavigation();
@@ -37,8 +46,6 @@ const Cadastro = () => {
     });
   }, []);
 
-  // console.log(id_estadoSelecionado.id)
-
   useEffect(() => {
     apiBlood.get("/listarEstados").then((data) => {
       console.log(data.data[0]);
@@ -52,19 +59,6 @@ const Cadastro = () => {
       setCidade(data.data);
     });
   }, []);
-
-  // const buscandoCidades = () => {
-  //   apiBlood.get(`/listarCidadePorid_Estado/${inputs.id_estado}`).then((data) => {
-  //     console.log(data.data[0]);
-  //     setCidade(data.data)
-  //   });
-  // };
-
-  // function handleSelectedUf(id){
-  //   console.log(id)
-  //   setid_EstadoSelecionado(id)
-  //   console.log(id_estadoSelecionado)
-  // }
 
   // function aplicar() {
   //   inputs.cpf = formataCPF(inputs.cpf);
@@ -85,17 +79,12 @@ const Cadastro = () => {
   };
 
   const handleChangeEstado = (key, value) => {
-    buscarCidades(value)
+    buscarCidades(value);
     setInputs({
       ...inputs,
       [key]: value,
-    })
+    });
   };
-
-  // const handleSelectedUf = (event) => {
-  //   const uf = event
-  //   setCidade(uf )
-  // }
 
   const buscarCidades = (id) => {
     apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
@@ -104,14 +93,12 @@ const Cadastro = () => {
     });
   };
 
-  // console.log(cidades)
-
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
     nomeCompleto: "",
     email: "",
-    id_cidade_doacao: 0,
+    id_cidade_doacao: [],
     id_estado: 0,
     cpf: "",
     senha: "",
@@ -124,15 +111,13 @@ const Cadastro = () => {
   // STATE NO MÉTODO OnChangeText
   const handleOnChange = (text, input) => {
     //O setInputs invoca o id_estado e passa para o prevState
-    setInputs(
-      (prevState) => (
-        // console.log(prevState),
-        // console.log(input + ` ` + text)
+    setInputs((prevState) =>
+      // console.log(prevState),
+      // console.log(input + ` ` + text)
 
-        // Injeção de dados na State
-        // Sobrepondo resultado do texto e colocando no prevState
-        { ...prevState, [input]: text }
-      )
+      // Injeção de dados na State
+      // Sobrepondo resultado do texto e colocando no prevState
+      ({ ...prevState, [input]: text })
     );
   };
   // ******************** Validação dos dados de cadastro ********************
@@ -247,7 +232,7 @@ const Cadastro = () => {
     }
 
     if (validate) {
-      console.log(inputs)
+      console.log(inputs);
       // Envia os dados para a API cadastrar.
       cadastrar();
       console.log("Cadastrou");
@@ -275,20 +260,58 @@ const Cadastro = () => {
     }
   };
 
-
-
   useEffect(() => {
-    buscarCidades(inputs.id_estado)
-    console.log(cidades)
+    buscarCidades(inputs.id_estado);
+    console.log(cidades);
   }, [inputs.id_estado]);
 
-  const renderItem = ({item, index}) => {
-  return (
-    <View>
-      <Text>Item demo</Text>
-    </View>
-  )
-  }
+  const onChangeValue = (itemSelected, index) => {
+    console.log(itemSelected);
+    const newCity = cidades.map((item) => {
+      console.log(itemSelected.id)
+      if (item.id == itemSelected.id) {
+        return {
+          ...item,
+          selected: !item.selected,
+        };
+      }
+      return {
+        ...item,
+        selected: item.selected,
+      };
+    });
+    setCidade(newCity);
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <View style={estilos.item}>
+        <Text>{item.cidade}</Text>
+        <Checkbox
+          style={estilos.checkbox}
+          onAnimationType="fill"
+          disabled={false}
+          offAnimationType="fade"
+          boxType="square"
+          onValueChange={() => onChangeValue(item, index)}
+          value={inputs.id_cidade_doacao}
+          // color={cidades ? '#4630EB' : COLORS.vermelhoClaro}
+        />
+      </View>
+    );
+  };
+
+  const onPressShowItemSelected = () => {
+    const listSelected = cidades.filter((item) => item.selected == true);
+    let contentAlert = "";
+    listSelected.forEach((item) => {
+      contentAlert = contentAlert + `${item.id} . ` + item.cidade + "\n";
+    });
+    const uniqueId = listSelected.map(item => item.id)
+    console.log(uniqueId)
+    Alert.alert(contentAlert);
+    handleChangeInputs('id_cidade_doacao', uniqueId)
+  };
 
   return (
     <Layout>
@@ -378,8 +401,15 @@ const Cadastro = () => {
                   return <Picker.Item label={city.cidade} value={city.id}/>;
                 })}
               </Picker> */}
-              <Select options={cidades} keyExtractor={item=> `key-${item.id}`} renderItem={renderItem} onChangeSelect={(id)=> alert(id)} data={cidades} text="Selecione a cidade de doação"/>
-              
+              <Select
+                options={cidades}
+                keyExtractor={(item) => `key-${item.id}`}
+                renderItem={renderItem}
+                // onChangeSelect={(id) => alert(id)}
+                data={cidades}
+                text="Selecione a cidade de doação"
+                onPress={onPressShowItemSelected}
+              />
             </View>
             <View style={estilos.id_estadoDoacao}>
               <Picker
@@ -392,7 +422,9 @@ const Cadastro = () => {
                 }
               >
                 {estados.map((id_estado) => {
-                  return <Picker.Item label={id_estado.uf} value={id_estado.id}/>;
+                  return (
+                    <Picker.Item label={id_estado.uf} value={id_estado.id} />
+                  );
                 })}
               </Picker>
             </View>
@@ -552,6 +584,27 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
     backgroundColor: COLORS.branco,
+  },
+  item: {
+    flexDirection: "row",
+    marginTop: 8,
+    padding: 4,
+    paddingBottom: 10,
+    justifyContent: "space-between",
+    shadowColor: COLORS.preto,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
+    width: 200,
+    textAlign: "center",
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
   },
 });
 

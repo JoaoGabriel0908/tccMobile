@@ -14,7 +14,15 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const { width } = Dimensions.get("window");
 
-const Select = ({ option, onChangeSelect, text, renderItem, data, keyExtractor= () => {}}) => {
+const Select = ({
+  options,
+  onChangeSelect,
+  text,
+  renderItem,
+  data,
+  keyExtractor = () => {},
+  onPress = () => {},
+}) => {
   const [txt, setTxt] = useState(text);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -43,6 +51,18 @@ const Select = ({ option, onChangeSelect, text, renderItem, data, keyExtractor= 
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
             </TouchableOpacity>
+            <FlatList
+              style={estilos.list}
+              data={data}
+              renderItem={renderItem}
+              keyExtractor={keyExtractor}
+              options={options}
+            />
+            <View style={estilos.wrapButton}>
+              <TouchableOpacity style={estilos.button} onPress={onPress}>
+                <Text>Show Item</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </SafeAreaView>
       </Modal>
@@ -70,6 +90,21 @@ const estilos = StyleSheet.create({
     color: "#555",
     fontSize: 16,
   },
+  list: {
+    height: '80%',
+    padding: 8,
+    paddingBottom: 20,
+  },
+  wrapButton: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 20,
+  },
+  button:{
+    padding: 16,
+    backgroundColor: COLORS.vermelhoClaro,
+  }
 });
 
 export default Select;
