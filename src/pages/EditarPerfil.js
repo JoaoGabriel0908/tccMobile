@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  Button,
 } from "react-native";
 
 import Cabecalho from "../components/Cabecalho";
@@ -20,6 +21,8 @@ import { useNavigation } from "@react-navigation/native";
 const person = "../assets/Ellipse8.png";
 
 const EditarPerfil = () => {
+  const navigation = useNavigation();
+
   return (
     <ScrollView>
       <View style={estilos.pessoa}>
@@ -69,7 +72,7 @@ const EditarPerfil = () => {
       <View>
         <View>
           <Text style={estilos.title}>Tipo sanguíneo</Text>
-          <View>
+          <View style={estilos.pickerborda}>
           <Picker style={estilos.picker}
             placeholder="Tipo sanguíneo"
             // onFocus={() => {
@@ -87,6 +90,7 @@ const EditarPerfil = () => {
         <View>
           <Text style={estilos.title}>Data nascimento</Text>
           <TextInput style={estilos.input} />
+        
         </View>
         <View>
           <Text></Text>
@@ -106,8 +110,16 @@ const EditarPerfil = () => {
         <TextInput style={estilos.inputEstado} />
       </View>
       <View style={estilos.cidadeContainer}>
-        <Text style={estilos.titleCidades}>Cidades que pretende doar</Text>
+        <Text style={estilos.titleCidades}>Cidades que pretende doar </Text>
         <TextInput style={estilos.inputCidade} />
+
+        <Text style={estilos.subtitle}>Dados de contato</Text>
+        <Text style={estilos.title}>Celular</Text>
+        <TextInput style={estilos.input} />
+
+        <Text style={estilos.title}>Email</Text>
+        <TextInput style={estilos.input} />
+      
       </View>
       </View>
     </ScrollView>
@@ -166,7 +178,7 @@ const estilos = StyleSheet.create({
     height: 55,
     backgroundColor: COLORS.cinza,
     flexDirection: "row",
-    paddingHorizontal: 15,
+
     alignItems: "center",
     borderRadius: 15,
     justifyContent: "center",
@@ -224,7 +236,11 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
     left:35,
     top:-50
+  },
+  pickerborda:{
+    borderRadius:15 
   }
+  
 });
 
 export default EditarPerfil;

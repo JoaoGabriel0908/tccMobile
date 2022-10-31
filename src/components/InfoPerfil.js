@@ -70,7 +70,7 @@ const estilos = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-  
+    backgroundColor: COLORS.vermelhoClaro2,
     height: 230,
     justifyContent: "center",
     alignItems: "center",

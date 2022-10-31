@@ -13,7 +13,7 @@ const Perfil = () => {
       gender="gender-male"
       iconNameSangue="water"
       tipoSanguineo="AB+"/>
-      <View style={estilos.dadosPerfilContainer}>
+      <View>
         <DadosPerfil/>
       </View>
     </ScrollView>
@@ -23,7 +23,8 @@ const Perfil = () => {
 const estilos = StyleSheet.create({
   dadosPerfilContainer: {
     backgroundColor: COLORS.preto,
-  }
+  },
+  
 })
 
 export default Perfil

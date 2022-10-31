@@ -293,8 +293,9 @@ const Cadastro = () => {
           disabled={false}
           offAnimationType="fade"
           boxType="square"
+          onChange={inputs.id_cidade_doacao}
           onValueChange={() => onChangeValue(item, index)}
-          value={inputs.id_cidade_doacao}
+          // value={inputs.id_cidade_doacao}
           // color={cidades ? '#4630EB' : COLORS.vermelhoClaro}
         />
       </View>

@@ -66,7 +66,7 @@ const estilos = StyleSheet.create({
     alignItems: "center",
   },
   inputPequeno:{
-    marginBottom: 40,
+    marginBottom: 80,
     backgroundColor: COLORS.preto,
     height: 0,
   },
