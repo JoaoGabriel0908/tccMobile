@@ -7,7 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Button,
+  
 } from "react-native";
 
 import Cabecalho from "../components/Cabecalho";
@@ -17,6 +17,7 @@ import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
+import Button from "../components/Button";
 
 const person = "../assets/Ellipse8.png";
 
@@ -40,8 +41,9 @@ const EditarPerfil = () => {
           }}
           style={{
             justifyContent: "center",
-            flexDirection: "row",
+            
             alignItems: "center",
+            borderRadius:15
           }}
         >
           <Text style={estilos.Text}>Alterar foto de Perfil</Text>
@@ -64,6 +66,7 @@ const EditarPerfil = () => {
           >
             <Picker.Item label="Masculino" value="mas" />
             <Picker.Item label="Feminino" value="fem" />
+            <Picker.Item label="Outro" value="out" />
           </Picker>
         </View>
 
@@ -81,8 +84,8 @@ const EditarPerfil = () => {
             selectedValue={""}
             onValueChange={(itemValue) => handleChangeInputs("sexo", itemValue)}
           >
-            <Picker.Item label="Java" value="java" />
-            <Picker.Item label="JavaScript" value="js" />
+            <Picker.Item label="A+" value="java" />
+            <Picker.Item label="A-" value="js" />
           </Picker>
         </View>
           
@@ -118,8 +121,10 @@ const EditarPerfil = () => {
         <TextInput style={estilos.input} />
 
         <Text style={estilos.title}>Email</Text>
-        <TextInput style={estilos.input} />
-      
+        <TextInput style={estilos.input} /> 
+        <View style={estilos.btn}>
+        <Button style={estilos.Button} title="Desativar Conta" onPress={""} />
+        </View>
       </View>
       </View>
     </ScrollView>
@@ -151,7 +156,7 @@ const estilos = StyleSheet.create({
     fontSize: 15,
   },
   input: {
-    width: 334,
+    width: 370,
     height: 55,
     backgroundColor: COLORS.cinza,
     flexDirection: "row",
@@ -174,13 +179,12 @@ const estilos = StyleSheet.create({
     top: 50,
   },
   picker:{
-    width: 334,
+    width: 370,
     height: 55,
     backgroundColor: COLORS.cinza,
     flexDirection: "row",
 
     alignItems: "center",
-    borderRadius: 15,
     justifyContent: "center",
     left: 35,
    },
@@ -197,7 +201,7 @@ const estilos = StyleSheet.create({
    },
 
    inputEstado:{
-    width: 150,
+    width: 130,
     height: 55,
     backgroundColor: COLORS.cinza,
     flexDirection: "row",
@@ -226,7 +230,7 @@ const estilos = StyleSheet.create({
     top:-60
   },
   inputCidade:{
-    width: 334,
+    width: 370,
     height: 150,
     backgroundColor: COLORS.cinza,
     flexDirection: "row",
@@ -238,7 +242,11 @@ const estilos = StyleSheet.create({
     top:-50
   },
   pickerborda:{
-    borderRadius:15 
+    borderRadius:15
+  },
+  btn:{
+    alignItems: "center",
+    justifyContent: "center"
   }
   
 });

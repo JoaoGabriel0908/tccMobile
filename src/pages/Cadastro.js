@@ -96,7 +96,7 @@ const Cadastro = () => {
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
-    nomeCompleto: "",
+    nome_completo: "",
     email: "",
     id_cidade_doacao: [],
     id_estado: 0,
@@ -148,19 +148,19 @@ const Cadastro = () => {
     let validate = true;
 
     // Quando máo tem conteúdo o validate ficará falso e aparecerá a mensagem
-    // if (!inputs.nomeCompleto) {
+    // if (!inputs.nome_completo) {
     //   validate = false;
-    //   handleErrors("Informe o nome completo", "nomeCompleto");
+    //   handleErrors("Informe o nome completo", "nome_completo");
     //   // console.log('Título em branco')
     // } else if (
     //   /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(
-    //     inputs.nomeCompleto
+    //     inputs.nome_completo
     //   )
     // ) {
     //   validate = false;
     //   handleErrors(
     //     "Elementos especias e pontuação não são permitidos",
-    //     "nomeCompleto"
+    //     "nome_completo"
     //   );
     // }
     // if (!inputs.email) {
@@ -198,9 +198,9 @@ const Cadastro = () => {
     //   // console.log('Capa em branco')
     // }
 
-    if (!inputs.nomeCompleto) {
+    if (!inputs.nome_completo) {
       validate = false;
-      handleErrors("Informe o nome completo", "nomeCompleto");
+      handleErrors("Informe o nome completo", "nome_completo");
       // console.log('Título em branco')
     }
     const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
@@ -245,9 +245,9 @@ const Cadastro = () => {
   const cadastrar = () => {
     try {
       const response = apiBlood.post("/cadastrarDoador", {
-        nome_completo: inputs.nomeCompleto,
+        nome_completo: inputs.nome_completo,
         email: inputs.email,
-        id_cidade: inputs.id_cidade_doacao,
+        id_cidade_doacao: inputs.id_cidade_doacao,
         id_estado: inputs.id_estado,
         cpf: inputs.cpf,
         senha: inputs.senha,
@@ -255,6 +255,7 @@ const Cadastro = () => {
         id_sexo: inputs.id_sexo,
         id_tipo_sanguineo: inputs.id_tipo_sanguineo,
       });
+      navigation.navigate('Terms')
     } catch (error) {
       error.response.data;
     }
@@ -323,14 +324,14 @@ const Cadastro = () => {
         <Input
           name="name"
           placeholder="Nome Completo"
-          value={inputs.nomeCompleto}
+          value={inputs.nome_completo}
           iconName="account"
-          error={errors.nomeCompleto}
+          error={errors.nome_completo}
           onFocus={() => {
-            handleErrors(null, "nomeCompleto");
+            handleErrors(null, "nome_completo");
           }}
           keyboardType="default"
-          onChangeText={(text) => handleOnChange(text, "nomeCompleto")}
+          onChangeText={(text) => handleOnChange(text, "nome_completo")}
         />
         <Input
           name="email"

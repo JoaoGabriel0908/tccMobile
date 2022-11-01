@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
+import { Card } from "react-native-paper";
 
 const fundo = "../assets/fundo.png";
 
-const HemoPaginaInicial = () => {
+const HemoPaginaInicial = ({onPress = () => {}}) => {
  // const [hemocentro, setHemocentro] = useState({
  //   id: "",
  //   hemocentroNome: "",
@@ -28,13 +29,13 @@ const HemoPaginaInicial = () => {
 
  return (
   <SafeAreaView style={estilos.container}>
-   <View>
+   <View style={estilos.containerImagem}>
     <Image source={require(fundo)} style={estilos.imagem} />
    </View>
    <View style={estilos.containerDesc}>
     <Text style={estilos.hemoTitulo}>Hemocentro Campinas</Text>
     <Text>Universidade Estadual de Campinas - R. Carlos Chagas, 480 - Cidade Universitária, Campinas - SP, 13083-878</Text>
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
      <Text>Ver mais</Text>
     </TouchableOpacity>
    </View>
@@ -43,7 +44,7 @@ const HemoPaginaInicial = () => {
 };
 
 const estilos = StyleSheet.create({
- imagem: {
+ containerImagem: {
   width: 120,
   height: 120,
   borderRadius: 10,
@@ -61,6 +62,12 @@ const estilos = StyleSheet.create({
  hemoTitulo:{
   fontWeight: "bold",
   fontSize: 16
+ },
+ imagem: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: COLORS.cinza,
+    borderRadius: 6,
  }
 });
 

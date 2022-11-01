@@ -8,6 +8,7 @@ import Perfil from "../pages/Perfil";
 import COLORS from "../const/Colors";
 import Cabecalho from "../components/Cabecalho";
 import EditarPerfil from "../pages/EditarPerfil";
+import PerfilHemo from "../pages/PerfilHemo"
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const logo = "../assets/cuidados-de-saude(3)1.png";

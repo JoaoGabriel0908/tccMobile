@@ -9,6 +9,7 @@ import Hemocentros from "../pages/Hemocentros";
 import Conquistas from "../pages/Conquistas";
 import Menu from "./BottomTabs";
 import EditarPerfil from "../pages/EditarPerfil";
+import PerfilHemo from "../pages/PerfilHemo";
 
 const Stack = createNativeStackNavigator();
 
@@ -72,9 +73,28 @@ export default function Routes() {
           name="EditarPerfil"
           component={EditarPerfil}
           options={{
-            headerTitle: () => <Cabecalho name="Perfil"/>,
+            headerTitle: () => <Cabecalho name="Perfil" />,
             headerTitleAlign: "center",
-            headerBackImageSource: '../assets/Combined-Shape.png',
+            headerBackImageSource: "../assets/Combined-Shape.png",
+            tabBarIcon: ({ focused }) => (
+              <>
+                <Icon
+                  name="account"
+                  size={40}
+                  color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
+                />
+              </>
+            ),
+          }}
+        />
+
+        <Stack.Screen
+          name="PerfilHemo"
+          component={PerfilHemo}
+          options={{
+            headerTitle: () => <Cabecalho name="Hemocentro" />,
+            headerTitleAlign: "center",
+            headerBackImageSource: "../assets/Combined-Shape.png",
             tabBarIcon: ({ focused }) => (
               <>
                 <Icon

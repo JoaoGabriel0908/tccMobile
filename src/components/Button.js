@@ -8,6 +8,7 @@ const Button = ({ title, onPress = () => {}, ...props }) => {
     if (props.login) stylesButton.push(styles.buttonLogin);
     if (props.register) stylesButton.push(styles.buttonRegister);
     if (props.verMais) stylesButton.push(styles.verMais);
+    if (props.agendar) stylesButton.push(styles.agendar);
     
     const stylesText = [styles.texto];
     if (props.textBack) stylesText.push(styles.textBack);
@@ -76,6 +77,13 @@ const styles = StyleSheet.create({
         height: 40,
         marginTop: 0,
         marginBottom: 2,
-        
+    },
+    agendar:{
+        backgroundColor: COLORS.vermelhoPrincipal,
+        width: 150,
+        height: 50,
+        marginRight: 20,
+        textAlign: 'center',
+        paddingHorizontal: 5,
     }
 });
