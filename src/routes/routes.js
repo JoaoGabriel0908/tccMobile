@@ -10,6 +10,7 @@ import Conquistas from "../pages/Conquistas";
 import Menu from "./BottomTabs";
 import EditarPerfil from "../pages/EditarPerfil";
 import PerfilHemo from "../pages/PerfilHemo";
+import DesativarConta from "../pages/DesativarConta";
 
 const Stack = createNativeStackNavigator();
 
@@ -75,6 +76,7 @@ export default function Routes() {
           options={{
             headerTitle: () => <Cabecalho name="Perfil" />,
             headerTitleAlign: "center",
+            headerBackVisible: false,
             headerBackImageSource: "../assets/Combined-Shape.png",
             tabBarIcon: ({ focused }) => (
               <>
@@ -94,7 +96,7 @@ export default function Routes() {
           options={{
             headerTitle: () => <Cabecalho name="Hemocentro" />,
             headerTitleAlign: "center",
-            headerBackImageSource: "../assets/Combined-Shape.png",
+            headerBackVisible: false,
             tabBarIcon: ({ focused }) => (
               <>
                 <Icon
@@ -106,6 +108,11 @@ export default function Routes() {
             ),
           }}
         />
+          {/* <Stack.Screen
+          name="DesativarConta"
+          component={DesativarConta}
+          options={{ headerShown: false }}
+        /> */}
       </Stack.Navigator>
     </>
   );

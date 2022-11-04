@@ -55,8 +55,8 @@ const EditarPerfil = () => {
       </View>
       <View style={estilos.nascimentoContainer}>
         <Text style={estilos.title}>Genero</Text>
-        <View>
-          <Picker style={estilos.picker}
+        <View style={estilos.picker}>
+          <Picker
             placeholder="Sexo"
             // onFocus={() => {
             //   handleErrors(null, "sexo");
@@ -75,8 +75,8 @@ const EditarPerfil = () => {
       <View>
         <View>
           <Text style={estilos.title}>Tipo sanguíneo</Text>
-          <View style={estilos.pickerborda}>
-          <Picker style={estilos.picker}
+          <View style={estilos.picker}>
+          <Picker
             placeholder="Tipo sanguíneo"
             // onFocus={() => {
             //   handleErrors(null, "sexo");
@@ -152,8 +152,8 @@ const estilos = StyleSheet.create({
   title: {
     fontWeight: "regular",
     left: 50,
-    marginBottom: 10,
-    fontSize: 15,
+    marginBottom: 3,
+    fontSize: 17,
   },
   input: {
     width: 370,
@@ -182,12 +182,10 @@ const estilos = StyleSheet.create({
     width: 370,
     height: 55,
     backgroundColor: COLORS.cinza,
-    flexDirection: "row",
-
-    alignItems: "center",
-    justifyContent: "center",
+    borderRadius: 15,
     left: 35,
-   },
+  
+  },
    inputCidRes:{
     width: 220,
     height: 55,
@@ -215,16 +213,16 @@ const estilos = StyleSheet.create({
   titleEstado:{
     fontWeight: "regular",
     left: 50,
-    marginBottom: 10,
-    fontSize: 15,
+    marginBottom: 9,
+    fontSize: 17,
     left: 290,
-    top:-85
+    top:-81
   },
   titleCidades:{
     fontWeight: "regular",
     left: 50,
-    marginBottom: 10,
-    fontSize: 15,
+    
+    fontSize: 17,
     justifyContent: "center",
     alignItems: "center",
     top:-60
