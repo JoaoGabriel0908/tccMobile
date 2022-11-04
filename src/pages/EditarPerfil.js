@@ -12,7 +12,7 @@ import {
 
 import Cabecalho from "../components/Cabecalho";
 import InputIcon from "../components/InputIcon";
-import COLORS from "../const/Colors";
+c
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
