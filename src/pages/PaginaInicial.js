@@ -60,6 +60,7 @@ const PaginaInicial = () => {
       };
     });
     setData(newArrData);
+    navigation.navigate("Campanha");
   };
 
   const renderItem = ({ item, index }) => {

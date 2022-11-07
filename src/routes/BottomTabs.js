@@ -55,7 +55,7 @@ export default function Menu() {
                     </>
                 )
             }}/>
-            <Screen name="Conquistas" component={Conquistas}
+            {/* <Screen name="Conquistas" component={Conquistas}
             options={{
                 headerTitle: () => <Cabecalho name='Conquistas'/>,
                 headerTitleAlign: "center",
@@ -68,7 +68,7 @@ export default function Menu() {
                         />
                     </>
                 )
-            }}/>
+            }}/> */}
             <Screen name="Perfil" component={Perfil} key={pessoa.id}
             options={{
                 headerTitle: () => <Cabecalho name='Perfil'/>,

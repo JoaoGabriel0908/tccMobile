@@ -31,7 +31,7 @@ const Desativar = () => {
           </TouchableOpacity>
           <View style={estilos.content}>
             <View style={estilos.containerTexto}>
-              <Text style={estilos.texto} numberOfLines={1}>
+              <Text style={estilos.texto}>
                 Tem certeza que deseja desativar sua conta temporariamente?
               </Text>
             </View>
@@ -61,7 +61,6 @@ const estilos = StyleSheet.create({
   },
   containerTexto: {
     flexDirection: "row",
-    backgroundColor: COLORS.preto
   },
   texto: {
     color: "#555",
@@ -80,7 +79,6 @@ const estilos = StyleSheet.create({
   content: {
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: COLORS.cinza,
     flex: 1,
     flexWrap: "wrap",
   },

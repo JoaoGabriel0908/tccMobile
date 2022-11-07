@@ -69,9 +69,7 @@ const EditarPerfil = () => {
             <Picker.Item label="Feminino" value="fem" />
             <Picker.Item label="Outro" value="out" />
           </Picker>
-        </View>
-
-      
+        </View>      
       </View>
       <View>
         <View>

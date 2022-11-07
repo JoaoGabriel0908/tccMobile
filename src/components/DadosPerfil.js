@@ -27,6 +27,7 @@ const DadosPerfil = ({
 }) => {
 
   const [pessoa, setPessoa] = useState([])
+  const [estado, setEstado] = useState([])
   const [selectedLanguage, setSelectedLanguage] = useState();
 
   useEffect(() => {
@@ -35,6 +36,15 @@ const DadosPerfil = ({
       setPessoa(data.data[0]);
     });
   }, []);
+
+  useEffect(() => {
+    apiBlood.get('/listarEstados').then(data => {
+      console.log(data.data[0]);
+      setEstado(data.data[0]);
+    });
+  }, []);
+
+  
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -53,7 +63,7 @@ const DadosPerfil = ({
         </View>
         <View>
           <Text style={estilos.text}>Celular</Text>
-          <Input inputPequeno/>
+          <Input inputPequeno editable={false}>{pessoa.telefone_doador}</Input>
         </View>
         <View>
           <Text style={estilos.text}>{clinicasSeguidas}</Text>
@@ -78,8 +88,7 @@ const DadosPerfil = ({
                 setSelectedLanguage(itemValue)
               }
             >
-              <Picker.Item label="Java" value="java" />
-              <Picker.Item label="JavaScript" value="js" />
+              <Picker.Item label={estado.estado} value={estado.id} />
             </Picker>
           </View>
         </View>

@@ -43,7 +43,7 @@ const Cadastro = () => {
 
   useEffect(() => {
     apiBlood.get("/listarSexo").then((data) => {
-      // console.log(data);
+      // console.log(data.data);
       setSexo(data.data);
     });
   }, []);
