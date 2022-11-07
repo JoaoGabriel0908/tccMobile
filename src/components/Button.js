@@ -68,15 +68,18 @@ const styles = StyleSheet.create({
     texto: {
         color: COLORS.branco,
         fontSize: 18,
+        fontFamily: 'Poppins_700Bold',
     },
     textBack: {
         color: COLORS.vermelhoPrincipal,
+        fontFamily: 'Poppins_700Bold',
     },
     verMais: {
         backgroundColor: COLORS.vermelhoPrincipal,
         height: 40,
         marginTop: 0,
         marginBottom: 2,
+        fontFamily: 'Poppins_700Bold',
     },
     agendar:{
         backgroundColor: COLORS.vermelhoPrincipal,
@@ -85,5 +88,6 @@ const styles = StyleSheet.create({
         marginRight: 20,
         textAlign: 'center',
         paddingHorizontal: 5,
+        fontFamily: 'Poppins_700Bold',
     }
 });

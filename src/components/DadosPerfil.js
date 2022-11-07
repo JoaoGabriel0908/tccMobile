@@ -8,26 +8,39 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Input from "./Input";
 import Select from "./Select";
 import { Picker } from "@react-native-picker/picker";
 import CardAgends from "./CardAgends";
+import apiBlood from "../service/apiBlood";
 
 const DadosPerfil = ({
   nameComplet,
   iconName,
   nameGenres,
   clinicasSeguidas,
+  route,
+  navigation
 }) => {
+
+  const [pessoa, setPessoa] = useState([])
   const [selectedLanguage, setSelectedLanguage] = useState();
+
+  useEffect(() => {
+    apiBlood.get('/listarDoador').then(data => {
+      console.log(data.data[0]);
+      setPessoa(data.data[0]);
+    });
+  }, []);
+
   return (
     <SafeAreaView style={estilos.container}>
       <View style={estilos.cidadeContainer}>
         <Text style={estilos.text}>Cidade residente</Text>
-        <Input inputPequeno />
+        <Input inputPequeno/>
       </View>
       <View style={estilos.nascimentoContainer}>
         <Text style={estilos.text}>Data nascimento</Text>
@@ -36,11 +49,11 @@ const DadosPerfil = ({
       <View>
         <View>
           <Text style={estilos.text} textPequeno>E-mail</Text>
-          <Input inputPequeno />
+          <Input inputPequeno editable={false}>{pessoa.email}</Input>
         </View>
         <View>
           <Text style={estilos.text}>Celular</Text>
-          <Input inputPequeno />
+          <Input inputPequeno/>
         </View>
         <View>
           <Text style={estilos.text}>{clinicasSeguidas}</Text>

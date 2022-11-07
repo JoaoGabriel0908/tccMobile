@@ -11,17 +11,28 @@ import COLORS from "../const/Colors";
 import TextInputMask from "react-native-masked-text";
 
 // Função que representa um componente
-const Input = (
-  { label, iconName, error, value, onFocus = () => {}, keyboardType, name, maxLength, onBlur = () => {}, ...props}
-  ) => {
-    const stylesMargin = [estilos.formContainer];
-    if (props.inputPequeno) stylesMargin.push(estilos.inputPequeno);
+const Input = ({
+  label,
+  iconName,
+  error,
+  value,
+  onFocus = () => {},
+  keyboardType,
+  name,
+  maxLength,
+  onBlur = () => {},
+  editable,
+  ...props
+}) => {
 
-    const stylesText = [estilos.inputLabel];
-    if (props.textPequeno) stylesText.push(estilos.textPequeno);
+  const stylesMargin = [estilos.formContainer];
+  if (props.inputPequeno) stylesMargin.push(estilos.inputPequeno);
 
-    const stylesEditar = [estilos.inputContainer];
-    if (props.EditarPerfil) stylesEditar.push(estilos.EditarPerfil);
+  const stylesText = [estilos.inputLabel];
+  if (props.textPequeno) stylesText.push(estilos.textPequeno);
+
+  const stylesEditar = [estilos.inputContainer];
+  if (props.EditarPerfil) stylesEditar.push(estilos.EditarPerfil);
 
   return (
     <View style={stylesMargin}>
@@ -39,8 +50,8 @@ const Input = (
         </TouchableOpacity>
         <TextInput
           onBlur={() => {
-            onBlur()
-            }}
+            onBlur();
+          }}
           style={estilos.TextInput}
           autoCorrect={false}
           onFocus={() => {
@@ -51,9 +62,10 @@ const Input = (
           value={value}
           keyboardType={keyboardType}
           maxLength={maxLength}
+          editable={editable}
         />
       </View>
-        
+
       <Text>{error}</Text>
     </View>
   );
@@ -65,7 +77,7 @@ const estilos = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
-  inputPequeno:{
+  inputPequeno: {
     marginBottom: 80,
     backgroundColor: COLORS.preto,
     height: 0,
@@ -100,11 +112,7 @@ const estilos = StyleSheet.create({
     opacity: 0.5,
     fontSize: 30,
   },
-  EditarPerfil:{
-   
-    
-  }
-  
+  EditarPerfil: {},
 });
 
 export default Input;

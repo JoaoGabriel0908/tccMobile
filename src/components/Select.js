@@ -60,7 +60,7 @@ const Select = ({
             />
             <View style={estilos.wrapButton}>
               <TouchableOpacity style={estilos.button} onPress={onPress}>
-                <Text>Show Item</Text>
+                <Text>Confirmar</Text>
               </TouchableOpacity>
             </View>
           </View>

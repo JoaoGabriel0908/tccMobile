@@ -32,6 +32,8 @@ const Cadastro = () => {
 
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
 
+  const [isChecked, setChecked] = useState([]);
+
   useEffect(() => {
     apiBlood.get("/listarTipoSanguineo").then((data) => {
       // console.log(data);
@@ -53,12 +55,12 @@ const Cadastro = () => {
     });
   }, []);
 
-  useEffect(() => {
-    apiBlood.get(`/listarCidadesPorEstado/${inputs.id_estado}`).then((data) => {
-      console.log(data.data[0]);
-      setCidade(data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarCidadesPorEstado/${inputs.id_estado}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     setCidade(data.data);
+  //   });
+  // }, []);
 
   // function aplicar() {
   //   inputs.cpf = formataCPF(inputs.cpf);
@@ -148,77 +150,44 @@ const Cadastro = () => {
     let validate = true;
 
     // Quando máo tem conteúdo o validate ficará falso e aparecerá a mensagem
-    // if (!inputs.nome_completo) {
-    //   validate = false;
-    //   handleErrors("Informe o nome completo", "nome_completo");
-    //   // console.log('Título em branco')
-    // } else if (
-    //   /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(
-    //     inputs.nome_completo
-    //   )
-    // ) {
-    //   validate = false;
-    //   handleErrors(
-    //     "Elementos especias e pontuação não são permitidos",
-    //     "nome_completo"
-    //   );
-    // }
-    // if (!inputs.email) {
-    //   validate = false;
-    //   handleErrors("Informe o seu e-mail", "email");
-    //   // console.log('Descrição em branco')
-    // }
-    // if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(inputs.email)) {
-    //   validate = false;
-    //   handleErrors("Email inválido", "email");
-    // }
-    // if (!inputs.id_cidade_doacao) {
-    //   validate = false;
-    //   handleErrorsPicker("Informe a cidade de doação", "id_cidade_doacao");
-    //   // console.log('Descrição em branco')
-    // }
-    // if (!inputs.cpf) {
-    //   validate = false;
-    //   handleErrors("Informe o seu CPF corretamente", "cpf");
-    // // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
-    // //   validate = false;
-    // //   handleErrors("CPF inválido", "cpf");
-    // } else if (validarCPF(inputs.cpf)) {
-    //   validate = false;
-    //   handleErrors("CPF inválido", "cpf");
-    // }
-    // if (!inputs.senha) {
-    //   validate = false;
-    //   handleErrors("Cadastre sua senha", "senha");
-    //   // console.log('Capa em branco')
-    // }
-    // if (!inputs.confirmacaoSenha) {
-    //   validate = false;
-    //   handleErrors("Informa sua senha novamente", "confirmacaoSenha");
-    //   // console.log('Capa em branco')
-    // }
-
     if (!inputs.nome_completo) {
       validate = false;
       handleErrors("Informe o nome completo", "nome_completo");
       // console.log('Título em branco')
+    } else if (
+      /[`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/^\(\)0-9]/gi.test(
+        inputs.nome_completo
+      )
+    ) {
+      validate = false;
+      handleErrors(
+        "Elementos especias e pontuação não são permitidos",
+        "nome_completo"
+      );
     }
-    const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
-    // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
     if (!inputs.email) {
       validate = false;
       handleErrors("Informe o seu e-mail", "email");
       // console.log('Descrição em branco')
     }
+    if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(inputs.email)) {
+      validate = false;
+      handleErrors("Email inválido", "email");
+    }
     if (!inputs.id_cidade_doacao) {
       validate = false;
-      handleErrorsPicker("Informe a cidade de doação", "id_cidade_doacao");
+      handleErrors("Informe a cidade de doação", "id_cidade_doacao");
       // console.log('Descrição em branco')
     }
     if (!inputs.cpf) {
       validate = false;
       handleErrors("Informe o seu CPF corretamente", "cpf");
-      // console.log('Capa em branco')
+    // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
+    //   validate = false;
+    //   handleErrors("CPF inválido", "cpf");
+    } else if (validarCPF(inputs.cpf)) {
+      validate = false;
+      handleErrors("CPF inválido", "cpf");
     }
     if (!inputs.senha) {
       validate = false;
@@ -230,6 +199,19 @@ const Cadastro = () => {
       handleErrors("Informa sua senha novamente", "confirmacaoSenha");
       // console.log('Capa em branco')
     }
+
+    // const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+    // // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
+    // if (!inputs.email) {
+    //   validate = false;
+    //   handleErrors("Informe o seu e-mail", "email");
+    //   // console.log('Descrição em branco')
+    // }
+    // if (!inputs.cpf) {
+    //   validate = false;
+    //   handleErrors("Informe o seu CPF corretamente", "cpf");
+    //   // console.log('Capa em branco')
+    // }
 
     if (validate) {
       console.log(inputs);
@@ -257,14 +239,14 @@ const Cadastro = () => {
       });
       navigation.navigate('Terms')
     } catch (error) {
-      error.response.data;
+      error.response.data
     }
   };
 
-  useEffect(() => {
-    buscarCidades(inputs.id_estado);
-    console.log(cidades);
-  }, [inputs.id_estado]);
+  // useEffect(() => {
+  //   buscarCidades(inputs.id_estado);
+  //   console.log(cidades);
+  // }, [inputs.id_estado]);
 
   const onChangeValue = (itemSelected, index) => {
     console.log(itemSelected);
@@ -274,11 +256,13 @@ const Cadastro = () => {
         return {
           ...item,
           selected: !item.selected,
+          setChecked: true,
         };
       }
       return {
         ...item,
         selected: item.selected,
+        setChecked: false,
       };
     });
     setCidade(newCity);
@@ -294,9 +278,9 @@ const Cadastro = () => {
           disabled={false}
           offAnimationType="fade"
           boxType="square"
-          onChange={inputs.id_cidade_doacao}
+          onChange={isChecked}
           onValueChange={() => onChangeValue(item, index)}
-          // value={inputs.id_cidade_doacao}
+          // value={setChecked}
           // color={cidades ? '#4630EB' : COLORS.vermelhoClaro}
         />
       </View>
@@ -305,6 +289,7 @@ const Cadastro = () => {
 
   const onPressShowItemSelected = () => {
     const listSelected = cidades.filter((item) => item.selected == true);
+    console.log(listSelected)
     let contentAlert = "";
     listSelected.forEach((item) => {
       contentAlert = contentAlert + `${item.id} . ` + item.cidade + "\n";
@@ -313,6 +298,7 @@ const Cadastro = () => {
     console.log(uniqueId)
     Alert.alert(contentAlert);
     handleChangeInputs('id_cidade_doacao', uniqueId)
+    return uniqueId
   };
 
   return (
@@ -407,7 +393,7 @@ const Cadastro = () => {
                 options={cidades}
                 keyExtractor={(item) => `key-${item.id}`}
                 renderItem={renderItem}
-                // onChangeSelect={(id) => alert(id)}
+                onChangeSelect={(id) => alert(id)}
                 data={cidades}
                 text="Selecione a cidade de doação"
                 onPress={onPressShowItemSelected}
@@ -608,6 +594,9 @@ const estilos = StyleSheet.create({
     width: 20,
     height: 20,
   },
+  label:{
+    textAlign: "center",
+  }
 });
 
 export default Cadastro;

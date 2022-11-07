@@ -12,12 +12,13 @@ import {
 
 import Cabecalho from "../components/Cabecalho";
 import InputIcon from "../components/InputIcon";
-c
 import React, { useEffect, useState } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../components/Button";
+import COLORS from "../const/Colors";
+import Desativar from "./DesativarConta";
 
 const person = "../assets/Ellipse8.png";
 
@@ -123,7 +124,7 @@ const EditarPerfil = () => {
         <Text style={estilos.title}>Email</Text>
         <TextInput style={estilos.input} /> 
         <View style={estilos.btn}>
-        <Button style={estilos.Button} title="Desativar Conta" onPress={""} />
+        <Desativar />
         </View>
       </View>
       </View>

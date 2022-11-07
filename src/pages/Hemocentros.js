@@ -19,11 +19,11 @@ const Hemocentros = () => {
       <SafeAreaView style={estilos.container}>
         <View>
           <Text style={estilos.textTitle}></Text>
-          <InputIcon
-            name="name"
+          <Input
+            name={null}
             placeholder="Pesquise hemocentros perto de você"
             // value={inputs.nomeCompleto}
-            iconName="account"
+            iconName="magnify"
             // error={errors.nomeCompleto}
             onFocus={() => {
               handleErrors(null, "nomeCompleto");

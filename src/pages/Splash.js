@@ -56,7 +56,8 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     top: 350,
     color: "#fff",
-    fontSize:18,
+    fontSize:24,
+    fontFamily: 'Poppins_700Bold',
   },
   imagemFundo: {
     width: "100%",
@@ -69,7 +70,7 @@ const estilos = StyleSheet.create({
     flexDirection: "row",
     height: "10%",
     position: "absolute",
-    bottom: 15,
+    bottom: 10,
     flex: 1,
   },
 });

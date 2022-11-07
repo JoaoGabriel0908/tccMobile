@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Conquistas from "../pages/Conquistas";
@@ -8,16 +8,25 @@ import Perfil from "../pages/Perfil";
 import COLORS from "../const/Colors";
 import Cabecalho from "../components/Cabecalho";
 import EditarPerfil from "../pages/EditarPerfil";
-import PerfilHemo from "../pages/PerfilHemo"
+import PerfilHemo from "../pages/PerfilHemo";
+import apiBlood from "../service/apiBlood";
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const logo = "../assets/cuidados-de-saude(3)1.png";
 
 export default function Menu() {
+  const [pessoa, setPessoa] = useState([])
+
+    useEffect(() => {
+        apiBlood.get('/listarDoador').then(data => {
+          console.log(data.data);
+          setPessoa(data.data);
+        });
+      }, []);
 
     return(
         <Navigator>
-            <Screen name="PaginaInicial" 
+            <Screen name="Pagina Inicial" 
             component={PaginaInicial}
             options={{
                 headerTitle: () => <Cabecalho name='Pagina Inicial'/>,
@@ -60,7 +69,7 @@ export default function Menu() {
                     </>
                 )
             }}/>
-            <Screen name="Perfil" component={Perfil}
+            <Screen name="Perfil" component={Perfil} key={pessoa.id}
             options={{
                 headerTitle: () => <Cabecalho name='Perfil'/>,
                 headerTitleAlign: "center",

@@ -55,7 +55,7 @@ const InputIcon = ({
         />
 
         <Icon
-          name={passwordShown ? "magnify" : "eye-off"}
+          name={passwordShown ? "eye" : "eye-off"}
           style={estilos.icon}
           onPress={togglePassword}
           

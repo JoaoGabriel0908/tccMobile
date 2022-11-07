@@ -64,6 +64,8 @@ const Terms = () => {
         <View style={estilos.botoes}>
           <Button
             title="Voltar"
+            back
+            textBack
             onPress={() => {
               navigation.navigate("Cadastro");
             }}
@@ -71,12 +73,9 @@ const Terms = () => {
           <Button
             title="Avançar"
             onPress={() => {
-              navigation.navigate("Terms");
+              navigation.navigate("Menu");
             }}
           />
-        </View>
-        <View style={estilos.passo}>
-          <Image source={require(passo1)} />
         </View>
       </View>
     </Layout>

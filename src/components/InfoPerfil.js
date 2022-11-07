@@ -27,23 +27,23 @@ const InfoPerfil = ({
     <SafeAreaView style={estilos.containerGeral}>
       <SafeAreaView style={estilos.container}>
         <View style={estilos.perfil}>
-          <Icon name={iconNameSangue} style={{ fontSize: 50 }} />
-          <Text style={{ fontSize: 14, fontWeight: "800" }}>
+          <Icon name={iconNameSangue} style={{ fontSize: 50, color: COLORS.branco }} />
+          <Text style={{ fontSize: 14, fontFamily: 'Poppins_600SemiBold', color: COLORS.branco }}>
             {tipoSanguineo}
           </Text>
         </View>
         <View>
           <View style={estilos.pessoa}>
             <Image source={require(person)} style={estilos.imagem} />
-            <Text style={{ marginTop: 20, fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ marginTop: 20, fontSize: 18, fontFamily: 'Poppins_600SemiBold', color: COLORS.branco }}>
               {nameComplet}
             </Text>
           </View>
           <Image />
         </View>
         <View style={estilos.genero}>
-          <Icon name={gender} style={{ fontSize: 50 }} />
-          <Text style={{ fontSize: 14, fontWeight: "800" }}>{nameGenres}</Text>
+          <Icon name={gender} style={{ fontSize: 50, color: COLORS.branco }} />
+          <Text style={{ fontSize: 14, fontFamily: 'Poppins_600SemiBold', color: COLORS.branco }}>{nameGenres}</Text>
         </View>
       </SafeAreaView>
       <View style={estilos.config}>
@@ -80,6 +80,7 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 2,
+    color: COLORS.branco
   },
   perfil: {
     justifyContent: "center",
