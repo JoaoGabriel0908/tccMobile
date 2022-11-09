@@ -31,7 +31,7 @@ const DadosPerfil = ({
   const [selectedLanguage, setSelectedLanguage] = useState();
 
   useEffect(() => {
-    apiBlood.get('/listarDoador').then(data => {
+    apiBlood.get(`/listarDoador/${id}`).then(data => {
       console.log(data.data[0]);
       setPessoa(data.data[0]);
     });
@@ -44,7 +44,7 @@ const DadosPerfil = ({
     });
   }, []);
 
-  
+  // const {id} = route.params
 
   return (
     <SafeAreaView style={estilos.container}>

@@ -14,15 +14,32 @@ import apiBlood from "../service/apiBlood";
 const {Navigator, Screen} = createBottomTabNavigator();
 const logo = "../assets/cuidados-de-saude(3)1.png";
 
-export default function Menu() {
-  const [pessoa, setPessoa] = useState([])
+export default function Menu({route, navigation}) {
+  const [pessoa, setPessoa] = useState({
+    id: '',
+    nome_completo: '',
+    email: '',
+    data_nascimento: '',
+    telefone_doador: '',
+  })
 
-    useEffect(() => {
-        apiBlood.get('/listarDoador').then(data => {
-          console.log(data.data);
-          setPessoa(data.data);
-        });
-      }, []);
+  const {id} = route.params
+
+    // useEffect(() => {
+    //     apiBlood.get(`/updateUsuario/${id}`).then(data => {
+    //       console.log(data.data);
+    //       setPessoa(data.data);
+    //     });
+    //   }, []);
+
+      useEffect(() => {
+      apiBlood.get('/listarUsuario').then(data => {
+        console.log(data.data);
+        setPessoa(data.data);
+      });
+    }, []);
+    
+      console.log(pessoa)
 
     return(
         <Navigator>
@@ -69,7 +86,7 @@ export default function Menu() {
                     </>
                 )
             }}/> */}
-            <Screen name="Perfil" component={Perfil} key={pessoa.id}
+            <Screen name="Perfil" component={Perfil} 
             options={{
                 headerTitle: () => <Cabecalho name='Perfil'/>,
                 headerTitleAlign: "center",

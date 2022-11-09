@@ -157,7 +157,8 @@ const estilos = StyleSheet.create({
   input: {
     width: 370,
     height: 55,
-    backgroundColor: COLORS.cinza,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
     flexDirection: "row",
     paddingHorizontal: 15,
     alignItems: "center",
@@ -180,7 +181,8 @@ const estilos = StyleSheet.create({
   picker:{
     width: 370,
     height: 55,
-    backgroundColor: COLORS.cinza,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
     borderRadius: 15,
     left: 35,
   
@@ -188,7 +190,9 @@ const estilos = StyleSheet.create({
    inputCidRes:{
     width: 220,
     height: 55,
-    backgroundColor: COLORS.cinza,
+    // backgroundColor: COLORS.cinza,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
     flexDirection: "row",
     paddingHorizontal: 15,
     alignItems: "center",
@@ -200,7 +204,8 @@ const estilos = StyleSheet.create({
    inputEstado:{
     width: 130,
     height: 55,
-    backgroundColor: COLORS.cinza,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
     flexDirection: "row",
     paddingHorizontal: 15,
     alignItems: "center",
@@ -229,7 +234,8 @@ const estilos = StyleSheet.create({
   inputCidade:{
     width: 370,
     height: 150,
-    backgroundColor: COLORS.cinza,
+    borderColor: COLORS.preto,
+    borderWidth: 1,
     flexDirection: "row",
     paddingHorizontal: 15,
     alignItems: "center",

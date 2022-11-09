@@ -17,6 +17,7 @@ import COLORS from "../const/Colors";
 import Menu from "../routes/BottomTabs";
 import HemoPaginaInicial from "../components/HemoPaginaInicial";
 import { useNavigation } from "@react-navigation/native";
+import apiBlood from "../service/apiBlood";
 
 const PaginaInicial = () => {
   const navigation = useNavigation();
@@ -25,6 +26,14 @@ const PaginaInicial = () => {
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState();
   const [refFlatList, setRefFlatList] = useState();
+  const [campanha, setCampanha] = useState()
+
+  useEffect(() => {
+    apiBlood.get("/listarCampanhas").then((data) => {
+      // console.log(data);
+      setCampanha(data.data);
+    });
+  }, []);
 
   useEffect(() => {
     getList();
@@ -62,6 +71,7 @@ const PaginaInicial = () => {
     setData(newArrData);
     navigation.navigate("Campanha");
   };
+  // console.log(campanha)
 
   const renderItem = ({ item, index }) => {
     return (
@@ -74,9 +84,7 @@ const PaginaInicial = () => {
             marginRight: 40,
             marginVertical: 25,
             height: 200,
-            backgroundColor: item.selected
-              ? COLORS.preto
-              : COLORS.vermelhoClaro,
+            backgroundColor: COLORS.vermelhoClaro,
           },
         ]}
       >

@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
-import Button from "../components/Button"
+import Button from "./Button"
+import apiBlood from "../service/apiBlood";
 
 const fundo = "../assets/fundo.png";
 const hemocentroImagem = "../assets/Ellipse8.png";
@@ -20,14 +21,13 @@ const vazio = "../assets/vazio.png";
 const meioCheio = "../assets/meio-cheio.png";
 const cheio = "../assets/cheio.png";
 const retangulo ="../assets/Rectangle42.png"
-const patrocinio = "../assets/image2.png"
-const patrocinio2 = "../assets/image4.png"
 
 const Campanhas = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState();
   const [refFlatList, setRefFlatList] = useState();
+  const [campanha, setCampanha] = useState();
 
   useEffect(() => {
     getList();
@@ -124,10 +124,6 @@ const Campanhas = () => {
         {/* Estoque */}
         <View style={estilos.containerEstoque}>
           <Image source={require(retangulo)}/>
-        </View>
-        <View style={estilos.containerPatrocinio}>
-          <Image source={require(patrocinio)} style={estilos.imagePatrocinio}/>
-          <Image source={require(patrocinio2)} style={estilos.imagePatrocinio}/>
         </View>
       </View>
     </ScrollView>

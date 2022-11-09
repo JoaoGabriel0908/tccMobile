@@ -21,13 +21,37 @@ import apiBlood from "../service/apiBlood";
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
-
-  const [pessoa, setPessoa] = useState([])
+  const [pessoa, setPessoa] = useState([]);
 
   const [validateInput, setValidadeInput] = useState({
     case: false,
     number: false,
     length: false,
+  });
+
+  const handleChangeInputs = (key, value) => {
+    setInputs({
+      ...inputs,
+      [key]: value,
+    });
+  };
+  const handleOnChange = (text, input) => {
+    //O setInputs invoca o id_estado e passa para o prevState
+    setInputs((prevState) =>
+      // console.log(prevState),
+      // console.log(input + ` ` + text)
+
+      // Injeção de dados na State
+      // Sobrepondo resultado do texto e colocando no prevState
+      ({ ...prevState, [input]: text })
+    );
+  };
+
+  const [inputs, setInputs] = React.useState({
+    // O useState sempre representa essa estrutura
+    // Chave = inputs / valor = inputs
+    cpf: "",
+    senha: "",
   });
 
   useEffect(() => {
@@ -36,6 +60,7 @@ const Login = () => {
       setPessoa(data.data);
     });
   }, []);
+  
 
   const secureText = (password) => {
     const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/);
@@ -48,6 +73,51 @@ const Login = () => {
       number: regexNumber.test(password),
       length,
     });
+  };
+   // Função de validação
+   const validate = () => {
+    let validate = true;
+
+    if (!inputs.cpf) {
+      validate = false;
+      handleErrors("Informe o seu CPF corretamente", "cpf");
+    // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
+    //   validate = false;
+    //   handleErrors("CPF inválido", "cpf");
+    } else if (validarCPF(inputs.cpf)) {
+      validate = false;
+      handleErrors("CPF inválido", "cpf");
+    }
+    if (!inputs.senha) {
+      validate = false;
+      handleErrors("Cadastre sua senha", "senha");
+      // console.log('Capa em branco')
+    }
+    if (!inputs.confirmacaoSenha) {
+      validate = false;
+      handleErrors("Informa sua senha novamente", "confirmacaoSenha");
+      // console.log('Capa em branco')
+    }
+
+    if (validate) {
+      console.log(inputs);
+      // Envia os dados para a API cadastrar.
+      Login();
+      //console.log("Cadastrou");
+    }
+
+    console.log(errors);
+  };
+  const Logar = () => {
+    try {
+      const response = apiBlood.post("/listarDoador", {
+        cpf: inputs.cpf,
+        senha: inputs.senha,
+      });
+      navigation.navigate('Terms')
+    } catch (error) {
+      error.response.data
+    }
   };
 
   const optionsindividual = [{ text: "Lembrar-me", id: 1 }];
@@ -85,19 +155,24 @@ const Login = () => {
       </View>
 
       <View style={estilos.Button01}>
+        {pessoa.map(pessoa => (
+          
+      
         <Button
+          key={pessoa.id} 
           style={estilos.Button01}
           title="Entre"
           onPress={() => {
             navigation.navigate("Menu", { id: pessoa.id });
           }}
         />
+        ))}
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>
-      <TouchableOpacity style={estilos.buttonRegister}>
-        <Text style={estilos.buttonText}>Cadastre-se</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={estilos.buttonRegister} onPress={() => navigation.navigate('Cadastro')}>
+          <Text style={estilos.buttonText}>Cadastre-se</Text>
+        </TouchableOpacity>
     </Layout>
   );
 };
