@@ -55,24 +55,6 @@ const Cadastro = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   apiBlood.get(`/listarCidadesPorEstado/${inputs.id_estado}`).then((data) => {
-  //     console.log(data.data[0]);
-  //     setCidade(data.data);
-  //   });
-  // }, []);
-
-  // function aplicar() {
-  //   inputs.cpf = formataCPF(inputs.cpf);
-  // }
-
-  // const formataCPF = (cpf) => {
-  //   cpf = cpf.replace(/\D/g, "");
-  //   cpf = cpf.replace(/^(\d{3})/g, "$1.");
-  //   cpf = cpf.replace(/(\d{3})(\d{3})/g, "$1.$2-");
-  //   return cpf;
-  // };
-
   const handleChangeInputs = (key, value) => {
     setInputs({
       ...inputs,
@@ -303,9 +285,6 @@ const Cadastro = () => {
 
   return (
     <Layout>
-      <View>
-        <Text style={estilos.textTitle}>Cadastro</Text>
-      </View>
       <View style={estilos.viewForm}>
         <Input
           name="name"

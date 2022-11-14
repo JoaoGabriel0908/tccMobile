@@ -13,7 +13,7 @@ import { Card } from "react-native-paper";
 
 const fundo = "../assets/fundo.png";
 
-const HemoPaginaInicial = ({onPress = () => {}}) => {
+const HemoPaginaInicial = ({onPress = () => {}, hemoNome, cep, cidade, estado, logradouro, bairro, numero}) => {
  // const [hemocentro, setHemocentro] = useState({
  //   id: "",
  //   hemocentroNome: "",
@@ -28,18 +28,15 @@ const HemoPaginaInicial = ({onPress = () => {}}) => {
  //   }, []);
 
  return (
-  <SafeAreaView style={estilos.container}>
+  <TouchableOpacity onPress={onPress} style={estilos.container}>
    <View style={estilos.containerImagem}>
     <Image source={require(fundo)} style={estilos.imagem} />
    </View>
    <View style={estilos.containerDesc}>
-    <Text style={estilos.hemoTitulo}>Hemocentro Campinas</Text>
-    <Text>Universidade Estadual de Campinas - R. Carlos Chagas, 480 - Cidade Universitária, Campinas - SP, 13083-878</Text>
-    <TouchableOpacity onPress={onPress}>
-     <Text>Ver mais</Text>
-    </TouchableOpacity>
+    <Text style={estilos.hemoTitulo}>{hemoNome}</Text>
+    <Text>{logradouro} {numero} - {bairro}, {cidade} - {estado}, {cep}</Text>
    </View>
-  </SafeAreaView>
+  </TouchableOpacity>
  );
 };
 

@@ -13,6 +13,7 @@ import {
 import React, { useState, useEffect } from "react";
 import COLORS from "../const/Colors";
 import Button from "../components/Button";
+import apiBlood from "../service/apiBlood";
 
 const fundo = "../assets/fundo.png";
 const hemocentroImagem = "../assets/Ellipse8.png";
@@ -20,7 +21,40 @@ const vazio = "../assets/vazio.png";
 const meioCheio = "../assets/meio-cheio.png";
 const cheio = "../assets/cheio.png";
 
-const PerfilHemo = () => {
+const PerfilHemo = ({ route, navigation }) => {
+  const { id } = route.params;
+  const [hemocentro, setHemocentro] = useState([
+    {
+      id: "",
+      nome_unidade: "",
+      nome_sede: "",
+    },
+  ]);
+
+  const [servico, setServico] = useState([]);
+  const [estoque, setEstoque] = useState([]);
+
+  useEffect(() => {
+    apiBlood.get(`/listarHemocentroPorId/${id}`).then((hemocentro) => {
+      setHemocentro(hemocentro.data[0][0]);
+      console.log(hemocentro.data[0][0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get("/listarTipoServico/").then((servico) => {
+      setServico(servico.data);
+      console.log(servico.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get(`/listarEstoqueSangue/${id}`).then((estoque) => {
+      setEstoque(estoque.data[0]);
+      console.log(estoque.data[0]);
+    });
+  }, []);
+
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState();
@@ -109,12 +143,10 @@ const PerfilHemo = () => {
       </View>
       <View style={estilos.content}>
         <View style={estilos.containerNomeHemocentro}>
-          <Text style={estilos.nomeHemocentro}>
-            Fundação hemocentro de Brasília
-          </Text>
+          <Text style={estilos.nomeHemocentro}>{hemocentro.nome_unidade}</Text>
           <Text style={estilos.endereco}>
-            Universidade Estadual de Campinas - R. Carlos Chagas, 480 - Cidade
-            Universitária, Campinas - SP, 13083-878
+            {hemocentro.logradouro} {hemocentro.numero} - {hemocentro.bairro},{" "}
+            {hemocentro.cidade} - {hemocentro.estado}, {hemocentro.cep}
           </Text>
         </View>
         <View style={estilos.containerSobre}>
@@ -125,17 +157,16 @@ const PerfilHemo = () => {
         </View>
         <View style={estilos.containerHorario}>
           <Text style={estilos.horario}>Horário de atendimento</Text>
-          <Text style={estilos.horarioDescricao}>
-            Segunda a sexta das 8:00 às 17:00
-          </Text>
           <Text style={estilos.horarioDescricaoFeriado}>
-            Feriados e finais de semana das 08:00 às 13:00
+            {hemocentro.horario_atendimento
+              ? ""
+              : "Segunda a sexta das 8:00 às 17:00"}
           </Text>
         </View>
         <View style={estilos.containerServico}>
           <Text style={estilos.servico}>Tipos de serviços</Text>
           <Text style={estilos.servicoDescricao}>
-            Sangue | Plaqueta | Medula
+            {servico.map((servico) => servico.tipo_servico).join(" | ")}
           </Text>
         </View>
         <View style={estilos.containerServico}>
@@ -143,40 +174,16 @@ const PerfilHemo = () => {
         </View>
         {/* Estoque */}
         <View style={estilos.containerEstoque}>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(vazio)} />
-            <Text>AB+</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(meioCheio)} />
-            <Text>AB-</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(vazio)} />
-            <Text>A+</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(cheio)} />
-            <Text>A-</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(cheio)} />
-            <Text>B+</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(meioCheio)} />
-            <Text>B</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(vazio)} />
-            <Text>O+</Text>
-          </View>
-          <View style={estilos.contentEstoque}>
-            <Image source={require(cheio)} />
-            <Text>O-</Text>
-          </View>
+          {estoque.map((estoque) => (
+            <View style={estilos.contentEstoque}>
+              <Image source={require(vazio)} />
+              <Text>{estoque.tipo_sanguineo}</Text>
+              <Text>{estoque.nivel}</Text>
+            </View>
+          ))}
         </View>
       </View>
+
       {/* Campanhas */}
       <ScrollView style={estilos.container}>
         <View style={estilos.containerCampanhas}>
@@ -254,6 +261,7 @@ const estilos = StyleSheet.create({
     borderWidth: 1,
     borderColor: COLORS.cinza,
     marginBottom: 30,
+    justifyContent: "center",
   },
   containerCampanhas: {
     textAlign: "center",
@@ -338,6 +346,7 @@ const estilos = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
+    marginHorizontal: 5,
   },
   contentCampanha: {
     alignItems: "center",

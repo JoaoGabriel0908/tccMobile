@@ -18,20 +18,28 @@ import Menu from "../routes/BottomTabs";
 import HemoPaginaInicial from "../components/HemoPaginaInicial";
 import { useNavigation } from "@react-navigation/native";
 import apiBlood from "../service/apiBlood";
+import CardCampanha from "../components/CardCampanha"
 
 const PaginaInicial = () => {
   const navigation = useNavigation();
 
-  const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
   const [currentIndex, setCurrentIndex] = useState();
   const [refFlatList, setRefFlatList] = useState();
-  const [campanha, setCampanha] = useState()
+  const [campanha, setCampanha] = useState([]);
+  const [hemocentro, setHemocentro] = useState([]);
+
+  // useEffect(() => {
+  //   apiBlood.get("/listarCampanhas").then((data) => {
+  //     // console.log(data.data);
+  //     setCampanha(data.data);
+  //   });
+  // }, []);
 
   useEffect(() => {
-    apiBlood.get("/listarCampanhas").then((data) => {
-      // console.log(data);
-      setCampanha(data.data);
+    apiBlood.get("/listarHemocentro").then((data) => {
+      // console.log(data.data);
+      setHemocentro(data.data[0]);
     });
   }, []);
 
@@ -41,22 +49,16 @@ const PaginaInicial = () => {
   }, []);
 
   const getList = () => {
-    const fotos =
-      "https://jsonplaceholder.typicode.com/photos?_limit=4&_page=1";
-    fetch(fotos)
-      .then((res) => res.json())
-      .then((resJson) => {
-        setData(resJson);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      })
-      .finally(() => setIsLoading(false));
+    apiBlood.get("/listarCampanhas").then((data) => {
+      console.log(data.data);
+      setCampanha(data.data);
+    });
+
   };
 
   const onClickItem = (item, index) => {
     setCurrentIndex(index);
-    const newArrData = data.map((e, index) => {
+    const newArrData = campanha.map((e, index) => {
       if (item.id == e.id) {
         return {
           ...e,
@@ -68,42 +70,11 @@ const PaginaInicial = () => {
         selected: false,
       };
     });
-    setData(newArrData);
+    setCampanha(newArrData);
     navigation.navigate("Campanha");
   };
-  // console.log(campanha)
 
-  const renderItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => onClickItem(item, index)}
-        style={[
-          estilos.item,
-          {
-            width: 250,
-            marginRight: 40,
-            marginVertical: 25,
-            height: 200,
-            backgroundColor: COLORS.vermelhoClaro,
-          },
-        ]}
-      >
-        <View>
-          <Image
-            style={estilos.imagem}
-            source={{ url: item.url }}
-            resizeMode="contain"
-          />
-          <Text style={estilos.titulo}>Título da Campanha</Text>
-          <Text style={estilos.descricao}>
-            A solidariedade corre nas suas veias. Doe sangue!
-          </Text>
-        </View>
-      </TouchableOpacity>
-    );
-  };
-
-  const getItemLayout = (data, index) => {
+  const getItemLayout = (campanha, index) => {
     return { length: 161, offset: 161 * index, index };
   };
 
@@ -111,29 +82,34 @@ const PaginaInicial = () => {
     <ScrollView style={estilos.containerPagina}>
       <ScrollView style={estilos.container}>
         <Text style={estilos.campanhaText}>Campanhas para você</Text>
-        {isLoading ? (
-          <ActivityIndicator />
-        ) : (
+
           <FlatList
-            data={data}
-            renderItem={renderItem}
+            data={campanha}
             keyExtractor={(item) => `${item.id}`}
+            renderItem={({item}) => 
+            <CardCampanha data={item}/>}
             horizontal
             getItemLayout={getItemLayout}
             ref={(ref) => setRefFlatList(ref)}
           />
-        )}
       </ScrollView>
       <SafeAreaView style={estilos.hemocentro}>
         <Text style={estilos.campanhaText}>Hemocentros perto de você</Text>
-        <HemoPaginaInicial
-          onPress={() => {
-            navigation.navigate("PerfilHemo");
-          }}
-        />
-        <HemoPaginaInicial />
-        <HemoPaginaInicial />
-        <HemoPaginaInicial />
+        {hemocentro.map((hemocentro) => (
+          <HemoPaginaInicial
+            key={hemocentro.id}
+            hemoNome={hemocentro.nome_unidade}
+            logradouro={hemocentro.logradouro}
+            estado={hemocentro.estado}
+            cidade={hemocentro.cidade}
+            cep={hemocentro.cep}
+            bairro={hemocentro.bairro}
+            numero={hemocentro.numero}
+            onPress={() => {
+              navigation.navigate("PerfilHemo", { id: hemocentro.id });
+            }}
+          />
+        ))}
       </SafeAreaView>
     </ScrollView>
   );
@@ -151,25 +127,6 @@ const estilos = StyleSheet.create({
     marginBottom: 20,
     padding: 20,
     backgroundColor: COLORS.preto,
-  },
-  item: {
-    borderWidth: 0.5,
-    padding: 8,
-    borderRadius: 10,
-    justifyContent: "center",
-  },
-  imagem: {
-    width: 100,
-    height: 100,
-  },
-  titulo: {
-    fontWeight: "900",
-    fontSize: 16,
-  },
-  descricao: {
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "justify",
   },
   campanhaText: {
     marginTop: 20,

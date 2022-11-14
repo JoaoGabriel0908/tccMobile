@@ -60,7 +60,6 @@ const Login = () => {
       setPessoa(data.data);
     });
   }, []);
-  
 
   const secureText = (password) => {
     const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/);
@@ -74,16 +73,16 @@ const Login = () => {
       length,
     });
   };
-   // Função de validação
-   const validate = () => {
+  // Função de validação
+  const validate = () => {
     let validate = true;
 
     if (!inputs.cpf) {
       validate = false;
       handleErrors("Informe o seu CPF corretamente", "cpf");
-    // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
-    //   validate = false;
-    //   handleErrors("CPF inválido", "cpf");
+      // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
+      //   validate = false;
+      //   handleErrors("CPF inválido", "cpf");
     } else if (validarCPF(inputs.cpf)) {
       validate = false;
       handleErrors("CPF inválido", "cpf");
@@ -114,9 +113,9 @@ const Login = () => {
         cpf: inputs.cpf,
         senha: inputs.senha,
       });
-      navigation.navigate('Terms')
+      navigation.navigate("Terms");
     } catch (error) {
-      error.response.data
+      error.response.data;
     }
   };
 
@@ -153,26 +152,24 @@ const Login = () => {
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
-
       <View style={estilos.Button01}>
-        {pessoa.map(pessoa => (
-          
-      
         <Button
-          key={pessoa.id} 
+          key={pessoa.id}
           style={estilos.Button01}
           title="Entre"
           onPress={() => {
             navigation.navigate("Menu", { id: pessoa.id });
           }}
         />
-        ))}
       </View>
 
       <Text style={estilos.Texto}>Novo por aqui? </Text>
-        <TouchableOpacity style={estilos.buttonRegister} onPress={() => navigation.navigate('Cadastro')}>
-          <Text style={estilos.buttonText}>Cadastre-se</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        style={estilos.buttonRegister}
+        onPress={() => navigation.navigate("Cadastro")}
+      >
+        <Text style={estilos.buttonText}>Cadastre-se</Text>
+      </TouchableOpacity>
     </Layout>
   );
 };
@@ -242,13 +239,11 @@ const estilos = StyleSheet.create({
     fontWeight: "bold",
     top: -120,
   },
-  eye: {},
   Texto: {
     top: -175,
     left: 90,
     fontSize: 15,
   },
-  CheckBox: {},
 });
 
 export default Login;

@@ -28,7 +28,12 @@ export default function Routes() {
         <Stack.Screen
           name="Cadastro"
           component={Cadastro}
-          options={{ headerShown: false }}
+          options={{
+            headerTransparent: true,
+            headerTitleAlign: "center",
+            headerTintColor: "white",
+            headerTitle: "Cadastro Doador",
+          }}
         />
 
         <Stack.Screen
@@ -109,7 +114,7 @@ export default function Routes() {
             ),
           }}
         />
-          {/* <Stack.Screen
+        {/* <Stack.Screen
           name="DesativarConta"
           component={DesativarConta}
           options={{ headerShown: false }}
