@@ -14,6 +14,7 @@ import React, { useState, useEffect } from "react";
 import COLORS from "../const/Colors";
 import Button from "../components/Button";
 import apiBlood from "../service/apiBlood";
+import CardCampanha from "../components/CardCampanha"
 
 const fundo = "../assets/fundo.png";
 const hemocentroImagem = "../assets/Ellipse8.png";
@@ -33,31 +34,29 @@ const PerfilHemo = ({ route, navigation }) => {
 
   const [servico, setServico] = useState([]);
   const [estoque, setEstoque] = useState([]);
+  const [campanha, setCampanha] = useState([]);
 
   useEffect(() => {
     apiBlood.get(`/listarHemocentroPorId/${id}`).then((hemocentro) => {
       setHemocentro(hemocentro.data[0][0]);
-      console.log(hemocentro.data[0][0]);
+      // console.log(hemocentro.data[0][0]);
     });
   }, []);
 
   useEffect(() => {
     apiBlood.get("/listarTipoServico/").then((servico) => {
       setServico(servico.data);
-      console.log(servico.data);
+      // console.log(servico.data);
     });
   }, []);
 
   useEffect(() => {
     apiBlood.get(`/listarEstoqueSangue/${id}`).then((estoque) => {
       setEstoque(estoque.data[0]);
-      console.log(estoque.data[0]);
+      // console.log(estoque.data[0]);
     });
   }, []);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState();
   const [refFlatList, setRefFlatList] = useState();
 
   useEffect(() => {
@@ -66,63 +65,10 @@ const PerfilHemo = ({ route, navigation }) => {
   }, []);
 
   const getList = () => {
-    const fotos =
-      "https://jsonplaceholder.typicode.com/photos?_limit=4&_page=1";
-    fetch(fotos)
-      .then((res) => res.json())
-      .then((resJson) => {
-        setData(resJson);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
-  const onClickItem = (item, index) => {
-    setCurrentIndex(index);
-    const newArrData = data.map((e, index) => {
-      if (item.id == e.id) {
-        return {
-          ...e,
-          selected: true,
-        };
-      }
-      return {
-        ...e,
-        selected: false,
-      };
+    apiBlood.get(`/listarCampanhas/${id}`).then((campanha) => {
+      setCampanha(campanha.data);
+      console.log(campanha.data);
     });
-    setData(newArrData);
-  };
-
-  const renderItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => onClickItem(item, index)}
-        style={[
-          estilos.item,
-          {
-            width: 250,
-            marginRight: 40,
-            marginVertical: 25,
-            height: 200,
-            backgroundColor: item.selected
-              ? COLORS.preto
-              : COLORS.vermelhoClaro,
-          },
-        ]}
-      >
-        <View>
-          <Image
-            style={estilos.imagemCampanha}
-            source={{ url: item.url }}
-            resizeMode="contain"
-          />
-          <Text style={estilos.titulo}>Título da Campanha</Text>
-        </View>
-      </TouchableOpacity>
-    );
   };
 
   const getItemLayout = (data, index) => {
@@ -189,18 +135,16 @@ const PerfilHemo = ({ route, navigation }) => {
         <View style={estilos.containerCampanhas}>
           <View style={estilos.contentCampanha}>
             <Text style={estilos.campanhaText}>Campanhas</Text>
-            {isLoading ? (
-              <ActivityIndicator />
-            ) : (
+
               <FlatList
-                data={data}
-                renderItem={renderItem}
+                data={campanha}
                 keyExtractor={(item) => `${item.id}`}
+                renderItem={({item}) => 
+                <CardCampanha data={item}/>}
                 horizontal
                 getItemLayout={getItemLayout}
                 ref={(ref) => setRefFlatList(ref)}
               />
-            )}
           </View>
         </View>
       </ScrollView>

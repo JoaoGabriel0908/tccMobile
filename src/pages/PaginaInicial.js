@@ -23,18 +23,9 @@ import CardCampanha from "../components/CardCampanha"
 const PaginaInicial = () => {
   const navigation = useNavigation();
 
-  const [data, setData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState();
   const [refFlatList, setRefFlatList] = useState();
   const [campanha, setCampanha] = useState([]);
   const [hemocentro, setHemocentro] = useState([]);
-
-  // useEffect(() => {
-  //   apiBlood.get("/listarCampanhas").then((data) => {
-  //     // console.log(data.data);
-  //     setCampanha(data.data);
-  //   });
-  // }, []);
 
   useEffect(() => {
     apiBlood.get("/listarHemocentro").then((data) => {
@@ -43,36 +34,17 @@ const PaginaInicial = () => {
     });
   }, []);
 
-  useEffect(() => {
-    getList();
-    return () => {};
-  }, []);
-
   const getList = () => {
     apiBlood.get("/listarCampanhas").then((data) => {
       console.log(data.data);
       setCampanha(data.data);
     });
-
   };
 
-  const onClickItem = (item, index) => {
-    setCurrentIndex(index);
-    const newArrData = campanha.map((e, index) => {
-      if (item.id == e.id) {
-        return {
-          ...e,
-          selected: true,
-        };
-      }
-      return {
-        ...e,
-        selected: false,
-      };
-    });
-    setCampanha(newArrData);
-    navigation.navigate("Campanha");
-  };
+  useEffect(() => {
+    getList();
+    return () => {};
+  }, []);
 
   const getItemLayout = (campanha, index) => {
     return { length: 161, offset: 161 * index, index };
@@ -91,6 +63,7 @@ const PaginaInicial = () => {
             horizontal
             getItemLayout={getItemLayout}
             ref={(ref) => setRefFlatList(ref)}
+            
           />
       </ScrollView>
       <SafeAreaView style={estilos.hemocentro}>

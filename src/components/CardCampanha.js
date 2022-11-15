@@ -1,22 +1,28 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import COLORS from "../const/Colors";
+import { useNavigation } from "@react-navigation/native";
 
-const CardCampanha = () => {
+const CardCampanha = ({data}) => {
+  const navigation = useNavigation();
+
   return (
-    <View style={{ backgroundColor: COLORS.cinza }}>
+    <View>
       <TouchableOpacity
-        onPress={() => onClickItem(item, index)}
+        onPress={() => {
+          navigation.navigate("Campanha", { id: data.id_unidade_hemocentro})
+        }}
         style={estilos.item}
       >
         <View>
           <Image
             style={estilos.imagem}
-            source={{ uri: props.data.foto_capa }}
+            source={{ uri: data.foto_capa }}
             resizeMode="contain"
           />
-          <Text style={estilos.titulo}>{props.data.nome}</Text>
+          <Text style={estilos.titulo}>{data.nome}</Text>
           <Text style={estilos.descricao}>
-            {campanha.data_inicio} - {campanha.data_termino}
+            {data.data_inicio} - {data.data_termino}
           </Text>
         </View>
       </TouchableOpacity>
@@ -37,8 +43,8 @@ const estilos = StyleSheet.create({
     backgroundColor: COLORS.vermelhoClaro,
   },
   imagem: {
-    width: 100,
-    height: 100,
+    width: '100%',
+    height: '80%',
   },
   titulo: {
     fontWeight: "900",

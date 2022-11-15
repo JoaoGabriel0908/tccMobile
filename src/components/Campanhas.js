@@ -3,131 +3,67 @@ import {
   Text,
   ImageBackground,
   ScrollView,
-  SafeAreaView,
-  ActivityIndicator,
-  FlatList,
   StyleSheet,
-  TouchableOpacity,
-  Image
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
-import Button from "./Button"
+import Button from "./Button";
 import apiBlood from "../service/apiBlood";
 
-const fundo = "../assets/fundo.png";
-const hemocentroImagem = "../assets/Ellipse8.png";
-const vazio = "../assets/vazio.png";
-const meioCheio = "../assets/meio-cheio.png";
-const cheio = "../assets/cheio.png";
-const retangulo ="../assets/Rectangle42.png"
+const Campanhas = ({ route }) => {
+  const { id } = route.params;
 
-const Campanhas = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [data, setData] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState();
-  const [refFlatList, setRefFlatList] = useState();
-  const [campanha, setCampanha] = useState();
+  const [campanha, setCampanha] = useState([
+
+  ]);
 
   useEffect(() => {
-    getList();
-    return () => { };
+    apiBlood.get(`/listarCampanhas/${id}`).then((campanha) => {
+      setCampanha(campanha.data[0]);
+      console.log(campanha.data[0]);
+    });
   }, []);
-
-  const getList = () => {
-    const fotos =
-      "https://jsonplaceholder.typicode.com/photos?_limit=20&_page=1";
-    fetch(fotos)
-      .then((res) => res.json())
-      .then((resJson) => {
-        setData(resJson);
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      })
-      .finally(() => setIsLoading(false));
-  };
-
-  const onClickItem = (item, index) => {
-    const newArrData = data.map((e, index) => {
-      if (item.id == e.id) {
-        return {
-          ...e,
-          selected: true
-        }
-      }
-      return {
-        ...e,
-        selected: false,
-      }
-    })
-    setData(newArrData)
-  }
-
-  const renderItem = ({ item, index }) => {
-    return (
-      <TouchableOpacity
-        onPress={() => onClickItem(item, index)}
-        style={[
-          estilos.item,
-          { marginTop: 11, height: 150, backgroundColor: item.selected ? COLORS.preto : COLORS.branco },
-        ]}
-      >
-        <Image style={estilos.imagem} source={{ url: item.url }} />
-      </TouchableOpacity>
-    );
-  };
-
-  const getItemLayout = (data, index) => {
-    return { length: 161, offset: 161 * index, index };
-  };
 
   return (
     <ScrollView style={estilos.container}>
-
       <View style={estilos.content}>
         <View style={estilos.containerNomeHemocentro}>
-          <Text style={estilos.nomeHemocentro}>
-            Fundação hemocentro de Brasília
-          </Text>
+          <Text style={estilos.nomeHemocentro}>{campanha.nome}</Text>
           <View style={estilos.containerImagem}>
-            <Image style={estilos.imagem} source={require(fundo)} />
+            <Image
+              style={estilos.imagem}
+              source={{uri: campanha.foto_capa}}
+            />
           </View>
           <Text style={estilos.endereco}>
-            Um herói não precisa usar capa, com uma doação voce pode se tornar um!
+            Um herói não precisa usar capa, com uma doação voce pode se tornar
+            um!
           </Text>
         </View>
         <View style={estilos.containerSobre}>
           <Text style={estilos.sobre}>Endereço</Text>
           <Text style={estilos.sobreDescricao}>
-          Universidade Estadual de Campinas - R. Carlos Chagas, 480 - Cidade Universitária, Campinas - SP, 13083-878
+            {campanha.logradouro}, {campanha.numero} - {campanha.bairro},{" "}
+            {campanha.cidade} - {campanha.estado}, {campanha.cep}  {campanha.ponto_referencia}
           </Text>
         </View>
         <View style={estilos.containerHorario}>
           <Text style={estilos.horario}>Horário de atendimento</Text>
-          <Text style={estilos.horarioDescricao}>
-            Segunda a sexta das 8:00 às 17:00
-          </Text>
           <Text style={estilos.horarioDescricaoFeriado}>
-            Feriados e finais de semana das 08:00 às 13:00
+            Horário inicio {campanha.hora_inicio} - Horário término{" "}
+            {campanha.hora_termino}
           </Text>
         </View>
         <View style={estilos.containerServico}>
           <Text style={estilos.servico}>Detalhes</Text>
           <Text style={estilos.servicoDescricao}>
-          O evento acontecerá para arrecadação de sangue do tipo AB+. Os três primeiros a realizarem a doação ganhará uma camiseta especial.
+            {campanha.descricao}
           </Text>
-        </View>
-        <View style={estilos.containerServico}>
-          <Text style={estilos.estoque}>Galeria</Text>
-        </View>
-        {/* Estoque */}
-        <View style={estilos.containerEstoque}>
-          <Image source={require(retangulo)}/>
         </View>
       </View>
     </ScrollView>
-  )
+  );
 };
 
 const estilos = StyleSheet.create({
@@ -138,8 +74,7 @@ const estilos = StyleSheet.create({
     height: 250,
   },
   imagem: {
-    height: "100%",
-    position: "relative",
+    width: 250, height: 250
   },
   buttonImage: {
     position: "absolute",
@@ -187,7 +122,6 @@ const estilos = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     justifyContent: "center",
-
   },
 
   nomeHemocentro: {
@@ -196,8 +130,7 @@ const estilos = StyleSheet.create({
     marginTop: 50,
     marginBottom: 17,
     textAlign: "center",
-    alignItems: 'center',
-
+    alignItems: "center",
   },
   endereco: {
     fontSize: 16,
@@ -304,14 +237,14 @@ const estilos = StyleSheet.create({
     width: 100,
     height: 100,
   },
-  containerPatrocinio:{
-    flexDirection: 'column',
+  containerPatrocinio: {
+    flexDirection: "column",
     marginBottom: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
-  imagePatrocinio:{
+  imagePatrocinio: {
     marginVertical: 50,
-  }
+  },
 });
 
 export default Campanhas;
