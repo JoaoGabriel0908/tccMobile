@@ -1,25 +1,24 @@
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
 import Button from "../components/Button";
 import COLORS from "../const/Colors";
 
 const Perfil = "../assets/Ellipse3.png";
 
-const CardHemo = () => {
-  return(
-  <View style={estilos.containerText}>
-    <Image style={estilos.image} source={require(Perfil)} />
-    <View style={{ alignItems: "center" }}>
-      <View style={estilos.tituloCor}>
-        <Text style={estilos.titulo}>Hemocentro Campinas</Text>
+const CardHemo = ({ onPress = () => {}, hemoNome, logradouro, numero, bairro, cidade, estado, cep, fotoHemo }) => {
+  return (
+    <TouchableOpacity onPress={onPress} style={estilos.containerText}>
+      <Image style={estilos.image} source={{uri: fotoHemo}} />
+      <View style={{ alignItems: "center" }}>
+        <View style={estilos.tituloCor}>
+          <Text style={estilos.titulo}>{hemoNome}</Text>
+        </View>
+        <Text style={estilos.descricao}>
+          {logradouro} {numero} - {bairro}, {cidade} - {estado}, {cep}
+        </Text>
+        <View style={{ alignItems: "flex-end", width: 200, marginTop: 13 }}>
+        </View>
       </View>
-      <Text style={estilos.descricao}>
-        Universidade Estadual de Campinas - R Carlos Chagas
-      </Text>
-      <View style={{ alignItems: "flex-end", width: 200, marginTop: 13 }}>
-        <Button verMais title="Ver mais" />
-      </View>
-    </View>
-  </View>
+    </TouchableOpacity>
   );
 };
 

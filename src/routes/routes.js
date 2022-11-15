@@ -12,6 +12,8 @@ import EditarPerfil from "../pages/EditarPerfil";
 import PerfilHemo from "../pages/PerfilHemo";
 import DesativarConta from "../pages/DesativarConta";
 import Campanhas from "../components/Campanhas";
+import TelaAgendamento from "../pages/TelaAgendamento";
+import COLORS from "../const/Colors";
 
 const Stack = createNativeStackNavigator();
 
@@ -135,6 +137,16 @@ export default function Routes() {
                 />
               </>
             ),
+          }}
+        />
+        <Stack.Screen
+          name="TelaAgendamento"
+          component={TelaAgendamento}
+          options={{
+            headerTitle: () => <Cabecalho name="Agendamento" />,
+            headerTitleAlign: "center",
+            headerTintColor:  COLORS.vermelhoPrincipal,
+            headerTitle: "Agendamento",
           }}
         />
       </Stack.Navigator>

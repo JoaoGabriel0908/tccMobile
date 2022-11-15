@@ -21,8 +21,11 @@ const hemocentroImagem = "../assets/Ellipse8.png";
 const vazio = "../assets/vazio.png";
 const meioCheio = "../assets/meio-cheio.png";
 const cheio = "../assets/cheio.png";
+import { useNavigation } from "@react-navigation/native";
 
-const PerfilHemo = ({ route, navigation }) => {
+const PerfilHemo = ({ route }) => {
+  const navigation = useNavigation();
+
   const { id } = route.params;
   const [hemocentro, setHemocentro] = useState([
     {
@@ -80,7 +83,9 @@ const PerfilHemo = ({ route, navigation }) => {
       <View style={estilos.containerImagem}>
         <ImageBackground style={estilos.imagem} source={require(fundo)} />
         <View style={estilos.buttonImage}>
-          <Button title="Agendar" />
+          <Button title="Agendar" onPress={() => {
+              navigation.navigate("TelaAgendamento", { id: hemocentro.id });
+            }}/>
         </View>
         <ImageBackground
           style={estilos.imageHemocentro}
