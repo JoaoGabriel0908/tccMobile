@@ -56,7 +56,7 @@ const PerfilHemo = ({ route }) => {
   useEffect(() => {
     apiBlood.get(`/listarEstoqueSangue/${id}`).then((estoque) => {
       setEstoque(estoque.data[0]);
-      // console.log(estoque.data[0]);
+      console.log(estoque.data[0]);
     });
   }, []);
 

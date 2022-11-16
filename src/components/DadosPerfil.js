@@ -30,12 +30,12 @@ const DadosPerfil = ({
   const [estado, setEstado] = useState([])
   const [selectedLanguage, setSelectedLanguage] = useState();
 
-  useEffect(() => {
-    apiBlood.get(`/listarDoador/${id}`).then(data => {
-      console.log(data.data[0]);
-      setPessoa(data.data[0]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarDoador/${id}`).then(data => {
+  //     console.log(data.data[0]);
+  //     setPessoa(data.data[0]);
+  //   });
+  // }, []);
 
   useEffect(() => {
     apiBlood.get('/listarEstados').then(data => {

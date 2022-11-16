@@ -7,21 +7,70 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext} from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation} from "@react-navigation/native";
 import Input from "../components/Input";
 import COLORS from "../const/Colors";
 import CheckBox from "../components/CheckBox";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import InputIcon from "../components/InputIcon";
 import apiBlood from "../service/apiBlood";
+import { AuthContext } from "../contexts/Contexts";
 
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
+  
+  const auth = useContext(AuthContext);
+  const navigate = useNavigation();
+
   const [pessoa, setPessoa] = useState([]);
+  
+  const [errors, setErrors] = useState({
+    cnpj: {
+      error: false,
+      errorMessage: false,
+    },
+    senha: {
+      error: false,
+      errorMessage: false,
+    },
+  });
+  const handleOnSubmit = async () => {
+    if (!inputs.cpf) {
+      return setErrors({
+        ...errors,
+        cpf: {
+          error: true,
+          errorMessage: "Preencha este campo.",
+        },
+      });
+    }
+
+    if (!inputs.senha) {
+      return setErrors({
+        ...errors,
+        senha: {
+          error: true,
+          errorMessage: "Preencha este campo.",
+        },
+      });
+    }
+
+    if (inputs.cpf && inputs.senha) {
+      const isLogged = await auth.signin({
+        cpf: inputs.cpf,
+        senha: inputs.senha,
+      });
+
+      if (isLogged) {
+        navigation.navigate("Menu");;
+      }
+    }
+  };
 
   const [validateInput, setValidadeInput] = useState({
     case: false,
@@ -55,9 +104,16 @@ const Login = () => {
   });
 
   useEffect(() => {
-    apiBlood.get("/listarDoador").then((data) => {
-      console.log(data.data[0]);
-      setPessoa(data.data);
+    apiBlood.get("/listarDoador").then((inputs) => {
+      console.log(inputs.inputs[0]);
+      setPessoa(inputs.inputs);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get("/listarDoador").then((inputs) => {
+      console.log(inputs.inputs[0]);
+      setPessoa(inputs.inputs);
     });
   }, []);
 
@@ -74,48 +130,16 @@ const Login = () => {
     });
   };
   // Função de validação
-  const validate = () => {
-    let validate = true;
-
-    if (!inputs.cpf) {
-      validate = false;
-      handleErrors("Informe o seu CPF corretamente", "cpf");
-      // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
-      //   validate = false;
-      //   handleErrors("CPF inválido", "cpf");
-    } else if (validarCPF(inputs.cpf)) {
-      validate = false;
-      handleErrors("CPF inválido", "cpf");
-    }
-    if (!inputs.senha) {
-      validate = false;
-      handleErrors("Cadastre sua senha", "senha");
-      // console.log('Capa em branco')
-    }
-    if (!inputs.confirmacaoSenha) {
-      validate = false;
-      handleErrors("Informa sua senha novamente", "confirmacaoSenha");
-      // console.log('Capa em branco')
-    }
-
-    if (validate) {
-      console.log(inputs);
-      // Envia os dados para a API cadastrar.
-      Login();
-      //console.log("Cadastrou");
-    }
-
-    console.log(errors);
-  };
+  
   const Logar = () => {
     try {
-      const response = apiBlood.post("/listarDoador", {
+      const response = apiBlood.post("/loginUsuario", {
         cpf: inputs.cpf,
         senha: inputs.senha,
       });
-      navigation.navigate("Terms");
+      navigation.navigate("PaginaInicial");
     } catch (error) {
-      error.response.data;
+      error.response.inputs;
     }
   };
 
@@ -148,7 +172,7 @@ const Login = () => {
 
       <View>
         <CheckBox options={optionsindividual} onChange={(op) => alert(op)} />
-        <TouchableOpacity style={estilos.button2}>
+        <TouchableOpacity onPress={() => navigation.navigate("Menu", { id: pessoa.id })} style={estilos.button2}>
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
@@ -157,9 +181,7 @@ const Login = () => {
           key={pessoa.id}
           style={estilos.Button01}
           title="Entre"
-          onPress={() => {
-            navigation.navigate("Menu", { id: pessoa.id });
-          }}
+          onPress={handleOnSubmit}
         />
       </View>
 
