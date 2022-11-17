@@ -25,7 +25,7 @@ const Hemocentros = () => {
     <ScrollView>
       <SafeAreaView style={estilos.container}>
         <View>
-          <Text style={estilos.textTitle}></Text>
+
           <Input
             name={null}
             placeholder="Pesquise hemocentros perto de você"

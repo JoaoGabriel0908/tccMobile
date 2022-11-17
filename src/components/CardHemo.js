@@ -1,21 +1,38 @@
-import { View, Text, StyleSheet, Image, SafeAreaView, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
 import Button from "../components/Button";
 import COLORS from "../const/Colors";
 
 const Perfil = "../assets/Ellipse3.png";
 
-const CardHemo = ({ onPress = () => {}, hemoNome, logradouro, numero, bairro, cidade, estado, cep, fotoHemo }) => {
+const CardHemo = ({
+  onPress = () => {},
+  hemoNome,
+  logradouro,
+  numero,
+  bairro,
+  cidade,
+  estado,
+  cep,
+  fotoHemo,
+}) => {
   return (
-    <TouchableOpacity onPress={onPress} style={estilos.containerText}>
-      <Image style={estilos.image} source={{uri: fotoHemo}} />
-      <View style={{ alignItems: "center" }}>
-        <View style={estilos.tituloCor}>
-          <Text style={estilos.titulo}>{hemoNome}</Text>
-        </View>
-        <Text style={estilos.descricao}>
-          {logradouro} {numero} - {bairro}, {cidade} - {estado}, {cep}
-        </Text>
-        <View style={{ alignItems: "flex-end", width: 200, marginTop: 13 }}>
+    <TouchableOpacity onPress={onPress} style={estilos.container}>
+      <View style={estilos.containerText}>
+        <Image style={estilos.image} source={{ uri: fotoHemo }} />
+        <View style={{ alignItems: "center" }}>
+          <View style={estilos.tituloCor}>
+            <Text style={estilos.titulo}>{hemoNome}</Text>
+          </View>
+          <Text style={estilos.descricao}>
+            {logradouro} {numero} - {bairro}, {cidade} - {estado}, {cep}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -41,9 +58,8 @@ const estilos = StyleSheet.create({
     borderStyle: "solid",
     borderRadius: 5,
     borderWidth: 1,
-    width: 330,
+    width: 334,
     height: 140,
-    paddingHorizontal: 17,
     borderWidth: 1,
     borderRadius: 20,
     left: 50,
@@ -54,26 +70,24 @@ const estilos = StyleSheet.create({
   },
   descricao: {
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "regular",
-    fontSize: 15,
+    fontSize: 14,
+    width: 200,
   },
   image: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 100,
+    marginRight: 20,
   },
   tituloCor: {
     backgroundColor: COLORS.vermelhoClaro,
     borderRadius: 5,
-    width: 220,
-    left: -20,
+    width: 200,
   },
   titulo: {
     alignItems: "center",
     justifyContent: "center",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
     textAlign: "center",
   },
 });
