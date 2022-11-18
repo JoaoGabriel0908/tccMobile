@@ -104,18 +104,18 @@ const Login = () => {
   });
 
   useEffect(() => {
-    apiBlood.get("/listarDoador").then((inputs) => {
-      console.log(inputs.inputs[0]);
-      setPessoa(inputs.inputs);
+    apiBlood.get("/listarDoador").then((pessoa) => {
+      console.log(pessoa.data[0]);
+      setPessoa(pessoa.data[0]);
     });
   }, []);
 
-  useEffect(() => {
-    apiBlood.get("/listarDoador").then((inputs) => {
-      console.log(inputs.inputs[0]);
-      setPessoa(inputs.inputs);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarDoadorId/${id}`).then((pessoa) => {
+  //     console.log(pessoa.data);
+  //     setPessoa(pessoa.data);
+  //   });
+  // }, []);
 
   const secureText = (password) => {
     const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/);
@@ -172,7 +172,7 @@ const Login = () => {
 
       <View>
         <CheckBox options={optionsindividual} onChange={(op) => alert(op)} />
-        <TouchableOpacity onPress={() => navigation.navigate("Menu", { id: pessoa.id })} style={estilos.button2}>
+        <TouchableOpacity onPress={() => navigation.navigate("Perfil", { id: pessoa.id })} style={estilos.button2}>
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

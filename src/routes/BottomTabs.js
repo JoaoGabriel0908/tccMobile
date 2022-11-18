@@ -26,12 +26,6 @@ export default function Menu({route, navigation}) {
   })
 
   console.log(id)
-    // useEffect(() => {
-    //     apiBlood.get(`/updateUsuario/${id}`).then(data => {
-    //       console.log(data.data);
-    //       setPessoa(data.data);
-    //     });
-    //   }, []);
 
       useEffect(() => {
       apiBlood.get('/listarUsuario').then(data => {
@@ -43,8 +37,8 @@ export default function Menu({route, navigation}) {
       console.log(pessoa)
 
     return(
-        <Navigator>
-            <Screen name="Pagina Inicial" 
+        <Navigator initialRouteName="Pagina Inicial"> 
+            <Screen name="Pagina Inicial"
             component={PaginaInicial}
             options={{
                 headerTitle: () => <Cabecalho name='Pagina Inicial'/>,
@@ -73,7 +67,7 @@ export default function Menu({route, navigation}) {
                     </>
                 )
             }}/>
-            <Screen name="Perfil" component={Perfil} 
+            <Screen name="Perfil" component={Perfil}
             options={{
                 headerTitle: () => <Cabecalho name='Perfil'/>,
                 headerTitleAlign: "center",

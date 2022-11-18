@@ -354,20 +354,6 @@ const Cadastro = () => {
           <Text style={estilos.label}>Cidades que pretende doar</Text>
           <View style={estilos.formContainer}>
             <View style={estilos.id_cidade_doacao}>
-              {/* <Picker
-                // onBlur={buscandoCidades}
-                onFocus={() => {
-                  handleErrors(null, "id_cidade_doacao");
-                }}
-                selectedValue={inputs.id_cidade_doacao}
-                onValueChange={(itemValue) =>
-                  handleChangeInputs("id_cidade_doacao", itemValue)
-                }
-              >
-                {cidades.map((city) => {
-                  return <Picker.Item label={city.cidade} value={city.id}/>;
-                })}
-              </Picker> */}
               <Select
                 options={cidades}
                 keyExtractor={(item) => `key-${item.id}`}

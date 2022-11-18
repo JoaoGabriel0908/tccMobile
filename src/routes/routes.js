@@ -14,6 +14,7 @@ import DesativarConta from "../pages/DesativarConta";
 import Campanhas from "../components/Campanhas";
 import TelaAgendamento from "../pages/TelaAgendamento";
 import COLORS from "../const/Colors";
+import PaginaInicial from "../pages/PaginaInicial";
 
 const Stack = createNativeStackNavigator();
 
@@ -116,11 +117,6 @@ export default function Routes() {
             ),
           }}
         />
-        {/* <Stack.Screen
-          name="DesativarConta"
-          component={DesativarConta}
-          options={{ headerShown: false }}
-        /> */}
         <Stack.Screen
           name="Campanha"
           component={Campanhas}
@@ -145,7 +141,7 @@ export default function Routes() {
           options={{
             headerTitle: () => <Cabecalho name="Agendamento" />,
             headerTitleAlign: "center",
-            headerTintColor:  COLORS.vermelhoPrincipal,
+            headerTintColor: COLORS.vermelhoPrincipal,
             headerTitle: "Agendamento",
           }}
         />

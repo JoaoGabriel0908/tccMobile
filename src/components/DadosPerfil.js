@@ -22,20 +22,24 @@ const DadosPerfil = ({
   iconName,
   nameGenres,
   clinicasSeguidas,
-  route,
-  navigation
+  email,
+  celular,
+  selectedLanguage,
+  onValueChange = () => {}
 }) => {
 
   const [pessoa, setPessoa] = useState([])
   const [estado, setEstado] = useState([])
-  const [selectedLanguage, setSelectedLanguage] = useState();
+  const [cidades, setCidade] = useState([]);
 
-  // useEffect(() => {
-  //   apiBlood.get(`/listarDoador/${id}`).then(data => {
-  //     console.log(data.data[0]);
-  //     setPessoa(data.data[0]);
-  //   });
-  // }, []);
+  useEffect(() => {
+    apiBlood.get(`/listarDoador/${id}`).then(data => {
+      console.log(data.data);
+      setPessoa(data.data);
+    });
+  }, []);
+
+  console.log(pessoa)
 
   useEffect(() => {
     apiBlood.get('/listarEstados').then(data => {
@@ -50,20 +54,20 @@ const DadosPerfil = ({
     <SafeAreaView style={estilos.container}>
       <View style={estilos.cidadeContainer}>
         <Text style={estilos.text}>Cidade residente</Text>
-        <Input inputPequeno/>
+        <Input inputPequeno editable={false}/>
       </View>
       <View style={estilos.nascimentoContainer}>
         <Text style={estilos.text}>Data nascimento</Text>
-        <Input inputPequeno />
+        <Input inputPequeno editable={false}/>
       </View>
       <View>
         <View>
-          <Text style={estilos.text} textPequeno>E-mail</Text>
-          <Input inputPequeno editable={false}>{pessoa.email}</Input>
+          <Text style={estilos.text} textPequeno>Email</Text>
+          <Input inputPequeno editable={false}>{email}</Input>
         </View>
         <View>
           <Text style={estilos.text}>Celular</Text>
-          <Input inputPequeno editable={false}>{pessoa.telefone_doador}</Input>
+          <Input inputPequeno editable={false}>{celular}</Input>
         </View>
         <View>
           <Text style={estilos.text}>{clinicasSeguidas}</Text>
@@ -72,24 +76,15 @@ const DadosPerfil = ({
         <View style={estilos.local}>
           <Text style={{position: "absolute", bottom: 60}}>Locais de doação selecionados</Text>
           <View style={estilos.cidades}>
-            <Select />
-          </View>
-          <View style={estilos.id_estadoDoacao}>
-            <Picker
-              // onFocus={() => {
-              //   handleErrors(null, "id_estadoDoacao");
-              // }}
-              // selectedValue={inputs.id_estado}
-              // onValueChange={(itemValue) =>
-              //   handleChangeEstado("id_estado", itemValue)
-              // }
-              selectedValue={selectedLanguage}
-              onValueChange={(itemValue, itemIndex) =>
-                setSelectedLanguage(itemValue)
-              }
-            >
-              <Picker.Item label={estado.estado} value={estado.id} />
-            </Picker>
+            <Select 
+            options={cidades}
+            keyExtractor={(item) => `key-${item.id}`}
+            // renderItem={renderItem}
+            onChangeSelect={(id) => alert(id)}
+            data={cidades}
+            text="Selecione a cidade de doação"
+            // onPress={onPressShowItemSelected}
+            />
           </View>
         </View>
         <CardAgends />
