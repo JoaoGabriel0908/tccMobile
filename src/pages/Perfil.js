@@ -11,6 +11,8 @@ const Perfil = ({route, key}) => {
 
   const {id} = route.params
 
+  // console.log(route.params)
+
   useEffect(() => {
     apiBlood.get(`/listarDoadorId/${id}`).then(data => {
       console.log(data.data);
@@ -18,7 +20,7 @@ const Perfil = ({route, key}) => {
     });
   }, []);
 
-  console.log(pessoa)
+  console.log(id)
 
   // useEffect(() => {
   //   buscarCidades(id_estado);

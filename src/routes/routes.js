@@ -15,6 +15,7 @@ import Campanhas from "../components/Campanhas";
 import TelaAgendamento from "../pages/TelaAgendamento";
 import COLORS from "../const/Colors";
 import PaginaInicial from "../pages/PaginaInicial";
+import AgendamentoConcluido from "../pages/AgendamentoConcluido"
 
 const Stack = createNativeStackNavigator();
 
@@ -77,6 +78,16 @@ export default function Routes() {
           name="Perfil"
           component={Perfil}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="AgendamentoConcluido"
+          component={AgendamentoConcluido}
+          options={{
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.vermelhoPrincipal,
+            headerTitle: "Agendamento Concluido",
+          }}
         />
 
         <Stack.Screen

@@ -28,6 +28,8 @@ const Login = () => {
   const navigate = useNavigation();
 
   const [pessoa, setPessoa] = useState([]);
+
+  console.log(pessoa)
   
   const [errors, setErrors] = useState({
     cnpj: {
@@ -172,7 +174,7 @@ const Login = () => {
 
       <View>
         <CheckBox options={optionsindividual} onChange={(op) => alert(op)} />
-        <TouchableOpacity onPress={() => navigation.navigate("Perfil", { id: pessoa.id })} style={estilos.button2}>
+        <TouchableOpacity onPress={() => navigation.navigate("Menu", { id: pessoa.id })} style={estilos.button2}>
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>

@@ -112,7 +112,6 @@ const estilos = StyleSheet.create({
     opacity: 0.5,
     fontSize: 30,
   },
-  EditarPerfil: {},
 });
 
 export default Input;

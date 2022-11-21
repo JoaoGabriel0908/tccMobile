@@ -14,7 +14,7 @@ import React, { useState, useEffect } from "react";
 import COLORS from "../const/Colors";
 import Button from "../components/Button";
 import apiBlood from "../service/apiBlood";
-import CardCampanha from "../components/CardCampanha"
+import CardCampanha from "../components/CardCampanha";
 
 const fundo = "../assets/fundo.png";
 const hemocentroImagem = "../assets/Ellipse8.png";
@@ -83,9 +83,12 @@ const PerfilHemo = ({ route }) => {
       <View style={estilos.containerImagem}>
         <ImageBackground style={estilos.imagem} source={require(fundo)} />
         <View style={estilos.buttonImage}>
-          <Button title="Agendar" onPress={() => {
+          <Button
+            title="Agendar"
+            onPress={() => {
               navigation.navigate("TelaAgendamento", { id: hemocentro.id });
-            }}/>
+            }}
+          />
         </View>
         <ImageBackground
           style={estilos.imageHemocentro}
@@ -125,13 +128,33 @@ const PerfilHemo = ({ route }) => {
         </View>
         {/* Estoque */}
         <View style={estilos.containerEstoque}>
-          {estoque.map((estoque) => (
-            <View style={estilos.contentEstoque}>
-              <Image source={require(vazio)} />
-              <Text>{estoque.tipo_sanguineo}</Text>
-              <Text>{estoque.nivel}</Text>
-            </View>
-          ))}
+          {estoque.map((estoque) => {
+            if (estoque.nivel === "Alerta") {
+              return (
+                <View style={estilos.contentEstoque}>
+                  <Image source={require(meioCheio)} />
+                  <Text>{estoque.tipo_sanguineo}</Text>
+                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_600SemiBold", }}>{estoque.nivel}</Text>
+                </View>
+              );
+            } else if (estoque.nivel === "Crítico") {
+              return (
+                <View style={estilos.contentEstoque}>
+                  <Image source={require(vazio)} />
+                  <Text>{estoque.tipo_sanguineo}</Text>
+                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_700Bold" }}>{estoque.nivel}!</Text>
+                </View>
+              );
+            } else {
+              return (
+                <View style={estilos.contentEstoque}>
+                  <Image source={require(cheio)} />
+                  <Text>{estoque.tipo_sanguineo}</Text>
+                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_400Regular" }}>{estoque.nivel}</Text>
+                </View>
+              );
+            }
+          })}
         </View>
       </View>
 
@@ -141,15 +164,14 @@ const PerfilHemo = ({ route }) => {
           <View style={estilos.contentCampanha}>
             <Text style={estilos.campanhaText}>Campanhas</Text>
 
-              <FlatList
-                data={campanha}
-                keyExtractor={(item) => `${item.id}`}
-                renderItem={({item}) => 
-                <CardCampanha data={item}/>}
-                horizontal
-                getItemLayout={getItemLayout}
-                ref={(ref) => setRefFlatList(ref)}
-              />
+            <FlatList
+              data={campanha}
+              keyExtractor={(item) => `${item.id}`}
+              renderItem={({ item }) => <CardCampanha data={item} />}
+              horizontal
+              getItemLayout={getItemLayout}
+              ref={(ref) => setRefFlatList(ref)}
+            />
           </View>
         </View>
       </ScrollView>

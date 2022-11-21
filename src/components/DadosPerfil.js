@@ -32,12 +32,12 @@ const DadosPerfil = ({
   const [estado, setEstado] = useState([])
   const [cidades, setCidade] = useState([]);
 
-  useEffect(() => {
-    apiBlood.get(`/listarDoador/${id}`).then(data => {
-      console.log(data.data);
-      setPessoa(data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarDoador/${id}`).then(data => {
+  //     console.log(data.data);
+  //     setPessoa(data.data);
+  //   });
+  // }, []);
 
   console.log(pessoa)
 
