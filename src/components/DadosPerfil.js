@@ -42,7 +42,7 @@ const DadosPerfil = ({
   console.log(pessoa)
 
   useEffect(() => {
-    apiBlood.get('/listarEstados').then(data => {
+    apiBlood.get('/listarCidadesPorDoador').then(data => {
       console.log(data.data[0]);
       setEstado(data.data[0]);
     });
@@ -54,11 +54,12 @@ const DadosPerfil = ({
     <SafeAreaView style={estilos.container}>
       <View style={estilos.cidadeContainer}>
         <Text style={estilos.text}>Cidade residente</Text>
-        <Input inputPequeno editable={false}/>
+        <Input inputPequeno editable={false} placeholder="Cidade"
+        />
       </View>
       <View style={estilos.nascimentoContainer}>
         <Text style={estilos.text}>Data nascimento</Text>
-        <Input inputPequeno editable={false}/>
+        <Input inputPequeno editable={false} placeholder="__/__/__"/>
       </View>
       <View>
         <View>
@@ -67,7 +68,7 @@ const DadosPerfil = ({
         </View>
         <View>
           <Text style={estilos.text}>Celular</Text>
-          <Input inputPequeno editable={false}>{celular}</Input>
+          <Input inputPequeno editable={false} placeholder='(00)12345-6789'>{celular}</Input>
         </View>
         <View>
           <Text style={estilos.text}>{clinicasSeguidas}</Text>
@@ -109,8 +110,7 @@ const estilos = StyleSheet.create({
   },
   cidades: {
     height: 50,
-    width: '45%',
-    marginRight: '5%',
+    width: 330,
   },
   id_estadoDoacao: {
     width: "30%",

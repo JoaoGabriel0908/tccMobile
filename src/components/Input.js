@@ -22,6 +22,7 @@ const Input = ({
   maxLength,
   onBlur = () => {},
   editable,
+  placeholder,
   ...props
 }) => {
 
@@ -49,6 +50,7 @@ const Input = ({
           <Icon name={iconName} style={estilos.icon} />
         </TouchableOpacity>
         <TextInput
+        placeholder={placeholder}
           onBlur={() => {
             onBlur();
           }}

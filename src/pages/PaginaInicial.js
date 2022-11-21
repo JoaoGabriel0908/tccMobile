@@ -54,7 +54,6 @@ const PaginaInicial = () => {
     <ScrollView style={estilos.containerPagina}>
       <ScrollView style={estilos.container}>
         <Text style={estilos.campanhaText}>Campanhas para você</Text>
-
           <FlatList
             data={campanha}
             keyExtractor={(item) => `${item.id}`}
@@ -63,7 +62,6 @@ const PaginaInicial = () => {
             horizontal
             getItemLayout={getItemLayout}
             ref={(ref) => setRefFlatList(ref)}
-            
           />
       </ScrollView>
       <SafeAreaView style={estilos.hemocentro}>

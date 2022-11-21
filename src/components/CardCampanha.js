@@ -45,6 +45,7 @@ const estilos = StyleSheet.create({
   imagem: {
     width: '100%',
     height: '80%',
+    borderRadius: 10,
   },
   titulo: {
     fontWeight: "900",

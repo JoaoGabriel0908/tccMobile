@@ -20,7 +20,12 @@ import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 
 const fundo = "../assets/fundo.png";
 
-const TelaAgendamento = ({}) => {
+const TelaAgendamento = ({route}) => {
+
+  const {id} = route.params;
+
+  console.log(id)
+
   const navigation = useNavigation();
 
   const [date, setDate] = useState(new Date());
@@ -42,7 +47,7 @@ const TelaAgendamento = ({}) => {
       "/" +
       tempDate.getFullYear();
     let formatTime =
-      "Horas" + tempDate.getHours() + "| Minutos: " + tempDate.getMinutes();
+      tempDate.getHours() + ":" + tempDate.getMinutes();
     setText(formatDate);
     setHour(formatTime);
 
@@ -89,13 +94,13 @@ const TelaAgendamento = ({}) => {
             />
           )}
         </View>
-        <View>
+        <View style={estilos.containerData}>
           <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
           <View style={estilos.picker}>
             <Picker />
           </View>
         </View>
-        <View>
+        <View style={estilos.containerData}>
           <Text style={estilos.dateText}>Selecione o seu tipo sanguíneo</Text>
           <View style={estilos.picker}>
             <Picker />
@@ -149,11 +154,10 @@ const estilos = StyleSheet.create({
     marginTop: 30,
   },
   dateText: {
-    fontFamily: "Poppins_600SemiBold",
+    fontFamily: "Poppins_500Medium",
     fontSize: 20,
     color: COLORS.vermelhoPrincipal,
-    alignItems: "flex-start",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   picker: {
     width: 350,
@@ -168,7 +172,6 @@ const estilos = StyleSheet.create({
   button: {
     width: 334,
     alignItems: "center",
-    top: 150,
   },
 });
 

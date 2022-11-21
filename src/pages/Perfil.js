@@ -7,6 +7,10 @@ import apiBlood from '../service/apiBlood'
 
 const Perfil = ({route, key}) => {
   const [pessoa, setPessoa] = useState([])
+  const [cidade, setCidade] = useState([])
+  const [sexo, setSexo] = useState([])
+  const [sangue, setSangue] = useState([])
+
   const [selectedLanguage, setSelectedLanguage] = useState();
 
   const {id} = route.params
@@ -20,7 +24,33 @@ const Perfil = ({route, key}) => {
     });
   }, []);
 
+  useEffect(() => {
+    apiBlood.get(`/listarCidadesPorDoador/${id}`).then(data => {
+      console.log(data.data[0]);
+      setCidade(data.data[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get(`/listarSexoPorDoador/${id}`).then(data => {
+      console.log(data.data[0][0]);
+      setSexo(data.data[0][0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get(`/listarSanguePorUsuario/${id}`).then(data => {
+      console.log(data.data[0]);
+      setSangue(data.data[0][0]);
+    });
+  }, []);
+
   console.log(id)
+
+  console.log(pessoa)
+  console.log(cidade)
+  console.log(sangue)
+  console.log(sexo)
 
   // useEffect(() => {
   //   buscarCidades(id_estado);
@@ -30,11 +60,11 @@ const Perfil = ({route, key}) => {
   return (
     <ScrollView>
       <InfoPerfil
-      nameComplet="Leonardo Vivi"
-      nameGenres="Masculino"
+      nameComplet={pessoa.nome_completo}
+      nameGenres={sexo.sexo}
       gender="gender-male"
       iconNameSangue="water"
-      tipoSanguineo="AB+"/>
+      tipoSanguineo={sangue.tipo_sanguineo}/>
       <View>
         <DadosPerfil
         email={pessoa.email}
