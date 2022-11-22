@@ -57,12 +57,20 @@ const Perfil = ({route, key}) => {
   //   console.log(cidades);
   // }, [inputs.id_estado]);
 
+  const sexualidade = () => {
+  if(sexo === 'Feminino'){
+    return gender-female
+  } else {
+    return gender-male
+  }
+  }
+
   return (
     <ScrollView>
       <InfoPerfil
       nameComplet={pessoa.nome_completo}
       nameGenres={sexo.sexo}
-      gender="gender-male"
+      gender={sexualidade}
       iconNameSangue="water"
       tipoSanguineo={sangue.tipo_sanguineo}/>
       <View>

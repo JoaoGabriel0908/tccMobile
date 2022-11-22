@@ -8,10 +8,10 @@ import {
   SafeAreaView,
 } from "react-native";
 
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
-import { useNavigation} from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Input from "../components/Input";
 import COLORS from "../const/Colors";
 import CheckBox from "../components/CheckBox";
@@ -23,79 +23,20 @@ import { AuthContext } from "../contexts/Contexts";
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
-  
-  const auth = useContext(AuthContext);
   const navigate = useNavigation();
+  const auth = useContext(AuthContext);
 
   const [pessoa, setPessoa] = useState([]);
+  const [errors, setErrors] = React.useState([]);
 
-  console.log(pessoa)
-  
-  const [errors, setErrors] = useState({
-    cnpj: {
-      error: false,
-      errorMessage: false,
-    },
-    senha: {
-      error: false,
-      errorMessage: false,
-    },
-  });
-  const handleOnSubmit = async () => {
-    if (!inputs.cpf) {
-      return setErrors({
-        ...errors,
-        cpf: {
-          error: true,
-          errorMessage: "Preencha este campo.",
-        },
-      });
-    }
-
-    if (!inputs.senha) {
-      return setErrors({
-        ...errors,
-        senha: {
-          error: true,
-          errorMessage: "Preencha este campo.",
-        },
-      });
-    }
-
-    if (inputs.cpf && inputs.senha) {
-      const isLogged = await auth.signin({
-        cpf: inputs.cpf,
-        senha: inputs.senha,
-      });
-
-      if (isLogged) {
-        navigation.navigate("Menu");;
-      }
-    }
-  };
-
-  const [validateInput, setValidadeInput] = useState({
-    case: false,
-    number: false,
-    length: false,
-  });
-
-  const handleChangeInputs = (key, value) => {
-    setInputs({
-      ...inputs,
-      [key]: value,
-    });
-  };
-  const handleOnChange = (text, input) => {
-    //O setInputs invoca o id_estado e passa para o prevState
-    setInputs((prevState) =>
-      // console.log(prevState),
-      // console.log(input + ` ` + text)
-
-      // Injeção de dados na State
-      // Sobrepondo resultado do texto e colocando no prevState
-      ({ ...prevState, [input]: text })
-    );
+  // Função Handler que configura as mensagens de erros na state
+  // Pegando as mensagens de erros e onde ocorreu (input)
+  const handleErrors = (errorMessage, input) => {
+    // Quando usamos um par de parenteses quer dizer que estamos dando um RETURN
+    setErrors((prevState) => ({
+      ...prevState,
+      [input]: errorMessage,
+    }));
   };
 
   const [inputs, setInputs] = React.useState({
@@ -105,19 +46,28 @@ const Login = () => {
     senha: "",
   });
 
+  console.log(inputs);
+
+  // console.log(pessoa)
+
+  const handleOnChange = (text, input) => {
+    //O setInputs invoca o id_estado e passa para o prevState
+    setInputs((prevState) =>
+      // console.log(prevState)
+      // console.log(input + ` ` + text)
+
+      // Injeção de dados na State
+      // Sobrepondo resultado do texto e colocando no prevState
+      ({ ...prevState, [input]: text })
+    );
+  };
+
   useEffect(() => {
-    apiBlood.get("/listarDoador").then((pessoa) => {
-      console.log(pessoa.data[0]);
-      setPessoa(pessoa.data[0]);
+    apiBlood.get("/listarDoador").then((data) => {
+      console.log(data.data[3]);
+      setPessoa(data.data[3]);
     });
   }, []);
-
-  // useEffect(() => {
-  //   apiBlood.get(`/listarDoadorId/${id}`).then((pessoa) => {
-  //     console.log(pessoa.data);
-  //     setPessoa(pessoa.data);
-  //   });
-  // }, []);
 
   const secureText = (password) => {
     const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/);
@@ -131,15 +81,36 @@ const Login = () => {
       length,
     });
   };
+  // 35789045773
   // Função de validação
-  
+  const validate = () => {
+    let validate = true;
+
+    if (!inputs.cpf) {
+      validate = false;
+      handleErrors("Informe o seu CPF corretamente", "cpf");
+    }
+    if (!inputs.senha) {
+      validate = false;
+      handleErrors("Informe sua senha", "senha");
+      // console.log('Capa em branco')
+    }
+    if (validate) {
+      console.log(inputs);
+      // Envia os dados para a API cadastrar.
+      Logar();
+      console.log("Cadastrou");
+    }
+  };
+
   const Logar = () => {
     try {
       const response = apiBlood.post("/loginUsuario", {
         cpf: inputs.cpf,
         senha: inputs.senha,
       });
-      navigation.navigate("PaginaInicial");
+      localStorage.
+      navigation.navigate("Menu", { id: pessoa.id });
     } catch (error) {
       error.response.inputs;
     }
@@ -156,25 +127,33 @@ const Login = () => {
         <Input
           placeholder=" CPF"
           type="cpf"
-          onChangeText={(password) => {
-            secureText(password);
+          onChangeText={(text) => handleOnChange(text, "cpf")}
+          values={inputs.cpf}
+          onFocus={() => {
+            handleErrors(null, "cpf");
           }}
+          error={errors.cpf}
         />
       </View>
 
       <Text style={estilos.title}></Text>
       <InputIcon
-        source={validateInput.length}
         placeholder="Senha"
         iconName="eye"
-        onChangeText={(password) => {
-          secureText(password);
+        onChangeText={(text) => handleOnChange(text, "senha")}
+        values={inputs.senha}
+        onFocus={() => {
+          handleErrors(null, "senha");
         }}
-      ></InputIcon>
+        error={errors.senha}
+      />
 
       <View>
         <CheckBox options={optionsindividual} onChange={(op) => alert(op)} />
-        <TouchableOpacity onPress={() => navigation.navigate("Menu", { id: pessoa.id })} style={estilos.button2}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
+          style={estilos.button2}
+        >
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
         </TouchableOpacity>
       </View>
@@ -183,7 +162,7 @@ const Login = () => {
           key={pessoa.id}
           style={estilos.Button01}
           title="Entre"
-          onPress={handleOnSubmit}
+          onPress={validate}
         />
       </View>
 

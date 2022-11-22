@@ -101,7 +101,7 @@ const Cadastro = () => {
 
       // Injeção de dados na State
       // Sobrepondo resultado do texto e colocando no prevState
-      ({ ...prevState, [input]: text })
+      ({...prevState, [input]: text })
     );
   };
   // ******************** Validação dos dados de cadastro ********************
