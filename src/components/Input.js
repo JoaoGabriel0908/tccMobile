@@ -95,6 +95,8 @@ const estilos = StyleSheet.create({
     opacity: 0.5,
   },
   inputContainer: {
+    
+    
     width: 334,
     height: 55,
     backgroundColor: COLORS.branco,
@@ -103,6 +105,7 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: "center",
     borderRadius: 15,
+    left: 25
   },
   TextInput: {
     color: COLORS.preto,

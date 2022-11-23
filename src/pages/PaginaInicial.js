@@ -20,7 +20,10 @@ import { useNavigation } from "@react-navigation/native";
 import apiBlood from "../service/apiBlood";
 import CardCampanha from "../components/CardCampanha"
 
-const PaginaInicial = () => {
+const PaginaInicial = ({route}) => {
+  const {id} = route.params;
+  console.log(id);
+
   const navigation = useNavigation();
 
   const [refFlatList, setRefFlatList] = useState();
@@ -77,7 +80,7 @@ const PaginaInicial = () => {
             bairro={hemocentro.bairro}
             numero={hemocentro.numero}
             onPress={() => {
-              navigation.navigate("PerfilHemo", { id: hemocentro.id });
+              navigation.navigate("PerfilHemo",  [{id: hemocentro.id}, {idDoador: route.params.id}]);
             }}
           />
         ))}

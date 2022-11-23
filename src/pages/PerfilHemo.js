@@ -26,7 +26,11 @@ import { useNavigation } from "@react-navigation/native";
 const PerfilHemo = ({ route }) => {
   const navigation = useNavigation();
 
-  const { id } = route.params;
+  console.log(route);
+
+  const { id } = route.params[0];
+  const { idDoador } = route.params[1];
+  
   const [hemocentro, setHemocentro] = useState([
     {
       id: "",
@@ -86,7 +90,7 @@ const PerfilHemo = ({ route }) => {
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento", { id: hemocentro.id });
+              navigation.navigate("TelaAgendamento", [{id: hemocentro.id}, {idDoador: route.params.idDoador}]);
             }}
           />
         </View>

@@ -9,7 +9,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import COLORS from "../const/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -17,14 +17,32 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
+import apiBlood from "../service/apiBlood";
 
 const fundo = "../assets/fundo.png";
 
-const TelaAgendamento = ({route}) => {
+const TelaAgendamento = ({ route }) => {
 
-  const {id} = route.params;
+  const { id } = route.params[0];
+  const { idDoador } = route.params[1];
 
-  console.log(id)
+  console.log(route)
+
+  // console.log(id);
+
+  useEffect(() => {
+    apiBlood.get(`/listarHemocentroPorId/${id}`).then((data) => {
+      console.log(data.data[0]);
+      setHemocentro(data.data[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
+      console.log(data.data[0]);
+      setHemocentro(data.data[0]);
+    });
+  }, []);
 
   const navigation = useNavigation();
 
@@ -33,6 +51,7 @@ const TelaAgendamento = ({route}) => {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("Selecione a data");
   const [hour, setHour] = useState("Selecione o horário");
+  const [hemocentro, setHemocentro] = useState("Selecione o horário");
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -46,8 +65,7 @@ const TelaAgendamento = ({route}) => {
       (tempDate.getMonth() + 1) +
       "/" +
       tempDate.getFullYear();
-    let formatTime =
-      tempDate.getHours() + ":" + tempDate.getMinutes();
+    let formatTime = tempDate.getHours() + ":" + tempDate.getMinutes();
     setText(formatDate);
     setHour(formatTime);
 
@@ -58,6 +76,19 @@ const TelaAgendamento = ({route}) => {
     setShow(true);
     setMode(currentMode);
   };
+
+  const [inputs, setInputs] = React.useState({
+    id_sexo: 0,
+  });
+
+  const agendar = () => {
+    try {
+      const response = apiBlood
+    }
+    catch (error) {
+      error.response.data
+    }
+  }
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -97,13 +128,20 @@ const TelaAgendamento = ({route}) => {
         <View style={estilos.containerData}>
           <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
           <View style={estilos.picker}>
-            <Picker />
-          </View>
-        </View>
-        <View style={estilos.containerData}>
-          <Text style={estilos.dateText}>Selecione o seu tipo sanguíneo</Text>
-          <View style={estilos.picker}>
-            <Picker />
+            {/* <Picker
+              placeholder="id_Sexo"
+              onFocus={() => {
+                handleErrors(null, "id_sexo");
+              }}
+              selectedValue={inputs.id_sexo}
+              onValueChange={(itemValue) =>
+                handleChangeInputs("id_sexo", itemValue)
+              }
+            >
+              {sexo.map((sexo) => {
+                return <Picker.Item label={sexo.sexo} value={sexo.Id} />;
+              })}
+            </Picker> */}
           </View>
         </View>
         <View style={estilos.button}>

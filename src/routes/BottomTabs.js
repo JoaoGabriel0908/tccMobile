@@ -39,6 +39,7 @@ export default function Menu({ route, navigation }) {
   return (
     <Navigator initialRouteName="Pagina Inicial">
       <Screen
+        initialParams={{id}}
         name="Pagina Inicial"
         component={PaginaInicial}
         options={{

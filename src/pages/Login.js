@@ -8,6 +8,8 @@ import {
   SafeAreaView,
 } from "react-native";
 
+
+
 import React, { useState, useEffect, useContext } from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
@@ -19,6 +21,8 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import InputIcon from "../components/InputIcon";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
+
+import { TextInputMask } from "react-native-masked-text";
 
 const fundo = "../assets/fundo.png";
 
@@ -124,15 +128,17 @@ const Login = () => {
       <Text style={estilos.Text}>Entrar</Text>
       <View style={estilos.Text}>
         <Text style={estilos.title}></Text>
-        <Input
+        <Input 
           placeholder=" CPF"
           type="cpf"
           onChangeText={(text) => handleOnChange(text, "cpf")}
           values={inputs.cpf}
+          mask="00.000.000/0000-00"
           onFocus={() => {
             handleErrors(null, "cpf");
           }}
           error={errors.cpf}
+          
         />
       </View>
 
@@ -247,6 +253,17 @@ const estilos = StyleSheet.create({
     left: 90,
     fontSize: 15,
   },
+  inputMask:{
+    width: 334,
+    height: 55,
+    backgroundColor: COLORS.branco,
+    flexDirection: "row",
+    borderWidth: 1,
+    paddingHorizontal: 15,
+    alignItems: "center",
+    borderRadius: 15,
+    left: 25
+  }
 });
 
 export default Login;
