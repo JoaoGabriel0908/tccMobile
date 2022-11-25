@@ -14,7 +14,6 @@ import {
 import React, { useEffect, useState } from "react";
 import Campanhas from "../components/Campanhas";
 import COLORS from "../const/Colors";
-import Menu from "../routes/BottomTabs";
 import HemoPaginaInicial from "../components/HemoPaginaInicial";
 import { useNavigation } from "@react-navigation/native";
 import apiBlood from "../service/apiBlood";

@@ -26,7 +26,7 @@ import { useNavigation } from "@react-navigation/native";
 const PerfilHemo = ({ route }) => {
   const navigation = useNavigation();
 
-  console.log(route);
+  console.log(route)
 
   const { id } = route.params[0];
   const { idDoador } = route.params[1];
@@ -60,7 +60,6 @@ const PerfilHemo = ({ route }) => {
   useEffect(() => {
     apiBlood.get(`/listarEstoqueSangue/${id}`).then((estoque) => {
       setEstoque(estoque.data[0]);
-      console.log(estoque.data[0]);
     });
   }, []);
 
@@ -90,7 +89,7 @@ const PerfilHemo = ({ route }) => {
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento", [{id: hemocentro.id}, {idDoador: route.params.idDoador}]);
+              navigation.navigate("TelaAgendamento", [{id: hemocentro.id}, {idDoador: route.params.id}]);
             }}
           />
         </View>

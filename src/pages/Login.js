@@ -10,7 +10,7 @@ import {
 
 
 
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
 import { useNavigation } from "@react-navigation/native";
@@ -32,6 +32,13 @@ const Login = () => {
 
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
+  const [cpf, setCpf] = React.useState('');
+  const cpfRef = useRef(null);
+
+  //function showCpf(){
+    //const unmasked = this.cpfField.getRawValue()
+
+  //}
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -100,23 +107,29 @@ const Login = () => {
       // console.log('Capa em branco')
     }
     if (validate) {
-      console.log(inputs);
+      // console.log(inputs);
       // Envia os dados para a API cadastrar.
       Logar();
-      console.log("Cadastrou");
+      
     }
   };
 
   const Logar = () => {
     try {
+      console.log(cpfRef.current.getRawValue())
+      return;
+
       const response = apiBlood.post("/loginUsuario", {
-        cpf: inputs.cpf,
+        cpf: cpfRef.current.getRawValue(),
         senha: inputs.senha,
       });
-      localStorage.
-      navigation.navigate("Menu", { id: pessoa.id });
+      
+      navigation.navigate("Menu", { id: pessoa.id })
+
+      console.log("response", response)
     } catch (error) {
-      error.response.inputs;
+      // error.response.inputs;
+      console.log("error", error)
     }
   };
 
@@ -128,22 +141,25 @@ const Login = () => {
       <Text style={estilos.Text}>Entrar</Text>
       <View style={estilos.Text}>
         <Text style={estilos.title}></Text>
-        <Input 
+        <Input
+        key={'cpf'}
+        keyboardType={'numeric'}
           placeholder=" CPF"
           type="cpf"
-          onChangeText={(text) => handleOnChange(text, "cpf")}
+          maxLength={11}
+          onChangeText={(text, rawText) => handleOnChange(text, "cpf")}
           values={inputs.cpf}
-          mask="00.000.000/0000-00"
           onFocus={() => {
             handleErrors(null, "cpf");
           }}
           error={errors.cpf}
-          
+          ref={cpfRef}
         />
       </View>
 
       <Text style={estilos.title}></Text>
       <InputIcon
+      key={'senha'}
         placeholder="Senha"
         iconName="eye"
         onChangeText={(text) => handleOnChange(text, "senha")}
@@ -155,7 +171,7 @@ const Login = () => {
       />
 
       <View>
-        <CheckBox options={optionsindividual} onChange={(op) => alert(op)} />
+        <CheckBox options={optionsindividual} onChange={(op) => alert(op)} key='checkbox'/>
         <TouchableOpacity
           onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
           style={estilos.button2}
@@ -267,3 +283,4 @@ const estilos = StyleSheet.create({
 });
 
 export default Login;
+

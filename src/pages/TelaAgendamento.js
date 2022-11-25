@@ -22,20 +22,18 @@ import apiBlood from "../service/apiBlood";
 const fundo = "../assets/fundo.png";
 
 const TelaAgendamento = ({ route }) => {
-
   const { id } = route.params[0];
   const { idDoador } = route.params[1];
 
-  console.log(route)
+  // console.log(route)
+  console.log(id);
 
-  // console.log(id);
-
-  useEffect(() => {
-    apiBlood.get(`/listarHemocentroPorId/${id}`).then((data) => {
-      console.log(data.data[0]);
-      setHemocentro(data.data[0]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarHemocentroPorId/${id}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     setHemocentro(data.data[0]);
+  //   });
+  // }, []);
 
   useEffect(() => {
     apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
@@ -51,7 +49,7 @@ const TelaAgendamento = ({ route }) => {
   const [show, setShow] = useState(false);
   const [text, setText] = useState("Selecione a data");
   const [hour, setHour] = useState("Selecione o horário");
-  const [hemocentro, setHemocentro] = useState("Selecione o horário");
+  const [hemocentro, setHemocentro] = useState([]);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -77,18 +75,28 @@ const TelaAgendamento = ({ route }) => {
     setMode(currentMode);
   };
 
+  const handleChangeInputs = (key, value) => {
+    setInputs({
+      ...inputs,
+      [key]: value,
+    });
+  };
+
   const [inputs, setInputs] = React.useState({
-    id_sexo: 0,
+    hemocentro: 0,
   });
 
   const agendar = () => {
     try {
-      const response = apiBlood
+      const response = apiBlood.post("/CadastrarConsulta", {
+        
+      })
+    } catch (error) {
+      error.response.data;
     }
-    catch (error) {
-      error.response.data
-    }
-  }
+  };
+
+  console.log(hemocentro);
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -128,20 +136,25 @@ const TelaAgendamento = ({ route }) => {
         <View style={estilos.containerData}>
           <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
           <View style={estilos.picker}>
-            {/* <Picker
-              placeholder="id_Sexo"
-              onFocus={() => {
-                handleErrors(null, "id_sexo");
-              }}
-              selectedValue={inputs.id_sexo}
+            <Picker
+              placeholder="tipoServico"
+              // onFocus={() => {
+              //   handleErrors(null, "tipoServico");
+              // }}
+              selectedValue={inputs.tipoServico}
               onValueChange={(itemValue) =>
-                handleChangeInputs("id_sexo", itemValue)
+                handleChangeInputs("tipoServico", itemValue)
               }
             >
-              {sexo.map((sexo) => {
-                return <Picker.Item label={sexo.sexo} value={sexo.Id} />;
+              {hemocentro.map((hemocentro) => {
+                return (
+                  <Picker.Item
+                    label={hemocentro.tipo_servico}
+                    value={hemocentro.id}
+                  />
+                );
               })}
-            </Picker> */}
+            </Picker>
           </View>
         </View>
         <View style={estilos.button}>

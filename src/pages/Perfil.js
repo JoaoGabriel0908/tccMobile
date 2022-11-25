@@ -15,7 +15,7 @@ const Perfil = ({route, key}) => {
 
   const {id} = route.params
 
-  // console.log(route.params)
+  console.log(route.params)
 
   useEffect(() => {
     apiBlood.get(`/listarDoadorId/${id}`).then(data => {
