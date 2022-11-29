@@ -10,7 +10,6 @@ import {
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { useNavigation } from "@react-navigation/native";
 
 const person = "../assets/Ellipse8.png";
 
@@ -20,9 +19,9 @@ const InfoPerfil = ({
   nameGenres,
   tipoSanguineo,
   iconNameSangue,
-  gender,
+  onPress = () => {},
+  gender = () => {},
 }) => {
-  const navigation = useNavigation();
   return (
     <SafeAreaView style={estilos.containerGeral}>
       <SafeAreaView style={estilos.container}>
@@ -48,9 +47,7 @@ const InfoPerfil = ({
       </SafeAreaView>
       <View style={estilos.config}>
         <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("EditarPerfil");
-          }}
+          onPress={onPress}
           style={{
             justifyContent: "center",
             flexDirection: "row",

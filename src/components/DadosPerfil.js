@@ -18,37 +18,14 @@ import CardAgends from "./CardAgends";
 import apiBlood from "../service/apiBlood";
 
 const DadosPerfil = ({
-  nameComplet,
+  nomeCompleto,
   iconName,
   nameGenres,
   clinicasSeguidas,
   email,
   celular,
-  selectedLanguage,
-  onValueChange = () => {}
+  cidadesEscolhidas = []
 }) => {
-
-  const [pessoa, setPessoa] = useState([])
-  const [estado, setEstado] = useState([])
-  const [cidades, setCidade] = useState([]);
-
-  // useEffect(() => {
-  //   apiBlood.get(`/listarDoador/${id}`).then(data => {
-  //     console.log(data.data);
-  //     setPessoa(data.data);
-  //   });
-  // }, []);
-
-  console.log(pessoa)
-
-  useEffect(() => {
-    apiBlood.get('/listarCidadesPorDoador').then(data => {
-      console.log(data.data[0]);
-      setEstado(data.data[0]);
-    });
-  }, []);
-
-  // const {id} = route.params
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -77,15 +54,9 @@ const DadosPerfil = ({
         <View style={estilos.local}>
           <Text style={{position: "absolute", bottom: 60}}>Locais de doação selecionados</Text>
           <View style={estilos.cidades}>
-            <Select 
-            options={cidades}
-            keyExtractor={(item) => `key-${item.id}`}
-            // renderItem={renderItem}
-            onChangeSelect={(id) => alert(id)}
-            data={cidades}
-            text="Selecione a cidade de doação"
-            // onPress={onPressShowItemSelected}
-            />
+            <Input inputPequeno editable={false}>
+              {cidadesEscolhidas}
+            </Input>
           </View>
         </View>
         <CardAgends />

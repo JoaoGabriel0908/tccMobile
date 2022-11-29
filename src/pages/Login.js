@@ -8,8 +8,6 @@ import {
   SafeAreaView,
 } from "react-native";
 
-
-
 import React, { useState, useEffect, useContext, useRef } from "react";
 import Layout from "../components/Layout";
 import Button from "../components/Button";
@@ -32,11 +30,11 @@ const Login = () => {
 
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
-  const [cpf, setCpf] = React.useState('');
+  const [cpf, setCpf] = React.useState("");
   const cpfRef = useRef(null);
 
   //function showCpf(){
-    //const unmasked = this.cpfField.getRawValue()
+  //const unmasked = this.cpfField.getRawValue()
 
   //}
 
@@ -75,8 +73,8 @@ const Login = () => {
 
   useEffect(() => {
     apiBlood.get("/listarDoador").then((data) => {
-      console.log(data.data[3]);
-      setPessoa(data.data[3]);
+      console.log(data.data[0]);
+      setPessoa(data.data[0]);
     });
   }, []);
 
@@ -110,26 +108,21 @@ const Login = () => {
       // console.log(inputs);
       // Envia os dados para a API cadastrar.
       Logar();
-      
     }
   };
 
   const Logar = () => {
     try {
-      console.log(cpfRef.current.getRawValue())
-      return;
-
+      console.log(cpfRef.current.getRawValue());
       const response = apiBlood.post("/loginUsuario", {
         cpf: cpfRef.current.getRawValue(),
         senha: inputs.senha,
       });
-      
-      navigation.navigate("Menu", { id: pessoa.id })
-
-      console.log("response", response)
+      navigation.navigate("Menu", { id: pessoa.id });
+      console.log("response", response);
     } catch (error) {
       // error.response.inputs;
-      console.log("error", error)
+      console.log("error", error);
     }
   };
 
@@ -142,8 +135,8 @@ const Login = () => {
       <View style={estilos.Text}>
         <Text style={estilos.title}></Text>
         <Input
-        key={'cpf'}
-        keyboardType={'numeric'}
+          key={"cpf"}
+          keyboardType={"numeric"}
           placeholder=" CPF"
           type="cpf"
           maxLength={11}
@@ -159,7 +152,7 @@ const Login = () => {
 
       <Text style={estilos.title}></Text>
       <InputIcon
-      key={'senha'}
+        key={"senha"}
         placeholder="Senha"
         iconName="eye"
         onChangeText={(text) => handleOnChange(text, "senha")}
@@ -171,7 +164,11 @@ const Login = () => {
       />
 
       <View>
-        <CheckBox options={optionsindividual} onChange={(op) => alert(op)} key='checkbox'/>
+        <CheckBox
+          options={optionsindividual}
+          onChange={(op) => alert(op)}
+          key="checkbox"
+        />
         <TouchableOpacity
           onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
           style={estilos.button2}
@@ -269,7 +266,7 @@ const estilos = StyleSheet.create({
     left: 90,
     fontSize: 15,
   },
-  inputMask:{
+  inputMask: {
     width: 334,
     height: 55,
     backgroundColor: COLORS.branco,
@@ -278,9 +275,8 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 15,
     alignItems: "center",
     borderRadius: 15,
-    left: 25
-  }
+    left: 25,
+  },
 });
 
 export default Login;
-

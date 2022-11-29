@@ -53,7 +53,7 @@ const PerfilHemo = ({ route }) => {
   useEffect(() => {
     apiBlood.get("/listarTipoServico/").then((servico) => {
       setServico(servico.data);
-      // console.log(servico.data);
+      console.log(servico.data);
     });
   }, []);
 

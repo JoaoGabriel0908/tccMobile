@@ -36,16 +36,11 @@ const PaginaInicial = ({route}) => {
     });
   }, []);
 
-  const getList = () => {
+  useEffect(() => {
     apiBlood.get("/listarCampanhas").then((data) => {
       console.log(data.data);
       setCampanha(data.data);
     });
-  };
-
-  useEffect(() => {
-    getList();
-    return () => {};
   }, []);
 
   const getItemLayout = (campanha, index) => {

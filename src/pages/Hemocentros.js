@@ -25,7 +25,6 @@ const Hemocentros = () => {
     <ScrollView>
       <SafeAreaView style={estilos.container}>
         <View>
-
           <Input
             name={null}
             placeholder="Pesquise hemocentros perto de você"
@@ -39,24 +38,26 @@ const Hemocentros = () => {
             onChangeText={(text) => handleOnChange(text, "nomeCompleto")}
           />
         </View>
-        {hemocentro.map((hemocentro) => (
-          <CardHemo
-            key={hemocentro.id}
-            fotoHemo={
-              "https://firebasestorage.googleapis.com/v0/b/blood---amedoar.appspot.com/o/images%2Fe0c81b4d-91aa-1317-d013-45abeccaf1ad?alt=media&token=da716070-6f4e-441d-94ff-beba15aa0e8d"
-            }
-            hemoNome={hemocentro.nome_unidade}
-            logradouro={hemocentro.logradouro}
-            estado={hemocentro.estado}
-            cidade={hemocentro.cidade}
-            cep={hemocentro.cep}
-            bairro={hemocentro.bairro}
-            numero={hemocentro.numero}
-            onPress={() => {
-              navigation.navigate("PerfilHemo", { id: hemocentro.id });
-            }}
-          />
-        ))}
+        <View style={{ alignItems: "center" }}>
+          {hemocentro.map((hemocentro) => (
+            <CardHemo
+              key={hemocentro.id}
+              fotoHemo={
+                "https://firebasestorage.googleapis.com/v0/b/blood---amedoar.appspot.com/o/images%2Fe0c81b4d-91aa-1317-d013-45abeccaf1ad?alt=media&token=da716070-6f4e-441d-94ff-beba15aa0e8d"
+              }
+              hemoNome={hemocentro.nome_unidade}
+              logradouro={hemocentro.logradouro}
+              estado={hemocentro.estado}
+              cidade={hemocentro.cidade}
+              cep={hemocentro.cep}
+              bairro={hemocentro.bairro}
+              numero={hemocentro.numero}
+              onPress={() => {
+                navigation.navigate("PerfilHemo", { id: hemocentro.id });
+              }}
+            />
+          ))}
+        </View>
       </SafeAreaView>
     </ScrollView>
   );

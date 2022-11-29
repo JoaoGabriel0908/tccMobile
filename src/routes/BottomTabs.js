@@ -27,14 +27,14 @@ export default function Menu({ route, navigation }) {
 
   console.log(id);
 
-  useEffect(() => {
-    apiBlood.get("/listarUsuario").then((data) => {
-      console.log(data.data);
-      setPessoa(data.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get("/listarUsuario").then((data) => {
+  //     console.log(data.data);
+  //     setPessoa(data.data);
+  //   });
+  // }, []);
 
-  console.log(pessoa);
+  // console.log(pessoa);
 
   return (
     <Navigator initialRouteName="Pagina Inicial">

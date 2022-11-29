@@ -63,11 +63,28 @@ const TelaAgendamento = ({ route }) => {
       (tempDate.getMonth() + 1) +
       "/" +
       tempDate.getFullYear();
+
     let formatTime = tempDate.getHours() + ":" + tempDate.getMinutes();
+
+    let dateBanco =
+      tempDate.getFullYear() +
+      "-" +
+      (tempDate.getMonth() + 1) +
+      "-" +
+      tempDate.getDate();
+
+      if((tempDate.getMonth() + 1).length < 2){
+        tempDate.getMonth() = '0' + tempDate.getMonth()
+      }
+      if(tempDate.getDate().length < 2) {
+        tempDate.getDate() = '0' + tempDate.getDate();
+      }
+
     setText(formatDate);
     setHour(formatTime);
 
-    console.log(formatDate + " (" + formatTime + ") ");
+    console.log(dateBanco + " (" + formatTime + ") ");
+    return dateBanco
   };
 
   const showMode = (currentMode) => {
@@ -88,9 +105,7 @@ const TelaAgendamento = ({ route }) => {
 
   const agendar = () => {
     try {
-      const response = apiBlood.post("/CadastrarConsulta", {
-        
-      })
+      const response = apiBlood.post("/CadastrarConsulta", {});
     } catch (error) {
       error.response.data;
     }
@@ -130,6 +145,7 @@ const TelaAgendamento = ({ route }) => {
               is24Hour={true}
               display="default"
               onChange={onChange}
+              dateFormat="dd/MM/yyyy"
             />
           )}
         </View>

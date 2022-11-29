@@ -14,18 +14,6 @@ import { Card } from "react-native-paper";
 const fundo = "../assets/fundo.png";
 
 const HemoPaginaInicial = ({onPress = () => {}, hemoNome, cep, cidade, estado, logradouro, bairro, numero}) => {
- // const [hemocentro, setHemocentro] = useState({
- //   id: "",
- //   hemocentroNome: "",
- //   hemocentroEndereco: "",
- //   hemocentroFoto: "",
- // });
-
- //   useEffect(() => {
- //     apiLivraria.get(`/listarLivros/${cod_livro}`).then(livro => {
- //       setLivro(livro.data[0]);
- //     });
- //   }, []);
 
  return (
   <TouchableOpacity onPress={onPress} style={estilos.container}>

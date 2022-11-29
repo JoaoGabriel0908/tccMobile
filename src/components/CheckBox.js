@@ -20,7 +20,7 @@ function toggle(id){
   return (
       <View>
           {options.map((op) =>(
-        <View style={estilos.optionContainer}>
+        <View key={options} style={estilos.optionContainer}>
           
           <TouchableOpacity 
           style={estilos.touchble} 
