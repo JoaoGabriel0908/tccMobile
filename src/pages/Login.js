@@ -20,7 +20,7 @@ import InputIcon from "../components/InputIcon";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
 
-import { TextInputMask } from "react-native-masked-text";
+
 
 const fundo = "../assets/fundo.png";
 
@@ -31,7 +31,7 @@ const Login = () => {
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
   const [cpf, setCpf] = React.useState("");
-  const cpfRef = useRef(null);
+
 
   //function showCpf(){
   //const unmasked = this.cpfField.getRawValue()
@@ -111,11 +111,10 @@ const Login = () => {
     }
   };
 
-  const Logar = () => {
+  const Logar = async () => {
     try {
-      console.log(cpfRef.current.getRawValue());
       const response = apiBlood.post("/loginUsuario", {
-        cpf: cpfRef.current.getRawValue(),
+        cpf: inputs.senha,
         senha: inputs.senha,
       });
       navigation.navigate("Menu", { id: pessoa.id });
@@ -140,13 +139,13 @@ const Login = () => {
           placeholder=" CPF"
           type="cpf"
           maxLength={11}
-          onChangeText={(text, rawText) => handleOnChange(text, "cpf")}
+          onChangeText={(text, ) => handleOnChange(text, "cpf")}
           values={inputs.cpf}
           onFocus={() => {
             handleErrors(null, "cpf");
           }}
           error={errors.cpf}
-          ref={cpfRef}
+        
         />
       </View>
 
@@ -280,3 +279,5 @@ const estilos = StyleSheet.create({
 });
 
 export default Login;
+
+

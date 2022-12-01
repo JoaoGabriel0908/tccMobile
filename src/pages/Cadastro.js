@@ -32,7 +32,7 @@ const Cadastro = () => {
 
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
 
-  const [isChecked, setChecked] = useState([]);
+  const [isChecked, setChecked] = useState(false);
 
   useEffect(() => {
     apiBlood.get("/listarTipoSanguineo").then((data) => {
@@ -230,11 +230,11 @@ const Cadastro = () => {
   //   console.log(cidades);
   // }, [inputs.id_estado]);
 
-  const onChangeValue = (itemSelected, index) => {
-    console.log(itemSelected);
+  const renderItem = ({item, index}) => {
+    console.log(item);
     const newCity = cidades.map((item) => {
-      console.log(itemSelected.id)
-      if (item.id == itemSelected.id) {
+      // console.log(itemSelected.id)
+      if (item.id == item.id) {
         return {
           ...item,
           selected: !item.selected,
@@ -247,23 +247,24 @@ const Cadastro = () => {
         setChecked: false,
       };
     });
-    setCidade(newCity);
+    // setCidade(newCity);
   };
 
-  const renderItem = ({ item, index }) => {
+  const render = ({ item, index }) => {
     return (
       <View style={estilos.item}>
         <Text>{item.cidade}</Text>
         <Checkbox
           style={estilos.checkbox}
+          //style={item.selected ? 'checked' : 'unchecked'}
           onAnimationType="fill"
+          key={"checkbox"}
           disabled={false}
           offAnimationType="fade"
           boxType="square"
-          onChange={isChecked}
+          onChange={setChecked}
           onValueChange={() => onChangeValue(item, index)}
-          // value={setChecked}
-          // color={cidades ? '#4630EB' : COLORS.vermelhoClaro}
+          color={isChecked ? COLORS.cinza : COLORS.vermelhoEscuro2}
         />
       </View>
     );
@@ -288,6 +289,7 @@ const Cadastro = () => {
       <View style={estilos.viewForm}>
         <Input
           name="name"
+          key={"Name Completo"}
           placeholder="Nome Completo"
           value={inputs.nome_completo}
           iconName="account"
@@ -300,6 +302,7 @@ const Cadastro = () => {
         />
         <Input
           name="email"
+          key={"Email"}
           placeholder="E-Mail"
           iconName="email"
           value={inputs.email}
@@ -315,6 +318,7 @@ const Cadastro = () => {
           <View style={estilos.id_sexo}>
             <Picker
               placeholder="id_Sexo"
+              key={"Sexo"}
               onFocus={() => {
                 handleErrors(null, "id_sexo");
               }}
@@ -331,6 +335,7 @@ const Cadastro = () => {
           <View style={estilos.id_tipo_sanguineo}>
             <Picker
               placeholder="Tipo sanguineo"
+              key={"TipoSanguineo"}
               onFocus={() => {
                 handleErrors(null, "id_tipo_sanguineo");
               }}
@@ -386,6 +391,7 @@ const Cadastro = () => {
 
         <Input
           name="cpf"
+          key={"Cpf"}
           placeholder="CPF"
           values={inputs.cpf}
           iconName="card-account-details"
@@ -395,6 +401,7 @@ const Cadastro = () => {
           }}
           onChangeText={(text) => handleOnChange(text, "cpf")}
           keyboardType="numeric"
+          maxL
           // onBlur={() => {
           //   aplicar(inputs.cpf);
           // }}
@@ -402,6 +409,7 @@ const Cadastro = () => {
         />
         <InputIcon
           name="senha"
+          key={"Senha"}
           icon="lock"
           placeholder="Senha"
           values={inputs.senha}
@@ -412,8 +420,10 @@ const Cadastro = () => {
           keyboardType="default"
           onChangeText={(text) => handleOnChange(text, "senha")}
         />
+
         <InputIcon
           name="confirmacaoSenha"
+          key={"ConfirmacaoSenha"}
           icon="lock"
           placeholder="Confirmação de senha"
           values={inputs.confirmacaoSenha}

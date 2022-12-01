@@ -7,7 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 
 const passo1 = "../assets/Group8.png";
 
-const Terms = () => {
+const Terms = ({route}) => {
+
   const navigation = useNavigation()
   return (
     <Layout>
@@ -73,7 +74,7 @@ const Terms = () => {
           <Button
             title="Avançar"
             onPress={() => {
-              navigation.navigate("Menu");
+              navigation.navigate("Login");
             }}
           />
         </View>

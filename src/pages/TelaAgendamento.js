@@ -73,13 +73,6 @@ const TelaAgendamento = ({ route }) => {
       "-" +
       tempDate.getDate();
 
-      if((tempDate.getMonth() + 1).length < 2){
-        tempDate.getMonth() = '0' + tempDate.getMonth()
-      }
-      if(tempDate.getDate().length < 2) {
-        tempDate.getDate() = '0' + tempDate.getDate();
-      }
-
     setText(formatDate);
     setHour(formatTime);
 
