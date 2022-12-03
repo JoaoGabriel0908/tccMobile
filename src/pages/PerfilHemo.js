@@ -26,11 +26,11 @@ import { useNavigation } from "@react-navigation/native";
 const PerfilHemo = ({ route }) => {
   const navigation = useNavigation();
 
-  console.log(route)
+  console.log(route);
 
   const { id } = route.params[0];
   const { idDoador } = route.params[1];
-  
+
   const [hemocentro, setHemocentro] = useState([
     {
       id: "",
@@ -46,7 +46,7 @@ const PerfilHemo = ({ route }) => {
   useEffect(() => {
     apiBlood.get(`/listarHemocentroPorId/${id}`).then((hemocentro) => {
       setHemocentro(hemocentro.data[0][0]);
-      // console.log(hemocentro.data[0][0]);
+      console.log(hemocentro.data[0][0]);
     });
   }, []);
 
@@ -84,18 +84,24 @@ const PerfilHemo = ({ route }) => {
   return (
     <ScrollView style={estilos.container}>
       <View style={estilos.containerImagem}>
-        <ImageBackground style={estilos.imagem} source={require(fundo)} />
+        <ImageBackground
+          style={estilos.imagem}
+          source={{ uri: hemocentro.foto_capa }}
+        />
         <View style={estilos.buttonImage}>
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento", [{id: hemocentro.id}, {idDoador: route.params.id}]);
+              navigation.navigate("TelaAgendamento", [
+                { id: hemocentro.id },
+                { idDoador },
+              ]);
             }}
           />
         </View>
         <ImageBackground
           style={estilos.imageHemocentro}
-          source={require(hemocentroImagem)}
+          source={{ uri: hemocentro.foto_capa }}
         />
       </View>
       <View style={estilos.content}>
@@ -135,9 +141,17 @@ const PerfilHemo = ({ route }) => {
             if (estoque.nivel === "Alerta") {
               return (
                 <View style={estilos.contentEstoque}>
-                  <Image source={require(meioCheio)} />
-                  <Text>{estoque.tipo_sanguineo}</Text>
-                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_600SemiBold", }}>{estoque.nivel}</Text>
+                  <Image key={estoque.id} source={require(meioCheio)} />
+                  <Text key={estoque.id}>{estoque.tipo_sanguineo}</Text>
+                  <Text
+                    style={{
+                      color: COLORS.vermelhoEscuro,
+                      fontFamily: "Poppins_600SemiBold",
+                    }}
+                    key={estoque.nivel}
+                  >
+                    {estoque.nivel}
+                  </Text>
                 </View>
               );
             } else if (estoque.nivel === "Crítico") {
@@ -145,7 +159,14 @@ const PerfilHemo = ({ route }) => {
                 <View style={estilos.contentEstoque}>
                   <Image source={require(vazio)} />
                   <Text>{estoque.tipo_sanguineo}</Text>
-                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_700Bold" }}>{estoque.nivel}!</Text>
+                  <Text
+                    style={{
+                      color: COLORS.vermelhoEscuro,
+                      fontFamily: "Poppins_700Bold",
+                    }}
+                  >
+                    {estoque.nivel}!
+                  </Text>
                 </View>
               );
             } else {
@@ -153,7 +174,14 @@ const PerfilHemo = ({ route }) => {
                 <View style={estilos.contentEstoque}>
                   <Image source={require(cheio)} />
                   <Text>{estoque.tipo_sanguineo}</Text>
-                  <Text style={{color: COLORS.vermelhoEscuro, fontFamily: "Poppins_400Regular" }}>{estoque.nivel}</Text>
+                  <Text
+                    style={{
+                      color: COLORS.vermelhoEscuro,
+                      fontFamily: "Poppins_400Regular",
+                    }}
+                  >
+                    {estoque.nivel}
+                  </Text>
                 </View>
               );
             }
@@ -166,8 +194,8 @@ const PerfilHemo = ({ route }) => {
         <View style={estilos.containerCampanhas}>
           <View style={estilos.contentCampanha}>
             <Text style={estilos.campanhaText}>Campanhas</Text>
-
             <FlatList
+              key={campanha.id}
               data={campanha}
               keyExtractor={(item) => `${item.id}`}
               renderItem={({ item }) => <CardCampanha data={item} />}

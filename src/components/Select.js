@@ -11,6 +11,7 @@ import {
 import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import Input from "./Input";
 
 const { width } = Dimensions.get("window");
 
@@ -20,11 +21,16 @@ const Select = ({
   text,
   renderItem,
   data,
+  onChangeText = () => {},
   keyExtractor = () => {},
   onPress = () => {},
 }) => {
   const [txt, setTxt] = useState(text);
   const [modalVisible, setModalVisible] = useState(false);
+
+  function search(pesquisa) {
+    data.filter(d => d.cidade.includes(pesquisa))
+  }
 
   return (
     <View>
@@ -51,6 +57,7 @@ const Select = ({
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
             </TouchableOpacity>
+            <Input placeholder={'Pesquise sua cidade'} onChangeText={onChangeText}/> 
             <FlatList
               style={estilos.list}
               data={data}

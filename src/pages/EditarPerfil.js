@@ -27,32 +27,28 @@ const EditarPerfil = ({ route }) => {
   const { id } = route.params;
 
   useEffect(() => {
-    apiBlood.get("/listarSexo").then((data) => {
-      console.log(data.data[0]);
-      setSexo(data.data);
-    });
-  }, []);
-
-  useEffect(() => {
     apiBlood.get(`/listarDoadorId/${id}`).then((data) => {
       console.log(data.data);
       setInputs(data.data);
     });
-  }, []);
 
-  useEffect(() => {
+    // apiBlood.get("/listarSexo").then((data) => {
+    //   console.log(data.data[0]);
+    //   setSexo(data.data);
+    // });
+
     apiBlood.get("/listarTipoSanguineo").then((data) => {
-      // console.log(data);
+      console.log(data.data);
       setTipoSanguineo(data.data);
     });
   }, []);
 
-  // useEffect(() => {
-  //   apiBlood.get(`/listarSexoPorDoador/${id}`).then((data) => {
-  //     console.log(data.data);
-  //     setSexo(data.data[0][0]);
-  //   });
-  // }, []);
+  useEffect(() => {
+    apiBlood.get(`/listarSexoPorDoador/${id}`).then((data) => {
+      console.log(data.data);
+      setSexo(data.data[0]);
+    });
+  }, []);
 
   const [sexo, setSexo] = useState([]);
   const [tipoSanguineo, setTipoSanguineo] = useState([]);

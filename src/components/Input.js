@@ -23,6 +23,7 @@ const Input = ({
   onBlur = () => {},
   editable,
   placeholder,
+  onChangeText = () => {},
   ...props
 }) => {
 
@@ -50,6 +51,7 @@ const Input = ({
           <Icon name={iconName} style={estilos.icon} />
         </TouchableOpacity>
         <TextInput
+        onChangeText={onChangeText}
         placeholder={placeholder}
           onBlur={() => {
             onBlur();

@@ -42,9 +42,7 @@ const Hemocentros = () => {
           {hemocentro.map((hemocentro) => (
             <CardHemo
               key={hemocentro.id}
-              fotoHemo={
-                "https://firebasestorage.googleapis.com/v0/b/blood---amedoar.appspot.com/o/images%2Fe0c81b4d-91aa-1317-d013-45abeccaf1ad?alt=media&token=da716070-6f4e-441d-94ff-beba15aa0e8d"
-              }
+              fotoHemo={hemocentro.foto_capa}
               hemoNome={hemocentro.nome_unidade}
               logradouro={hemocentro.logradouro}
               estado={hemocentro.estado}

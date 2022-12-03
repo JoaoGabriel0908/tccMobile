@@ -25,9 +25,6 @@ const TelaAgendamento = ({ route }) => {
   const { id } = route.params[0];
   const { idDoador } = route.params[1];
 
-  // console.log(route)
-  console.log(id);
-
   // useEffect(() => {
   //   apiBlood.get(`/listarHemocentroPorId/${id}`).then((data) => {
   //     console.log(data.data[0]);
@@ -47,8 +44,8 @@ const TelaAgendamento = ({ route }) => {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState("Selecione a data");
-  const [hour, setHour] = useState("Selecione o horário");
+  const [text, setText] = useState("");
+  const [hour, setHour] = useState("");
   const [hemocentro, setHemocentro] = useState([]);
 
   const onChange = (event, selectedDate) => {
@@ -58,26 +55,19 @@ const TelaAgendamento = ({ route }) => {
 
     let tempDate = new Date(currentDate);
     let formatDate =
-      tempDate.getDate() +
-      "/" +
-      (tempDate.getMonth() + 1) +
-      "/" +
-      tempDate.getFullYear();
-
-    let formatTime = tempDate.getHours() + ":" + tempDate.getMinutes();
-
-    let dateBanco =
       tempDate.getFullYear() +
       "-" +
       (tempDate.getMonth() + 1) +
       "-" +
       tempDate.getDate();
 
+    let formatTime = tempDate.getHours() + ":" + tempDate.getMinutes() + tempDate.getSeconds();
+
     setText(formatDate);
     setHour(formatTime);
 
-    console.log(dateBanco + " (" + formatTime + ") ");
-    return dateBanco
+    handleChangeInputs("hora_agenda", hour);
+    handleChangeInputs("data_agenda", text);
   };
 
   const showMode = (currentMode) => {
@@ -93,18 +83,36 @@ const TelaAgendamento = ({ route }) => {
   };
 
   const [inputs, setInputs] = React.useState({
-    hemocentro: 0,
+    hemocentro: id,
+    data_agenda: "",
+    hora_agenda: "08:00:00",
+    id_doador: idDoador,
+    tipoServico: 0,
   });
 
+  const validate = () => {
+    let validate = true;
+
+    if (validate) {
+      console.log(inputs);
+      agendar();
+    }
+  };
+  console.log(inputs);
   const agendar = () => {
     try {
-      const response = apiBlood.post("/CadastrarConsulta", {});
+      const response = apiBlood.post("/CadastrarConsulta", {
+        data_agendada_doador: inputs.data_agenda,
+        hora: inputs.hora_agenda,
+        id_tipo_servico: inputs.tipoServico,
+        id_doador: inputs.id_doador,
+        id_unidade_hemocentro: inputs.hemocentro,
+      });
+      console.log(response)
     } catch (error) {
       error.response.data;
     }
   };
-
-  console.log(hemocentro);
 
   return (
     <SafeAreaView style={estilos.container}>
@@ -117,7 +125,7 @@ const TelaAgendamento = ({ route }) => {
                 style={estilos.input}
                 onPressIn={() => showMode("date")}
                 placeholder="Selecione a data"
-                value={text}
+                value={inputs.data_agenda}
               />
             </View>
             <View style={estilos.hora}>
@@ -125,11 +133,10 @@ const TelaAgendamento = ({ route }) => {
                 style={estilos.input}
                 onPressIn={() => showMode("time")}
                 placeholder="Selecione a hora"
-                value={hour}
+                value={inputs.hora_agenda}
               />
             </View>
           </View>
-
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -167,12 +174,7 @@ const TelaAgendamento = ({ route }) => {
           </View>
         </View>
         <View style={estilos.button}>
-          <Button
-            title="Agendar"
-            onPress={() => {
-              navigation.navigate("AgendamentoConcluido");
-            }}
-          />
+          <Button title="Agendar" onPress={validate} />
         </View>
       </View>
     </SafeAreaView>

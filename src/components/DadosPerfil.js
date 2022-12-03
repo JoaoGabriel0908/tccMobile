@@ -28,7 +28,7 @@ const DadosPerfil = ({
 }) => {
 
   return (
-    <SafeAreaView style={estilos.container}>
+    <ScrollView style={estilos.container}>
       <View style={estilos.cidadeContainer}>
         <Text style={estilos.text}>Cidade residente</Text>
         <Input inputPequeno editable={false} placeholder="Cidade"
@@ -52,35 +52,34 @@ const DadosPerfil = ({
           <Icon name={iconName} />
         </View>
         <View style={estilos.local}>
-          <Text style={{position: "absolute", bottom: 60}}>Locais de doação selecionados</Text>
+          <Text style={{position: "absolute", bottom: 80}}>Locais de doação selecionados</Text>
           <View style={estilos.cidades}>
             <Input inputPequeno editable={false}>
               {cidadesEscolhidas}
             </Input>
           </View>
         </View>
-        <CardAgends />
+        {/* <CardAgends /> */}
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
 const estilos = StyleSheet.create({
   container: {
     backgroundColor: COLORS.branco,
-    width: '100%',
     paddingTop: 10,
-    justifyContent: 'center',
+    paddingBottom: 100
   },
   primeiroContainer: {
     width: 360,
     flexDirection: "row",
+    justifyContent: 'center',
   },
   nascimentoContainer: {
     flex: 1,
   },
   cidades: {
-    height: 50,
     width: 330,
   },
   id_estadoDoacao: {

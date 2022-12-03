@@ -17,10 +17,10 @@ import COLORS from "../const/Colors";
 import HemoPaginaInicial from "../components/HemoPaginaInicial";
 import { useNavigation } from "@react-navigation/native";
 import apiBlood from "../service/apiBlood";
-import CardCampanha from "../components/CardCampanha"
+import CardCampanha from "../components/CardCampanha";
 
-const PaginaInicial = ({route}) => {
-  const {id} = route.params;
+const PaginaInicial = ({ route }) => {
+  const { id } = route.params;
   console.log(id);
 
   const navigation = useNavigation();
@@ -51,20 +51,20 @@ const PaginaInicial = ({route}) => {
     <ScrollView style={estilos.containerPagina}>
       <ScrollView style={estilos.container}>
         <Text style={estilos.campanhaText}>Campanhas para você</Text>
-          <FlatList
-            data={campanha}
-            keyExtractor={(item) => `${item.id}`}
-            renderItem={({item}) => 
-            <CardCampanha data={item}/>}
-            horizontal
-            getItemLayout={getItemLayout}
-            ref={(ref) => setRefFlatList(ref)}
-          />
+        <FlatList
+          data={campanha}
+          keyExtractor={(item) => `${item.id}`}
+          renderItem={({ item }) => <CardCampanha data={item} />}
+          horizontal
+          getItemLayout={getItemLayout}
+          ref={(ref) => setRefFlatList(ref)}
+        />
       </ScrollView>
       <SafeAreaView style={estilos.hemocentro}>
         <Text style={estilos.campanhaText}>Hemocentros perto de você</Text>
         {hemocentro.map((hemocentro) => (
           <HemoPaginaInicial
+            imagem={hemocentro.foto_capa}
             key={hemocentro.id}
             hemoNome={hemocentro.nome_unidade}
             logradouro={hemocentro.logradouro}
@@ -74,7 +74,10 @@ const PaginaInicial = ({route}) => {
             bairro={hemocentro.bairro}
             numero={hemocentro.numero}
             onPress={() => {
-              navigation.navigate("PerfilHemo",  [{id: hemocentro.id}, {idDoador: route.params.id}]);
+              navigation.navigate("PerfilHemo", [
+                { id: hemocentro.id },
+                { idDoador: route.params.id },
+              ]);
             }}
           />
         ))}

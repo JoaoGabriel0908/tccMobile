@@ -23,6 +23,8 @@ const Perfil = ({ route, key }) => {
       console.log(data.data);
       setPessoa(data.data);
     });
+
+    
   }, []);
 
   useEffect(() => {

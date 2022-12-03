@@ -19,20 +19,15 @@ import validarCPF from "../utils/validarCpf";
 import InputIcon from "../components/InputIcon";
 import Select from "../components/Select";
 import Checkbox from "expo-checkbox";
-// import CheckBox from '@react-native-community/checkbox';
 
 const Cadastro = () => {
   const navigation = useNavigation();
-
   const [cidades, setCidade] = useState([]);
-
+  const [cidadesFiltradas, setCidadeFiltradas] = useState([]);
   const [estados, setEstado] = useState([]);
-
   const [sexo, setSexo] = useState([]);
-
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
 
-  const [isChecked, setChecked] = useState(false);
 
   useEffect(() => {
     apiBlood.get("/listarTipoSanguineo").then((data) => {
@@ -74,6 +69,7 @@ const Cadastro = () => {
     apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data);
+      setCidadeFiltradas(data.data)
     });
   };
 
@@ -101,7 +97,7 @@ const Cadastro = () => {
 
       // Injeção de dados na State
       // Sobrepondo resultado do texto e colocando no prevState
-      ({...prevState, [input]: text })
+      ({ ...prevState, [input]: text })
     );
   };
   // ******************** Validação dos dados de cadastro ********************
@@ -164,9 +160,9 @@ const Cadastro = () => {
     if (!inputs.cpf) {
       validate = false;
       handleErrors("Informe o seu CPF corretamente", "cpf");
-    // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
-    //   validate = false;
-    //   handleErrors("CPF inválido", "cpf");
+      // } else if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(inputs.cpf)) {
+      //   validate = false;
+      //   handleErrors("CPF inválido", "cpf");
     } else if (validarCPF(inputs.cpf)) {
       validate = false;
       handleErrors("CPF inválido", "cpf");
@@ -181,19 +177,6 @@ const Cadastro = () => {
       handleErrors("Informa sua senha novamente", "confirmacaoSenha");
       // console.log('Capa em branco')
     }
-
-    // const emailValidado = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
-    // // if (!emailValidado.test(String(inputs.email).toLowerCase())) {
-    // if (!inputs.email) {
-    //   validate = false;
-    //   handleErrors("Informe o seu e-mail", "email");
-    //   // console.log('Descrição em branco')
-    // }
-    // if (!inputs.cpf) {
-    //   validate = false;
-    //   handleErrors("Informe o seu CPF corretamente", "cpf");
-    //   // console.log('Capa em branco')
-    // }
 
     if (validate) {
       console.log(inputs);
@@ -219,9 +202,10 @@ const Cadastro = () => {
         id_sexo: inputs.id_sexo,
         id_tipo_sanguineo: inputs.id_tipo_sanguineo,
       });
-      navigation.navigate('Terms')
+      navigation.navigate("Terms");
     } catch (error) {
-      error.response.data
+      alert('Insira todas as informações necessárias')
+      error.response.data;
     }
   };
 
@@ -230,11 +214,11 @@ const Cadastro = () => {
   //   console.log(cidades);
   // }, [inputs.id_estado]);
 
-  const renderItem = ({item, index}) => {
-    console.log(item);
+  const onChangeValue = (itemSelected, index) => {
+    console.log(itemSelected);
     const newCity = cidades.map((item) => {
-      // console.log(itemSelected.id)
-      if (item.id == item.id) {
+      console.log(itemSelected.id);
+      if (item.id == itemSelected.id) {
         return {
           ...item,
           selected: !item.selected,
@@ -247,24 +231,22 @@ const Cadastro = () => {
         setChecked: false,
       };
     });
-    // setCidade(newCity);
+    setCidade(newCity);
   };
 
-  const render = ({ item, index }) => {
+  const renderItem = ({ item, index }) => {
     return (
       <View style={estilos.item}>
         <Text>{item.cidade}</Text>
         <Checkbox
           style={estilos.checkbox}
-          //style={item.selected ? 'checked' : 'unchecked'}
           onAnimationType="fill"
           key={"checkbox"}
           disabled={false}
           offAnimationType="fade"
           boxType="square"
-          onChange={setChecked}
+          value={item.selected ? true : false}
           onValueChange={() => onChangeValue(item, index)}
-          color={isChecked ? COLORS.cinza : COLORS.vermelhoEscuro2}
         />
       </View>
     );
@@ -272,24 +254,29 @@ const Cadastro = () => {
 
   const onPressShowItemSelected = () => {
     const listSelected = cidades.filter((item) => item.selected == true);
-    console.log(listSelected)
+    console.log(listSelected);
     let contentAlert = "";
     listSelected.forEach((item) => {
       contentAlert = contentAlert + `${item.id} . ` + item.cidade + "\n";
     });
-    const uniqueId = listSelected.map(item => item.id)
-    console.log(uniqueId)
+    const uniqueId = listSelected.map((item) => item.id);
+    console.log(uniqueId);
     Alert.alert(contentAlert);
-    handleChangeInputs('id_cidade_doacao', uniqueId)
-    return uniqueId
+    handleChangeInputs("id_cidade_doacao", uniqueId);
+    return uniqueId;
   };
+
+  function search(s) {
+    let arr = JSON.parse(JSON.stringify(cidadesFiltradas))
+    setCidade(arr.filter(city => city.cidade.includes(s)))
+  }
 
   return (
     <Layout>
       <View style={estilos.viewForm}>
         <Input
           name="name"
-          key={"Name Completo"}
+          key={"NameCompleto"}
           placeholder="Nome Completo"
           value={inputs.nome_completo}
           iconName="account"
@@ -328,7 +315,13 @@ const Cadastro = () => {
               }
             >
               {sexo.map((sexo) => {
-                return <Picker.Item label={sexo.sexo} value={sexo.Id} />;
+                return (
+                  <Picker.Item
+                    key={sexo.Id}
+                    label={sexo.sexo}
+                    value={sexo.Id}
+                  />
+                );
               })}
             </Picker>
           </View>
@@ -347,6 +340,7 @@ const Cadastro = () => {
               {tipoSanguineo.map((sanguineo) => {
                 return (
                   <Picker.Item
+                    key={sanguineo.id}
                     label={sanguineo.tipo_sanguineo}
                     value={sanguineo.id}
                   />
@@ -356,10 +350,12 @@ const Cadastro = () => {
           </View>
         </View>
         <View style={estilos.selectContainer}>
-          <Text style={estilos.label}>Cidades que pretende doar</Text>
+          {/* <Text style={estilos.label}>Cidades que pretende doar</Text> */}
           <View style={estilos.formContainer}>
             <View style={estilos.id_cidade_doacao}>
               <Select
+                onChangeText={(s) => search(s)}
+                key={"cidades"}
                 options={cidades}
                 keyExtractor={(item) => `key-${item.id}`}
                 renderItem={renderItem}
@@ -371,6 +367,7 @@ const Cadastro = () => {
             </View>
             <View style={estilos.id_estadoDoacao}>
               <Picker
+                key={"estado"}
                 onFocus={() => {
                   handleErrors(null, "id_estadoDoacao");
                 }}
@@ -381,7 +378,11 @@ const Cadastro = () => {
               >
                 {estados.map((id_estado) => {
                   return (
-                    <Picker.Item label={id_estado.uf} value={id_estado.id} />
+                    <Picker.Item
+                      key={id_estado.id}
+                      label={id_estado.uf}
+                      value={id_estado.id}
+                    />
                   );
                 })}
               </Picker>
@@ -401,11 +402,10 @@ const Cadastro = () => {
           }}
           onChangeText={(text) => handleOnChange(text, "cpf")}
           keyboardType="numeric"
-          maxL
           // onBlur={() => {
           //   aplicar(inputs.cpf);
           // }}
-          maxLength={14}
+          maxLength={11}
         />
         <InputIcon
           name="senha"
@@ -436,6 +436,7 @@ const Cadastro = () => {
         />
         <View style={estilos.botoes}>
           <Button
+            key={"voltar"}
             back
             textBack
             title="Voltar"
@@ -443,7 +444,7 @@ const Cadastro = () => {
               navigation.navigate("Splash");
             }}
           />
-          <Button title="Avançar" onPress={validate} />
+          <Button key={"avancar"} title="Avançar" onPress={validate} />
         </View>
       </View>
     </Layout>
@@ -498,6 +499,7 @@ const estilos = StyleSheet.create({
   },
   selectContainer: {
     top: 15,
+    marginTop: 20,
   },
   selectContainerPessoal: {
     flexDirection: "row",
@@ -569,9 +571,9 @@ const estilos = StyleSheet.create({
     width: 20,
     height: 20,
   },
-  label:{
+  label: {
     textAlign: "center",
-  }
+  },
 });
 
 export default Cadastro;

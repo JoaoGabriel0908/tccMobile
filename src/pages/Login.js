@@ -20,8 +20,6 @@ import InputIcon from "../components/InputIcon";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
 
-
-
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
@@ -31,12 +29,6 @@ const Login = () => {
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
   const [cpf, setCpf] = React.useState("");
-
-
-  //function showCpf(){
-  //const unmasked = this.cpfField.getRawValue()
-
-  //}
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -114,13 +106,13 @@ const Login = () => {
   const Logar = async () => {
     try {
       const response = apiBlood.post("/loginUsuario", {
-        cpf: inputs.senha,
+        cpf: inputs.cpf,
         senha: inputs.senha,
       });
       navigation.navigate("Menu", { id: pessoa.id });
-      console.log("response", response);
     } catch (error) {
-      // error.response.inputs;
+      error.response.inputs;
+      alert('CPF ou senha inválidos!')
       console.log("error", error);
     }
   };
@@ -262,7 +254,7 @@ const estilos = StyleSheet.create({
   },
   Texto: {
     top: -175,
-    left: 90,
+    left: 80,
     fontSize: 15,
   },
   inputMask: {
