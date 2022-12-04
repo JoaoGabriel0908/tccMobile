@@ -11,17 +11,17 @@ import {
   Image,
 } from "react-native";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Campanhas from "../components/Campanhas";
 import COLORS from "../const/Colors";
 import HemoPaginaInicial from "../components/HemoPaginaInicial";
 import { useNavigation } from "@react-navigation/native";
 import apiBlood from "../service/apiBlood";
 import CardCampanha from "../components/CardCampanha";
+import { AuthContext } from "../contexts/Contexts";
 
 const PaginaInicial = ({ route }) => {
-  const { id } = route.params;
-  console.log(id);
+  const { userInfo } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -31,7 +31,7 @@ const PaginaInicial = ({ route }) => {
 
   useEffect(() => {
     apiBlood.get("/listarHemocentro").then((data) => {
-      // console.log(data.data);
+      console.log(data.data[0]);
       setHemocentro(data.data[0]);
     });
   }, []);
@@ -74,10 +74,9 @@ const PaginaInicial = ({ route }) => {
             bairro={hemocentro.bairro}
             numero={hemocentro.numero}
             onPress={() => {
-              navigation.navigate("PerfilHemo", [
-                { id: hemocentro.id },
-                { idDoador: route.params.id },
-              ]);
+              navigation.navigate("PerfilHemo", 
+                { id: hemocentro.id }
+              );
             }}
           />
         ))}

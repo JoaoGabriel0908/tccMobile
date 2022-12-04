@@ -6,7 +6,7 @@ import Terms from "../pages/Terms";
 import Cabecalho from "../components/Cabecalho";
 import Perfil from "../pages/Perfil";
 import Hemocentros from "../pages/Hemocentros";
-import Conquistas from "../pages/Conquistas";
+import Configuracao from "../pages/Configuracao";
 import Menu from "./BottomTabs";
 import EditarPerfil from "../pages/EditarPerfil";
 import PerfilHemo from "../pages/PerfilHemo";
@@ -16,6 +16,7 @@ import TelaAgendamento from "../pages/TelaAgendamento";
 import COLORS from "../const/Colors";
 import PaginaInicial from "../pages/PaginaInicial";
 import AgendamentoConcluido from "../pages/AgendamentoConcluido"
+import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
@@ -69,8 +70,8 @@ export default function Routes() {
         />
 
         <Stack.Screen
-          name="Conquistas"
-          component={Conquistas}
+          name="Configuracao"
+          component={Configuracao}
           options={{ headerShown: false }}
         />
 

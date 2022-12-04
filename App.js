@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import Routes from "./src/routes/routes";
 import { fonts, fontsToImport } from "./src/assets";
 import { useFonts } from '@expo-google-fonts/poppins/useFonts';
+import { AuthProvider } from "./src/contexts/Contexts";
+import AppNav from "./src/routes/AppNav";
 
 export default function App() {
 
@@ -14,9 +16,8 @@ export default function App() {
   if (!fontsLoaded) return <View><Text>App is loading...</Text></View> // TODO : add splash screen
   
   return (
-    <NavigationContainer>
-        <StatusBar backgroundColor='#AA1E1E' barStyle="ligh-content"/>
-        <Routes/>
-    </NavigationContainer>
+    <AuthProvider>
+      <AppNav />
+    </AuthProvider>
   );
 }

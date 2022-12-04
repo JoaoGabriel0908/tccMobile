@@ -23,12 +23,10 @@ import { AuthContext } from "../contexts/Contexts";
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
-  const navigate = useNavigation();
-  const auth = useContext(AuthContext);
-
+  const navigation = useNavigation();
+  const { login } = useContext(AuthContext);
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
-  const [cpf, setCpf] = React.useState("");
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -112,14 +110,13 @@ const Login = () => {
       navigation.navigate("Menu", { id: pessoa.id });
     } catch (error) {
       error.response.inputs;
-      alert('CPF ou senha inválidos!')
+      alert("CPF ou senha inválidos!");
       console.log("error", error);
     }
   };
 
   const optionsindividual = [{ text: "Lembrar-me", id: 1 }];
 
-  const navigation = useNavigation();
   return (
     <Layout>
       <Text style={estilos.Text}>Entrar</Text>
@@ -131,13 +128,12 @@ const Login = () => {
           placeholder=" CPF"
           type="cpf"
           maxLength={11}
-          onChangeText={(text, ) => handleOnChange(text, "cpf")}
+          onChangeText={(text) => handleOnChange(text, "cpf")}
           values={inputs.cpf}
           onFocus={() => {
             handleErrors(null, "cpf");
           }}
           error={errors.cpf}
-        
         />
       </View>
 
@@ -172,7 +168,10 @@ const Login = () => {
           key={pessoa.id}
           style={estilos.Button01}
           title="Entre"
-          onPress={validate}
+          onPress={() => {
+            login(inputs.cpf, inputs.senha);
+            navigation.navigate("Menu");
+          }}
         />
       </View>
 
@@ -271,5 +270,3 @@ const estilos = StyleSheet.create({
 });
 
 export default Login;
-
-

@@ -9,7 +9,7 @@ import CardHemo from "../components/CardHemo";
 
 const PerfilHemo = "../assets/Ellipse3.png";
 
-const Hemocentros = () => {
+const Hemocentros = ({data}) => {
   const navigation = useNavigation();
 
   const [hemocentro, setHemocentro] = useState([]);

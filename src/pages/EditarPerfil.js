@@ -9,7 +9,7 @@ import {
   TextInput,
 } from "react-native";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
@@ -18,16 +18,17 @@ import Input from "../components/Input";
 import COLORS from "../const/Colors";
 import Desativar from "./DesativarConta";
 import apiBlood from "../service/apiBlood";
+import { AuthContext } from "../contexts/Contexts";
 
 const person = "../assets/Ellipse8.png";
 
-const EditarPerfil = ({ route }) => {
+const EditarPerfil = () => {
   const navigation = useNavigation();
 
-  const { id } = route.params;
+  const { userInfo } = useContext(AuthContext);
 
   useEffect(() => {
-    apiBlood.get(`/listarDoadorId/${id}`).then((data) => {
+    apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {
       console.log(data.data);
       setInputs(data.data);
     });
@@ -44,7 +45,7 @@ const EditarPerfil = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    apiBlood.get(`/listarSexoPorDoador/${id}`).then((data) => {
+    apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data);
       setSexo(data.data[0]);
     });

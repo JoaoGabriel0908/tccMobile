@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Conquistas from "../pages/Conquistas";
 import PaginaInicial from "../pages/PaginaInicial";
 import Hemocentros from "../pages/Hemocentros";
 import Perfil from "../pages/Perfil";
@@ -10,22 +9,20 @@ import Cabecalho from "../components/Cabecalho";
 import EditarPerfil from "../pages/EditarPerfil";
 import PerfilHemo from "../pages/PerfilHemo";
 import apiBlood from "../service/apiBlood";
+import Configuracao from "../pages/Configuracao";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 const logo = "../assets/cuidados-de-saude(3)1.png";
 
 export default function Menu({ route, navigation }) {
-  const { id } = route.params;
 
-  const [pessoa, setPessoa] = useState({
-    id: "",
-    nome_completo: "",
-    email: "",
-    data_nascimento: "",
-    telefone_doador: "",
-  });
-
-  console.log(id);
+  // const [pessoa, setPessoa] = useState({
+  //   id: "",
+  //   nome_completo: "",
+  //   email: "",
+  //   data_nascimento: "",
+  //   telefone_doador: "",
+  // });
 
   // useEffect(() => {
   //   apiBlood.get("/listarUsuario").then((data) => {
@@ -39,7 +36,7 @@ export default function Menu({ route, navigation }) {
   return (
     <Navigator initialRouteName="Pagina Inicial">
       <Screen
-        initialParams={{id}}
+        // initialParams={{id}}
         name="Pagina Inicial"
         component={PaginaInicial}
         options={{
@@ -76,7 +73,7 @@ export default function Menu({ route, navigation }) {
       <Screen
         name="Perfil"
         component={Perfil}
-        initialParams={{id}}
+        // initialParams={{id}}
         options={{
           headerTitle: () => <Cabecalho name="Perfil" />,
           headerTitleAlign: "center",
@@ -93,7 +90,7 @@ export default function Menu({ route, navigation }) {
       />
       <Screen
         name="Configurações"
-        component={Conquistas}
+        component={Configuracao}
         options={{
           headerTitle: () => <Cabecalho name="Configurações" />,
           headerTitleAlign: "center",

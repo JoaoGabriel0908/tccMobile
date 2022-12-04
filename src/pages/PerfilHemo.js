@@ -28,8 +28,7 @@ const PerfilHemo = ({ route }) => {
 
   console.log(route);
 
-  const { id } = route.params[0];
-  const { idDoador } = route.params[1];
+  const { id } = route.params;
 
   const [hemocentro, setHemocentro] = useState([
     {
