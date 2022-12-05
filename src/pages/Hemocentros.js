@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import COLORS from "../const/Colors";
 import Input from "../components/Input";
@@ -9,55 +16,67 @@ import CardHemo from "../components/CardHemo";
 
 const PerfilHemo = "../assets/Ellipse3.png";
 
-const Hemocentros = ({data}) => {
+const Hemocentros = ({ data }) => {
   const navigation = useNavigation();
 
   const [hemocentro, setHemocentro] = useState([]);
+  const [hemocentroFiltrado, setHemocentroFiltrado] = useState([]);
+  const [searchText, setSearchText] = useState([]);
 
   useEffect(() => {
     apiBlood.get("/listarHemocentro").then((data) => {
       console.log(data.data[0]);
       setHemocentro(data.data[0]);
+      setHemocentroFiltrado(data.data[0]);
     });
   }, []);
 
+  const getItemLayout = (campanha, index) => {
+    return { length: 201, offset: 161 * index, index };
+  };
+
+  const searchFilterText = (text) => {
+    if(text) {
+      const newData = hemocentro.filter((item) => {
+        const itemData = item.cidade ? item.cidade : ''
+        const textData = text
+        return itemData.indexOf(textData) > -1
+      });
+      setHemocentroFiltrado(newData)
+      setSearchText(text)
+    } else {
+      setHemocentroFiltrado(hemocentro)
+      setSearchText(text)
+    }
+  }
+
   return (
-    <ScrollView>
-      <SafeAreaView style={estilos.container}>
-        <View>
-          <Input
-            name={null}
-            placeholder="Pesquise hemocentros perto de você"
-            // value={inputs.nomeCompleto}
-            iconName="magnify"
-            // error={errors.nomeCompleto}
-            onFocus={() => {
-              handleErrors(null, "nomeCompleto");
-            }}
-            keyboardType="default"
-            onChangeText={(text) => handleOnChange(text, "nomeCompleto")}
-          />
-        </View>
-        <View style={{ alignItems: "center" }}>
-          {hemocentro.map((hemocentro) => (
-            <CardHemo
-              key={hemocentro.id}
-              fotoHemo={hemocentro.foto_capa}
-              hemoNome={hemocentro.nome_unidade}
-              logradouro={hemocentro.logradouro}
-              estado={hemocentro.estado}
-              cidade={hemocentro.cidade}
-              cep={hemocentro.cep}
-              bairro={hemocentro.bairro}
-              numero={hemocentro.numero}
-              onPress={() => {
-                navigation.navigate("PerfilHemo", { id: hemocentro.id });
-              }}
-            />
-          ))}
-        </View>
-      </SafeAreaView>
-    </ScrollView>
+    <SafeAreaView style={estilos.container}>
+      <View style={{height: 150,}}>
+        <Input
+          name={null}
+          placeholder="Pesquise hemocentros perto de você"
+          // value={inputs.nomeCompleto}
+          iconName="magnify"
+          // error={errors.nomeCompleto}
+          // onFocus={() => {
+          //   handleErrors(null, "nomeCompleto");
+          // }}
+          keyboardType="default"
+          onChangeText={(s) => searchFilterText(s)}
+          value={searchText}
+        />
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <FlatList
+          data={hemocentroFiltrado}
+          keyExtractor={(item) => `${item.id}`}
+          renderItem={({ item }) => <CardHemo data={item} />}
+          nestedScrollEnabled
+          showsVerticalScrollIndicator={true}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
 

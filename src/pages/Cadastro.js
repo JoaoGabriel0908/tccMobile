@@ -22,12 +22,13 @@ import Checkbox from "expo-checkbox";
 
 const Cadastro = () => {
   const navigation = useNavigation();
+  const [searchText, setSearchText] = useState([]);
   const [cidades, setCidade] = useState([]);
-  const [cidadesFiltradas, setCidadeFiltradas] = useState([]);
+  const [cidadesFiltradas, setCidadeFiltradas] = useState();
   const [estados, setEstado] = useState([]);
   const [sexo, setSexo] = useState([]);
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
-
+  const [isChecked, setChecked] = useState(false);
 
   useEffect(() => {
     apiBlood.get("/listarTipoSanguineo").then((data) => {
@@ -67,9 +68,9 @@ const Cadastro = () => {
 
   const buscarCidades = (id) => {
     apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
-      console.log(data.data[0]);
+      console.log(data.data);
       setCidade(data.data);
-      setCidadeFiltradas(data.data)
+      setCidadeFiltradas(data.data);
     });
   };
 
@@ -204,7 +205,7 @@ const Cadastro = () => {
       });
       navigation.navigate("Terms");
     } catch (error) {
-      alert('Insira todas as informações necessárias')
+      alert("Insira todas as informações necessárias");
       error.response.data;
     }
   };
@@ -215,23 +216,24 @@ const Cadastro = () => {
   // }, [inputs.id_estado]);
 
   const onChangeValue = (itemSelected, index) => {
-    console.log(itemSelected);
     const newCity = cidades.map((item) => {
       console.log(itemSelected.id);
       if (item.id == itemSelected.id) {
         return {
           ...item,
           selected: !item.selected,
-          setChecked: true,
+          setChecked: false,
         };
       }
       return {
         ...item,
         selected: item.selected,
-        setChecked: false,
+        setChecked: true,
+        
       };
     });
     setCidade(newCity);
+    setCidadeFiltradas(newCity);
   };
 
   const renderItem = ({ item, index }) => {
@@ -253,7 +255,7 @@ const Cadastro = () => {
   };
 
   const onPressShowItemSelected = () => {
-    const listSelected = cidades.filter((item) => item.selected == true);
+    const listSelected = cidadesFiltradas.filter((item) => item.selected == true);
     console.log(listSelected);
     let contentAlert = "";
     listSelected.forEach((item) => {
@@ -266,9 +268,19 @@ const Cadastro = () => {
     return uniqueId;
   };
 
-  function search(s) {
-    let arr = JSON.parse(JSON.stringify(cidadesFiltradas))
-    setCidade(arr.filter(city => city.cidade.includes(s)))
+  const searchFilterText = (text) => {
+    if(text) {
+      const newData = cidades.filter((item) => {
+        const itemData = item.cidade ? item.cidade : ''
+        const textData = text
+        return itemData.indexOf(textData) > -1
+      });
+      setCidadeFiltradas(newData)
+      setSearchText(text)
+    } else {
+      setCidadeFiltradas(cidades)
+      setSearchText(text)
+    }
   }
 
   return (
@@ -354,13 +366,14 @@ const Cadastro = () => {
           <View style={estilos.formContainer}>
             <View style={estilos.id_cidade_doacao}>
               <Select
-                onChangeText={(s) => search(s)}
+                onChangeText={(s) => searchFilterText(s)}
+                value={searchText}
                 key={"cidades"}
-                options={cidades}
+                // options={cidades}
                 keyExtractor={(item) => `key-${item.id}`}
                 renderItem={renderItem}
                 onChangeSelect={(id) => alert(id)}
-                data={cidades}
+                data={cidadesFiltradas}
                 text="Selecione a cidade de doação"
                 onPress={onPressShowItemSelected}
               />

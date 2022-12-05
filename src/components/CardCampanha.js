@@ -44,7 +44,7 @@ const estilos = StyleSheet.create({
   },
   imagem: {
     width: '100%',
-    height: '80%',
+    height: '70%',
     borderRadius: 10,
   },
   titulo: {

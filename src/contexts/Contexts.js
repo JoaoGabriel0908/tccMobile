@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (cpf, senha) => {
     setLoading(true);
+    console.log(cpf, senha);
     apiBlood
       .post("/loginUsuario", {
         cpf,
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         AsyncStorage.setItem("userToken", userInfo.token);
 
+        console.log(userToken)
         console.log(userInfo);
         navigation.navigate("Menu")
         // console.log("Token e id do usuário" + userInfo.token);
@@ -50,9 +52,11 @@ export const AuthProvider = ({ children }) => {
       let userToken = await AsyncStorage.getItem("userToken");
       let userInfo = await AsyncStorage.getItem("userInfo");
       userInfo = JSON.parse(userInfo);
+      console.log(userInfo);
       if (userInfo) {
         setToken(userToken);
         setUserInfo(userInfo);
+        console.log(userToken);
       }
       setLoading(false);
     } catch (err) {

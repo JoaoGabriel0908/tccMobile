@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import Button from "../components/Button";
 import COLORS from "../const/Colors";
+import { useNavigation } from "@react-navigation/native";
 
 const Perfil = "../assets/Ellipse3.png";
 
@@ -21,17 +22,26 @@ const CardHemo = ({
   estado,
   cep,
   fotoHemo,
+
+  data,
 }) => {
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity onPress={onPress} style={estilos.container}>
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("PerfilHemo", { id: data.id_unidade_hemocentro });
+      }}
+      style={estilos.container}
+    >
       <View style={estilos.containerText}>
-        <Image style={estilos.image} source={{ uri: fotoHemo }} />
+        <Image style={estilos.image} source={{ uri: data.foto_capa }} />
         <View style={{ alignItems: "center" }}>
           <View style={estilos.tituloCor}>
-            <Text style={estilos.titulo}>{hemoNome}</Text>
+            <Text style={estilos.titulo}>{data.nome_sede}</Text>
           </View>
           <Text style={estilos.descricao}>
-            {logradouro} {numero} - {bairro}, {cidade} - {estado}, {cep}
+            {data.logradouro} {data.numero} - {data.bairro}, {data.cidade} - {data.estado}, {data.cep}
           </Text>
         </View>
       </View>

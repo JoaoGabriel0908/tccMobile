@@ -21,6 +21,7 @@ const Select = ({
   text,
   renderItem,
   data,
+  value,
   onChangeText = () => {},
   keyExtractor = () => {},
   onPress = () => {},
@@ -57,7 +58,7 @@ const Select = ({
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
             </TouchableOpacity>
-            <Input placeholder={'Pesquise sua cidade'} onChangeText={onChangeText}/> 
+            <Input placeholder={'Pesquise sua cidade'} value={value} onChangeText={onChangeText}/> 
             <FlatList
               style={estilos.list}
               data={data}

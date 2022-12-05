@@ -28,6 +28,8 @@ const Login = () => {
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
 
+  const { userInfo } = useContext(AuthContext);
+
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
   const handleErrors = (errorMessage, input) => {
@@ -157,7 +159,7 @@ const Login = () => {
           key="checkbox"
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
+          // onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
           style={estilos.button2}
         >
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
@@ -170,7 +172,7 @@ const Login = () => {
           title="Entre"
           onPress={() => {
             login(inputs.cpf, inputs.senha);
-            navigation.navigate("Menu");
+            navigation.navigate("Menu", {id: userInfo. id});
           }}
         />
       </View>

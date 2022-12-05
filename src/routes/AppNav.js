@@ -6,6 +6,7 @@ import Routes from "./routes";
 import { fonts, fontsToImport } from "../../src/assets";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { AuthContext } from "../contexts/Contexts";
+import Login from "../pages/Login";
 import Menu from "./BottomTabs";
 
 const AppNav = () => {
@@ -35,7 +36,7 @@ const AppNav = () => {
       ) : (
         <>
           <StatusBar backgroundColor="#AA1E1E" barStyle="ligh-content" />
-          <Routes />
+          <Menu />
         </>
       )}
     </NavigationContainer>

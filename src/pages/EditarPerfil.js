@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 
 import React, { useEffect, useState, useContext } from "react";
@@ -19,11 +20,19 @@ import COLORS from "../const/Colors";
 import Desativar from "./DesativarConta";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
+import Select from "../components/Select";
+import Checkbox from "expo-checkbox";
 
 const person = "../assets/Ellipse8.png";
 
 const EditarPerfil = () => {
   const navigation = useNavigation();
+
+  const [cidades, setCidade] = useState([]);
+  const [cidadesFiltradas, setCidadeFiltradas] = useState([]);
+  const [sexo, setSexo] = useState([]);
+  const [tipoSanguineo, setTipoSanguineo] = useState([]);
+  const [estados, setEstado] = useState([]);
 
   const { userInfo } = useContext(AuthContext);
 
@@ -33,26 +42,45 @@ const EditarPerfil = () => {
       setInputs(data.data);
     });
 
-    // apiBlood.get("/listarSexo").then((data) => {
-    //   console.log(data.data[0]);
-    //   setSexo(data.data);
-    // });
+    apiBlood.get("/listarSexo").then((data) => {
+      // console.log(data.data[0]);
+      setSexo(data.data);
+    });
 
     apiBlood.get("/listarTipoSanguineo").then((data) => {
-      console.log(data.data);
+      // console.log(data.data);
       setTipoSanguineo(data.data);
     });
-  }, []);
 
-  useEffect(() => {
-    apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
-      console.log(data.data);
-      setSexo(data.data[0]);
+    apiBlood.get("/listarEstados").then((data) => {
+      console.log(data.data[0]);
+      setEstado(data.data);
     });
   }, []);
 
-  const [sexo, setSexo] = useState([]);
-  const [tipoSanguineo, setTipoSanguineo] = useState([]);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
+  //     console.log(data.data);
+  //     setSexo(data.data[0]);
+  //   });
+  // }, []);
+
+  const handleChangeEstado = (key, value) => {
+    buscarCidades(value);
+    setInputs({
+      ...inputs,
+      [key]: value,
+    });
+  };
+
+  const buscarCidades = (id) => {
+    apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
+      console.log(data.data);
+      setCidade(data.data);
+      setCidadeFiltradas(data.data);
+    });
+  };
+
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
@@ -129,6 +157,62 @@ const EditarPerfil = () => {
       navigation.goBack();
     } catch (error) {}
   };
+
+  const onChangeValue = (itemSelected, index) => {
+    console.log(itemSelected);
+    const newCity = cidades.map((item) => {
+      console.log(itemSelected.id);
+      if (item.id == itemSelected.id) {
+        return {
+          ...item,
+          selected: !item.selected,
+        };
+      }
+      return {
+        ...item,
+        selected: item.selected,
+      };
+    });
+    setCidade(newCity);
+  };
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <View style={estilos.item}>
+        <Text>{item.cidade}</Text>
+        <Checkbox
+          style={estilos.checkbox}
+          onAnimationType="fill"
+          key={"checkbox"}
+          disabled={false}
+          offAnimationType="fade"
+          boxType="square"
+          value={item.selected ? true : false}
+          onValueChange={() => onChangeValue(item, index)}
+        />
+      </View>
+    );
+  };
+
+  const onPressShowItemSelected = () => {
+    const listSelected = cidades.filter((item) => item.selected == true);
+    console.log(listSelected);
+    let contentAlert = "";
+    listSelected.forEach((item) => {
+      contentAlert = contentAlert + `${item.id} . ` + item.cidade + "\n";
+    });
+    const uniqueId = listSelected.map((item) => item.id);
+    console.log(uniqueId);
+    Alert.alert(contentAlert);
+    handleChangeInputs("id_cidade_doacao", uniqueId);
+    return uniqueId;
+  };
+
+  function search(s) {
+    let arr = JSON.parse(JSON.stringify(cidadesFiltradas));
+    setCidade(arr.filter((city) => city.cidade.includes(s)));
+    setCidade(arr)
+  }
 
   return (
     <ScrollView>
@@ -237,12 +321,43 @@ const EditarPerfil = () => {
         </View>
         <View style={estilos.cidadeContainer}>
           <Text style={estilos.titleEstado}>Estado</Text>
-          <TextInput style={estilos.inputEstado} />
+          <Picker
+            key={"estado"}
+            onFocus={() => {
+              handleErrors(null, "id_estadoDoacao");
+            }}
+            selectedValue={inputs.id_estado}
+            onValueChange={(itemValue) =>
+              handleChangeEstado("id_estado", itemValue)
+            }
+          >
+            {estados.map((id_estado) => {
+              return (
+                <Picker.Item
+                  key={id_estado.id}
+                  label={id_estado.uf}
+                  value={id_estado.id}
+                />
+              );
+            })}
+          </Picker>
         </View>
         <View style={estilos.cidadeContainer}>
           <Text style={estilos.titleCidades}>Cidades que pretende doar </Text>
-          <TextInput style={estilos.inputCidade} />
-
+          <View style={{height: 20}}>
+          <Select
+            onChangeText={(s) => search(s)}
+            key={"cidades"}
+            options={cidades}
+            keyExtractor={(item) => `key-${item.id}`}
+            renderItem={renderItem}
+            onChangeSelect={(id) => alert(id)}
+            data={cidades}
+            text="Selecione a cidade de doação"
+            onPress={onPressShowItemSelected}
+          />
+          </View>
+          
           <Text style={estilos.subtitle}>Dados de contato</Text>
           <Text style={estilos.title}>Celular</Text>
           <Input
@@ -268,8 +383,8 @@ const EditarPerfil = () => {
             }}
           />
           <View style={estilos.btn}>
-            <Desativar />
             <Button title="Editar" onPress={validate} />
+            <Desativar />
           </View>
         </View>
       </View>
