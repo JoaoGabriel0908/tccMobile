@@ -6,14 +6,13 @@ import apiBlood from "../service/apiBlood";
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoading, setLoading] = useState();
+  const [isLoading, setLoading] = useState(false);
   const [userToken, setToken] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   //   const [id, setId] = useState(null);
 
   const login = (cpf, senha) => {
     setLoading(true);
-    console.log(cpf, senha);
     apiBlood
       .post("/loginUsuario", {
         cpf,
@@ -41,8 +40,8 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setLoading(true);
     setToken(null);
-    AsyncStorage.removeItem("UserInfo");
     AsyncStorage.removeItem("userToken");
+    AsyncStorage.removeItem("UserInfo");
     setLoading(false);
   };
 
@@ -56,7 +55,7 @@ export const AuthProvider = ({ children }) => {
       if (userInfo) {
         setToken(userToken);
         setUserInfo(userInfo);
-        console.log(userToken);
+        console.log(userInfo);
       }
       setLoading(false);
     } catch (err) {

@@ -7,6 +7,7 @@ import { fonts, fontsToImport } from "../../src/assets";
 import { useFonts } from "@expo-google-fonts/poppins/useFonts";
 import { AuthContext } from "../contexts/Contexts";
 import Login from "../pages/Login";
+import Splash from "../pages/Splash";
 import Menu from "./BottomTabs";
 
 const AppNav = () => {
@@ -14,9 +15,11 @@ const AppNav = () => {
   let [fontsLoaded] = useFonts(fontsToImport);
 
   if (isLoading) {
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <ActivityIndicator size={"large"} />
-    </View>;
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size={"large"} />
+      </View>
+    );
   }
 
   if (!fontsLoaded)
@@ -36,7 +39,7 @@ const AppNav = () => {
       ) : (
         <>
           <StatusBar backgroundColor="#AA1E1E" barStyle="ligh-content" />
-          <Menu />
+          <Routes />
         </>
       )}
     </NavigationContainer>
