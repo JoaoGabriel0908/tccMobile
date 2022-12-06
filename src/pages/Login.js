@@ -19,15 +19,23 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import InputIcon from "../components/InputIcon";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
+import Routes from "../routes/routes";
 
 const fundo = "../assets/fundo.png";
 
 const Login = () => {
   const navigation = useNavigation();
-  const { login } = useContext(AuthContext);
+  const { login, isLogin } = useContext(AuthContext);
 
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
+
+    useEffect(() => {
+    apiBlood.get("/listarDoador").then((data) => {
+      console.log(data.data[0]);
+      setPessoa(data.data[0]);
+    });
+  }, []);
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -42,8 +50,8 @@ const Login = () => {
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
-    cpf: "",
-    senha: "",
+    cpf: "25497863299",
+    senha: "conseguiPoha",
   });
 
   console.log(inputs);
@@ -163,7 +171,7 @@ const Login = () => {
           title="Entre"
           onPress={() => {
             login(inputs.cpf, inputs.senha);
-            // navigation.navigate("Menu");
+            {isLogin === true ? navigation.navigate("Menu") : <Routes />}
           }}
         />
       </View>

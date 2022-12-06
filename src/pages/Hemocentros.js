@@ -52,7 +52,7 @@ const Hemocentros = ({ data }) => {
 
   return (
     <SafeAreaView style={estilos.container}>
-      <View style={{height: 150,}}>
+      <View style={{height: 150}}>
         <Input
           name={null}
           placeholder="Pesquise hemocentros perto de você"

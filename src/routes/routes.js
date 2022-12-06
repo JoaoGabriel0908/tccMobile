@@ -15,7 +15,7 @@ import Campanhas from "../components/Campanhas";
 import TelaAgendamento from "../pages/TelaAgendamento";
 import COLORS from "../const/Colors";
 import PaginaInicial from "../pages/PaginaInicial";
-import AgendamentoConcluido from "../pages/AgendamentoConcluido"
+import AgendamentoConcluido from "../pages/AgendamentoConcluido";
 import { NavigationContainer } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();

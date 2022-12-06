@@ -9,7 +9,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import COLORS from "../const/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -18,26 +18,13 @@ import Input from "../components/Input";
 import { useNavigation } from "@react-navigation/native";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import apiBlood from "../service/apiBlood";
+import { AuthContext } from "../contexts/Contexts";
 
 const fundo = "../assets/fundo.png";
 
 const TelaAgendamento = ({ route }) => {
-  const { id } = route.params[0];
-  const { idDoador } = route.params[1];
-
-  // useEffect(() => {
-  //   apiBlood.get(`/listarHemocentroPorId/${id}`).then((data) => {
-  //     console.log(data.data[0]);
-  //     setHemocentro(data.data[0]);
-  //   });
-  // }, []);
-
-  useEffect(() => {
-    apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
-      console.log(data.data[0]);
-      setHemocentro(data.data[0]);
-    });
-  }, []);
+  const { id } = route.params;
+  const { userInfo } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
@@ -47,6 +34,21 @@ const TelaAgendamento = ({ route }) => {
   const [text, setText] = useState("");
   const [hour, setHour] = useState("");
   const [hemocentro, setHemocentro] = useState([]);
+  const [dias, setDias] = useState([]);
+
+  useEffect(() => {
+    apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
+      console.log(data.data[0]);
+      setHemocentro(data.data[0]);
+    });
+  }, []);
+
+  useEffect(() => {
+    apiBlood.get("/diasDisponiveis").then((data) => {
+      console.log(data.data);
+      setDias(data.data);
+    });
+  }, []);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -61,7 +63,8 @@ const TelaAgendamento = ({ route }) => {
       "-" +
       tempDate.getDate();
 
-    let formatTime = tempDate.getHours() + ":" + tempDate.getMinutes() + tempDate.getSeconds();
+    let formatTime =
+      tempDate.getHours() + ":" + tempDate.getMinutes() + tempDate.getSeconds();
 
     setText(formatDate);
     setHour(formatTime);
@@ -86,7 +89,7 @@ const TelaAgendamento = ({ route }) => {
     hemocentro: id,
     data_agenda: "",
     hora_agenda: "08:00:00",
-    id_doador: idDoador,
+    id_doador: userInfo.id,
     tipoServico: 0,
   });
 
@@ -94,21 +97,21 @@ const TelaAgendamento = ({ route }) => {
     let validate = true;
 
     if (validate) {
-      console.log(inputs);
+      // console.log(inputs);
       agendar();
     }
   };
-  console.log(inputs);
+  // console.log(inputs);
   const agendar = () => {
     try {
       const response = apiBlood.post("/CadastrarConsulta", {
         data_agendada_doador: inputs.data_agenda,
         hora: inputs.hora_agenda,
         id_tipo_servico: inputs.tipoServico,
-        id_doador: inputs.id_doador,
+        id_doador: inputs.userInfo.id,
         id_unidade_hemocentro: inputs.hemocentro,
       });
-      console.log(response)
+      console.log(response);
     } catch (error) {
       error.response.data;
     }
@@ -172,6 +175,13 @@ const TelaAgendamento = ({ route }) => {
               })}
             </Picker>
           </View>
+        </View>
+        <View>
+          <Picker style={{backgroundColor: COLORS.vermelhoClaro, width: 300}}>
+            {dias.map((dia) => {
+              return <Picker.Item label={dia.data_coleta} />
+            })}
+          </Picker>
         </View>
         <View style={estilos.button}>
           <Button title="Agendar" onPress={validate} />

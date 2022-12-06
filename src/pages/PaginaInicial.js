@@ -77,7 +77,7 @@ const PaginaInicial = ({ route }) => {
               navigation.navigate("PerfilHemo", 
                 { id: hemocentro.id }
               );
-            }}
+            }}x
           />
         ))}
       </SafeAreaView>

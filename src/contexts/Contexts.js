@@ -8,6 +8,7 @@ export const AuthProvider = ({children}) =>{
   const [isLoading, setisLoading] = useState(false)
   const [userToken, setUserToken] = useState(null)
   const [userInfo, setUserInfo] = useState(null)
+  const [isLogin, setisLogin] = useState(false)
 
   const login = (cpf, senha) =>{
     setisLoading(true)
@@ -23,6 +24,7 @@ export const AuthProvider = ({children}) =>{
       AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
       AsyncStorage.setItem('userToken', userInfo.token)
       console.log(userInfo)
+      setisLogin(true)
     })
     .catch(e => {
       console.log(`Login error: ${e.message}`)
@@ -45,6 +47,7 @@ export const AuthProvider = ({children}) =>{
       let userToken = await AsyncStorage.getItem('userToken')
       setUserToken(userToken)
       setisLoading(false)
+      setisLogin(true)
     } catch(e){
       console.log("isLoggedIn error: " + e)
     }
@@ -55,7 +58,7 @@ export const AuthProvider = ({children}) =>{
   }, [])
 
   return (
-    <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo}}>
+    <AuthContext.Provider value={{login, logout, isLoading, userToken, userInfo, isLogin}}>
       {children}
     </AuthContext.Provider>
 

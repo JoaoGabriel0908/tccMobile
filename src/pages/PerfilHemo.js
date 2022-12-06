@@ -30,13 +30,7 @@ const PerfilHemo = ({ route }) => {
 
   const { id } = route.params;
 
-  const [hemocentro, setHemocentro] = useState([
-    {
-      id: "",
-      nome_unidade: "",
-      nome_sede: "",
-    },
-  ]);
+  const [hemocentro, setHemocentro] = useState([]);
 
   const [servico, setServico] = useState([]);
   const [estoque, setEstoque] = useState([]);
@@ -50,9 +44,9 @@ const PerfilHemo = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    apiBlood.get("/listarTipoServico/").then((servico) => {
-      setServico(servico.data);
-      console.log(servico.data);
+    apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
+      // console.log(data.data);
+      setServico(data.data[0]);
     });
   }, []);
 
@@ -63,7 +57,6 @@ const PerfilHemo = ({ route }) => {
   }, []);
 
   const [refFlatList, setRefFlatList] = useState();
-
   useEffect(() => {
     getList();
     return () => {};
@@ -72,7 +65,7 @@ const PerfilHemo = ({ route }) => {
   const getList = () => {
     apiBlood.get(`/listarCampanhas/${id}`).then((campanha) => {
       setCampanha(campanha.data);
-      console.log(campanha.data);
+      // console.log(campanha.data);
     });
   };
 
@@ -91,10 +84,9 @@ const PerfilHemo = ({ route }) => {
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento", [
-                { id: hemocentro.id },
-                { idDoador },
-              ]);
+              navigation.navigate("TelaAgendamento",  
+                { id: hemocentro.id }
+              );
             }}
           />
         </View>

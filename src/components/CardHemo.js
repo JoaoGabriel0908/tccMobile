@@ -38,7 +38,7 @@ const CardHemo = ({
         <Image style={estilos.image} source={{ uri: data.foto_capa }} />
         <View style={{ alignItems: "center" }}>
           <View style={estilos.tituloCor}>
-            <Text style={estilos.titulo}>{data.nome_sede}</Text>
+            <Text style={estilos.titulo}>{data.nome_unidade}</Text>
           </View>
           <Text style={estilos.descricao}>
             {data.logradouro} {data.numero} - {data.bairro}, {data.cidade} - {data.estado}, {data.cep}
