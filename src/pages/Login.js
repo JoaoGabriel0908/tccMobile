@@ -25,6 +25,7 @@ const fundo = "../assets/fundo.png";
 const Login = () => {
   const navigation = useNavigation();
   const { login } = useContext(AuthContext);
+
   const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
 
@@ -60,13 +61,6 @@ const Login = () => {
       ({ ...prevState, [input]: text })
     );
   };
-
-  useEffect(() => {
-    apiBlood.get("/listarDoador").then((data) => {
-      console.log(data.data[0]);
-      setPessoa(data.data[0]);
-    });
-  }, []);
 
   const secureText = (password) => {
     const regexUppercase = RegExp(/ˆ(?=.*[A-Z]).+$/);
@@ -136,7 +130,6 @@ const Login = () => {
           error={errors.cpf}
         />
       </View>
-
       <Text style={estilos.title}></Text>
       <InputIcon
         key={"senha"}
@@ -170,7 +163,7 @@ const Login = () => {
           title="Entre"
           onPress={() => {
             login(inputs.cpf, inputs.senha);
-            navigation.navigate("Menu");
+            // navigation.navigate("Menu");
           }}
         />
       </View>

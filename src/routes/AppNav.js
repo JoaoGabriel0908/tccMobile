@@ -1,19 +1,14 @@
-import React, { useContext } from "react";
-
-import { StatusBar, View, Text, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import Routes from "./routes";
-import { fonts, fontsToImport } from "../../src/assets";
-import { useFonts } from "@expo-google-fonts/poppins/useFonts";
+import React, { useContext } from "react";
+import { ActivityIndicator, StatusBar, View } from "react-native";
+import COLORS from "../const/Colors";
 import { AuthContext } from "../contexts/Contexts";
-import Login from "../pages/Login";
-import Splash from "../pages/Splash";
+import Configuracao from "../pages/Configuracao";
 import Menu from "./BottomTabs";
+import Routes from "./routes";
 
 const AppNav = () => {
-  const { isLoading, userToken, userId } = useContext(AuthContext);
-  let [fontsLoaded] = useFonts(fontsToImport);
-
+  const { isLoading, userToken } = useContext(AuthContext);
   if (isLoading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -22,26 +17,10 @@ const AppNav = () => {
     );
   }
 
-  if (!fontsLoaded)
-    return (
-      <View>
-        <Text>App is loading...</Text>
-      </View>
-    );
-
   return (
     <NavigationContainer>
-      {userToken !== null ? (
-        <>
-          <StatusBar backgroundColor="#AA1E1E" barStyle="ligh-content" />
-          <Routes />
-        </>
-      ) : (
-        <>
-          <StatusBar backgroundColor="#AA1E1E" barStyle="ligh-content" />
-          <Routes />
-        </>
-      )}
+      <StatusBar backgroundColor={COLORS.vermelhoClaro} />
+      {userToken !== null ? <Configuracao/> : <Routes />}
     </NavigationContainer>
   );
 };
