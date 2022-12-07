@@ -340,7 +340,6 @@ const Cadastro = () => {
           <View style={estilos.id_tipo_sanguineo}>
             <Picker
               placeholder="Tipo sanguineo"
-              key={"TipoSanguineo"}
               onFocus={() => {
                 handleErrors(null, "id_tipo_sanguineo");
               }}

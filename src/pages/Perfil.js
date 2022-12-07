@@ -22,23 +22,14 @@ const Perfil = ({ route, key }) => {
       console.log(data.data);
       setPessoa(data.data);
     });    
-  }, []);
-
-  useEffect(() => {
     apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data[0]);
     });
-  }, []);
-
-  useEffect(() => {
     apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0][0]);
       setSexo(data.data[0][0]);
     });
-  }, []);
-
-  useEffect(() => {
     apiBlood.get(`/listarSanguePorUsuario/${userInfo.id}`).then((data) => {
       console.log(data.data[0][0]);
       setSangue(data.data[0][0]);
@@ -60,6 +51,8 @@ const Perfil = ({ route, key }) => {
           email={pessoa.email}
           celular={pessoa.telefone_doador}
           cidadesEscolhidas={cidade.map((cidade) => cidade.cidade).join(" | ")}
+          data_nascimento={pessoa.data_nascimento}
+          
         />
       </View>
     </ScrollView>

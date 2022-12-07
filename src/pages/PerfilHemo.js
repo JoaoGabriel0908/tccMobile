@@ -155,6 +155,7 @@ const PerfilHemo = ({ route }) => {
                       color: COLORS.vermelhoEscuro,
                       fontFamily: "Poppins_700Bold",
                     }}
+                    key={estoque.id}
                   >
                     {estoque.nivel}!
                   </Text>

@@ -12,6 +12,7 @@ import {
 
 import React, { useEffect, useState, useContext } from "react";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 import Button from "../components/Button";
@@ -33,6 +34,10 @@ const EditarPerfil = () => {
   const [sexo, setSexo] = useState([]);
   const [tipoSanguineo, setTipoSanguineo] = useState([]);
   const [estados, setEstado] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [text, setText] = useState("");
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState("date");
 
   const { userInfo } = useContext(AuthContext);
 
@@ -53,17 +58,10 @@ const EditarPerfil = () => {
     });
 
     apiBlood.get("/listarEstados").then((data) => {
-      console.log(data.data[0]);
+      console.log(data.data);
       setEstado(data.data);
     });
   }, []);
-
-  // useEffect(() => {
-  //   apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
-  //     console.log(data.data);
-  //     setSexo(data.data[0]);
-  //   });
-  // }, []);
 
   const handleChangeEstado = (key, value) => {
     buscarCidades(value);
@@ -73,12 +71,41 @@ const EditarPerfil = () => {
     });
   };
 
+  useEffect(() => {
+    apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
+      console.log(data.data[0]);
+      setCidadeFiltradas(data.data[0]);
+    });
+  }, []);
+
   const buscarCidades = (id) => {
     apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
       console.log(data.data);
       setCidade(data.data);
-      setCidadeFiltradas(data.data);
     });
+  };
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === "ios");
+    setDate(currentDate);
+
+    let tempDate = new Date(currentDate);
+    let formatDate =
+      tempDate.getFullYear() +
+      "-" +
+      (tempDate.getMonth() + 1) +
+      "-" +
+      tempDate.getDate();
+
+    setText(formatDate);
+
+    handleChangeInputs("data_nascimento", text);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
   };
 
   const [inputs, setInputs] = React.useState({
@@ -148,18 +175,29 @@ const EditarPerfil = () => {
     console.log(errors);
   };
 
+  console.log(inputs);
+
   const editar = () => {
     try {
-      const response = apiLivraria.put(`/uptadeUsuario/${id}`, {
+      const response = apiBlood.put(`/updateUsuario/${userInfo.id}`, {
         nome_completo: inputs.nome_completo,
         email: inputs.email,
+        telefone_doador: inputs.telefone_doador,
+        data_nascimento: inputs.data_nascimento,
+        id_cidade_doacao: inputs.id_cidade_doacao,
+        id_estado: inputs.id_estado,
+        id_sexo: inputs.id_sexo,
+        id_tipo_sanguineo: inputs.id_tipo_sanguineo,
+        id_cidade: inputs.id_cidade_doacao
       });
       navigation.goBack();
-    } catch (error) {}
+    } catch (error) {
+      console.log(`error ${error}`);
+    }
   };
 
   const onChangeValue = (itemSelected, index) => {
-    console.log(itemSelected);
+    // console.log(itemSelected);
     const newCity = cidades.map((item) => {
       console.log(itemSelected.id);
       if (item.id == itemSelected.id) {
@@ -211,7 +249,7 @@ const EditarPerfil = () => {
   function search(s) {
     let arr = JSON.parse(JSON.stringify(cidadesFiltradas));
     setCidade(arr.filter((city) => city.cidade.includes(s)));
-    setCidade(arr)
+    setCidade(arr);
   }
 
   return (
@@ -306,8 +344,20 @@ const EditarPerfil = () => {
               // Tirando a mensagem de erro
               handleErrors(null, "data_nascimento");
             }}
+            onPressIn={() => showMode("date")}
           />
         </View>
+        {show && (
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode={mode}
+              is24Hour={true}
+              display="default"
+              onChange={onChange}
+              dateFormat="dd/MM/yyyy"
+            />
+          )}
         <View style={estilos.cidadesEscolhidos}>
           <Text style={estilos.subtitle}>Localização</Text>
         </View>
@@ -324,7 +374,7 @@ const EditarPerfil = () => {
           <Picker
             key={"estado"}
             onFocus={() => {
-              handleErrors(null, "id_estadoDoacao");
+              handleErrors(null, "id_estado");
             }}
             selectedValue={inputs.id_estado}
             onValueChange={(itemValue) =>
@@ -344,20 +394,20 @@ const EditarPerfil = () => {
         </View>
         <View style={estilos.cidadeContainer}>
           <Text style={estilos.titleCidades}>Cidades que pretende doar </Text>
-          <View style={{height: 20}}>
-          <Select
-            onChangeText={(s) => search(s)}
-            key={"cidades"}
-            options={cidades}
-            keyExtractor={(item) => `key-${item.id}`}
-            renderItem={renderItem}
-            onChangeSelect={(id) => alert(id)}
-            data={cidades}
-            text="Selecione a cidade de doação"
-            onPress={onPressShowItemSelected}
-          />
+          <View style={{ height: 20 }}>
+            <Select
+              onChangeText={(s) => search(s)}
+              key={"cidades"}
+              // options={cidades}
+              keyExtractor={(item) => `key-${item.id}`}
+              renderItem={renderItem}
+              onChangeSelect={(id) => alert(id)}
+              data={cidadesFiltradas}
+              text="Selecione a cidade de doação"
+              onPress={onPressShowItemSelected}
+            />
           </View>
-          
+
           <Text style={estilos.subtitle}>Dados de contato</Text>
           <Text style={estilos.title}>Celular</Text>
           <Input

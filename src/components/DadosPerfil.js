@@ -24,6 +24,8 @@ const DadosPerfil = ({
   clinicasSeguidas,
   email,
   celular,
+  data_nascimento,
+  cidade,
   cidadesEscolhidas = []
 }) => {
 
@@ -31,12 +33,11 @@ const DadosPerfil = ({
     <ScrollView style={estilos.container}>
       <View style={estilos.cidadeContainer}>
         <Text style={estilos.text}>Cidade residente</Text>
-        <Input inputPequeno editable={false} placeholder="Cidade"
-        />
+        <Input inputPequeno editable={false} placeholder="Cidade">{cidade}</Input>
       </View>
       <View style={estilos.nascimentoContainer}>
         <Text style={estilos.text}>Data nascimento</Text>
-        <Input inputPequeno editable={false} placeholder="__/__/__"/>
+        <Input inputPequeno editable={false} placeholder="__/__/__">{data_nascimento}</Input>
       </View>
       <View>
         <View>

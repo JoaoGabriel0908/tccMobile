@@ -24,6 +24,7 @@ const Input = ({
   editable,
   placeholder,
   onChangeText = () => {},
+  onPressIn = () => {},
   ...props
 }) => {
 
@@ -67,6 +68,7 @@ const Input = ({
           keyboardType={keyboardType}
           maxLength={maxLength}
           editable={editable}
+          onPressIn={onPressIn}
         />
       </View>
 
