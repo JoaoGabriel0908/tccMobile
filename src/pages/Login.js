@@ -50,8 +50,8 @@ const Login = () => {
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
-    cpf: "10000000000",
-    senha: "lucas",
+    cpf: "12345678910",
+    senha: "lourenco",
   });
 
   console.log(inputs);
@@ -109,7 +109,6 @@ const Login = () => {
         cpf: inputs.cpf,
         senha: inputs.senha,
       });
-      navigation.navigate("Menu", { id: pessoa.id });
     } catch (error) {
       error.response.inputs;
       alert("CPF ou senha inválidos!");
@@ -158,7 +157,6 @@ const Login = () => {
           key="checkbox"
         />
         <TouchableOpacity
-          onPress={() => navigation.navigate("Menu", { id: pessoa.id })}
           style={estilos.button2}
         >
           <Text style={estilos.texto}>Esqueceu a senha?</Text>
@@ -171,7 +169,7 @@ const Login = () => {
           title="Entre"
           onPress={() => {
             login(inputs.cpf, inputs.senha);
-            {isLogin === true ? navigation.navigate("Menu") : <Routes />}
+            navigation.navigate("Menu")
           }}
         />
       </View>

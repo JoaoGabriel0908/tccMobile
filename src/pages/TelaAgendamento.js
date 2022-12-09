@@ -9,7 +9,7 @@ import {
   Platform,
   TextInput,
 } from "react-native";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import COLORS from "../const/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import apiBlood from "../service/apiBlood";
 import { AuthContext } from "../contexts/Contexts";
+import { Calendar } from "react-native-calendars";
 
 const fundo = "../assets/fundo.png";
 
@@ -45,7 +46,7 @@ const TelaAgendamento = ({ route }) => {
 
   useEffect(() => {
     apiBlood.get("/diasDisponiveis").then((data) => {
-      console.log(data.data);
+      // console.log(data.data);
       setDias(data.data);
     });
   }, []);
@@ -88,7 +89,7 @@ const TelaAgendamento = ({ route }) => {
   const [inputs, setInputs] = React.useState({
     hemocentro: id,
     data_agenda: "",
-    hora_agenda: "08:00:00",
+    hora_agenda: "",
     id_doador: userInfo.id,
     tipoServico: 0,
   });
@@ -117,6 +118,57 @@ const TelaAgendamento = ({ route }) => {
     }
   };
 
+  let markedDay = {};
+
+  dias.map((item) => {
+    markedDay[item.data_coleta] = {
+      marked: true,
+      dotColor: "purple",
+    };
+  });
+
+  const [hora, setHora] = useState({
+    hora_coleta: "",
+  });
+
+  const filterHours = useMemo(() => {
+    return hora
+      ? dias.filter((dia) => dia.data_coleta.includes(hora.hora_coleta))
+      : dias;
+  }, [dias, hora.hora_coleta]);
+
+  filterHours.map((item) => {
+    console.log(item);
+  });
+
+  const initDate = "2022-12-01";
+  const [selected, setSelected] = useState(initDate);
+
+  function CustomCalendar(props) {
+    const marked = useMemo(
+      () => ({
+        [selected]: {
+          selected: true,
+          selectedColor: "#222222",
+          selectedTextColor: "yellow",
+        },
+      }),
+      [selected]
+    );
+    return (
+      <Calendar
+        initialDate={initDate}
+        markedDates={marked}
+        enableSwipeMonths={true}
+        onDayPress={(day) => {
+          setSelected(day.dateString);
+          props.onDaySelect && props.onDaySelect(day);
+        }}
+        {...props}
+      />
+    );
+  }
+
   return (
     <SafeAreaView style={estilos.container}>
       <View style={estilos.content}>
@@ -124,33 +176,26 @@ const TelaAgendamento = ({ route }) => {
           <Text style={estilos.dateText}>Selecione uma data</Text>
           <View style={estilos.dataAgenda}>
             <View style={estilos.dia}>
-              <TextInput
-                style={estilos.input}
-                onPressIn={() => showMode("date")}
-                placeholder="Selecione a data"
-                value={inputs.data_agenda}
+              <CustomCalendar
+                onDaySelect={(day) =>
+                  handleChangeInputs("data_agenda", day.dateString)
+                }
               />
             </View>
             <View style={estilos.hora}>
-              <TextInput
-                style={estilos.input}
-                onPressIn={() => showMode("time")}
-                placeholder="Selecione a hora"
-                value={inputs.hora_agenda}
-              />
+              <Picker>
+                {filterHours.map((day) => {
+                  return (
+                    <Picker.Item
+                      key={day.id}
+                      label={day.hora_coleta}
+                      value={day.hora_coleta}
+                    />
+                  );
+                })}
+              </Picker>
             </View>
           </View>
-          {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-              dateFormat="dd/MM/yyyy"
-            />
-          )}
         </View>
         <View style={estilos.containerData}>
           <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
@@ -177,9 +222,9 @@ const TelaAgendamento = ({ route }) => {
           </View>
         </View>
         <View>
-          <Picker style={{backgroundColor: COLORS.vermelhoClaro, width: 300}}>
+          <Picker style={{ backgroundColor: COLORS.vermelhoClaro, width: 300 }}>
             {dias.map((dia) => {
-              return <Picker.Item label={dia.data_coleta} />
+              return <Picker.Item label={dia.data_coleta} />;
             })}
           </Picker>
         </View>
@@ -208,6 +253,7 @@ const estilos = StyleSheet.create({
   },
   hora: {
     width: "50%",
+    height: "50%",
   },
   input: {
     borderWidth: 1,
@@ -244,6 +290,11 @@ const estilos = StyleSheet.create({
   button: {
     width: 334,
     alignItems: "center",
+  },
+  calendar: {
+    borderRadius: 10,
+    elevation: 4,
+    margin: 40,
   },
 });
 

@@ -12,69 +12,49 @@ import { useNavigation } from "@react-navigation/native";
 
 const Perfil = "../assets/Ellipse3.png";
 
-const CardHemo = ({
-  onPress = () => {},
-  hemoNome,
-  logradouro,
-  numero,
-  bairro,
-  cidade,
-  estado,
-  cep,
-  fotoHemo,
-
-  data,
-}) => {
+const CardHemo = ({ data }) => {
   const navigation = useNavigation();
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("PerfilHemo", { id: data.id_unidade_hemocentro });
-      }}
-      style={estilos.container}
-    >
-      <View style={estilos.containerText}>
-        <Image style={estilos.image} source={{ uri: data.foto_capa }} />
-        <View style={{ alignItems: "center" }}>
-          <View style={estilos.tituloCor}>
-            <Text style={estilos.titulo}>{data.nome_unidade}</Text>
+    <SafeAreaView style={estilos.container}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("PerfilHemo", { id: data.id_unidade_hemocentro });
+        }}
+        style={estilos.botao}
+      >
+        <View style={estilos.containerText}>
+          <Image style={estilos.image} source={{ uri: data.foto_capa }} />
+          <View style={{ alignItems: "center" }}>
+            <View style={estilos.tituloCor}>
+              <Text style={estilos.titulo}>{data.nome_unidade}</Text>
+            </View>
+            <Text style={estilos.descricao}>
+              {data.logradouro} {data.numero} - {data.bairro}, {data.cidade} -{" "}
+              {data.estado}, {data.cep}
+            </Text>
           </View>
-          <Text style={estilos.descricao}>
-            {data.logradouro} {data.numero} - {data.bairro}, {data.cidade} - {data.estado}, {data.cep}
-          </Text>
         </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
 const estilos = StyleSheet.create({
-  container: {
+  container:{
     flex: 1,
-    alignContent: "center",
+    alignItems: 'center',
   },
-  textTitle: {
-    display: "flex",
-    justifyContent: "center",
-    textAlign: "center",
+  botao: {
     alignItems: "center",
-    color: COLORS.vermelhoPrincipal,
-    fontWeight: "bold",
-    fontSize: 25,
+    width: 330,
   },
   containerText: {
-    borderColor: COLORS.preto,
-    borderStyle: "solid",
-    borderRadius: 5,
-    borderWidth: 1,
-    width: 334,
     height: 140,
-    borderRadius: 20,
-    justifyContent: "center",
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 20,
+    paddingHorizontal: 30,
   },
   descricao: {
     display: "flex",
@@ -87,7 +67,6 @@ const estilos = StyleSheet.create({
     marginRight: 20,
   },
   tituloCor: {
-    backgroundColor: COLORS.vermelhoClaro,
     borderRadius: 5,
     width: 200,
   },

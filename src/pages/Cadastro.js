@@ -229,7 +229,6 @@ const Cadastro = () => {
         ...item,
         selected: item.selected,
         setChecked: true,
-        
       };
     });
     setCidade(newCity);
@@ -255,7 +254,9 @@ const Cadastro = () => {
   };
 
   const onPressShowItemSelected = () => {
-    const listSelected = cidadesFiltradas.filter((item) => item.selected == true);
+    const listSelected = cidadesFiltradas.filter(
+      (item) => item.selected == true
+    );
     console.log(listSelected);
     let contentAlert = "";
     listSelected.forEach((item) => {
@@ -269,19 +270,21 @@ const Cadastro = () => {
   };
 
   const searchFilterText = (text) => {
-    if(text) {
+    if (text) {
       const newData = cidades.filter((item) => {
-        const itemData = item.cidade ? item.cidade : ''
-        const textData = text
-        return itemData.indexOf(textData) > -1
+        const itemData = item.cidade
+          ? item.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          : "".normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const textData = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return itemData.indexOf(textData) > -1;
       });
-      setCidadeFiltradas(newData)
-      setSearchText(text)
+      setCidadeFiltradas(newData);
+      setSearchText(text);
     } else {
-      setCidadeFiltradas(cidades)
-      setSearchText(text)
+      setCidadeFiltradas(cidades);
+      setSearchText(text);
     }
-  }
+  };
 
   return (
     <Layout>

@@ -30,8 +30,18 @@ const Select = ({
   const [modalVisible, setModalVisible] = useState(false);
 
   function search(pesquisa) {
-    data.filter(d => d.cidade.includes(pesquisa))
+    data.filter((d) => d.cidade.includes(pesquisa));
   }
+
+  const renderSeparator = () => (
+    <View
+      style={{
+        backgroundColor: COLORS.vermelhoClaro,
+        height: 1,
+        width: '50%'
+      }}
+    />
+  );
 
   return (
     <View>
@@ -58,8 +68,13 @@ const Select = ({
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Text>Cancelar</Text>
             </TouchableOpacity>
-            <Input placeholder={'Pesquise sua cidade'} value={value} onChangeText={onChangeText}/> 
+            <Input
+              placeholder={"Pesquise sua cidade"}
+              value={value}
+              onChangeText={onChangeText}
+            />
             <FlatList
+              ItemSeparatorComponent={renderSeparator}
               style={estilos.list}
               data={data}
               renderItem={renderItem}
@@ -99,7 +114,7 @@ const estilos = StyleSheet.create({
     fontSize: 16,
   },
   list: {
-    height: '80%',
+    height: "80%",
     padding: 8,
     paddingBottom: 20,
   },
@@ -109,10 +124,10 @@ const estilos = StyleSheet.create({
     alignItems: "center",
     top: 20,
   },
-  button:{
+  button: {
     padding: 16,
     backgroundColor: COLORS.vermelhoClaro,
-  }
+  },
 });
 
 export default Select;

@@ -31,51 +31,62 @@ const Hemocentros = ({ data }) => {
     });
   }, []);
 
-  const getItemLayout = (campanha, index) => {
-    return { length: 201, offset: 161 * index, index };
+  const searchFilterText = (text) => {
+    if (text) {
+      const newData = hemocentro.filter((item) => {
+        const itemData = item.cidade
+          ? item.cidade.normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, "")
+          : "".normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, "");;
+        const textData = text.normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, "");
+        return itemData.indexOf(textData) > -1;
+      });
+      setHemocentroFiltrado(newData);
+      setSearchText(text);
+    } else {
+      setHemocentroFiltrado(hemocentro);
+      setSearchText(text);
+    }
   };
 
-  const searchFilterText = (text) => {
-    if(text) {
-      const newData = hemocentro.filter((item) => {
-        const itemData = item.cidade ? item.cidade : ''
-        const textData = text
-        return itemData.indexOf(textData) > -1
-      });
-      setHemocentroFiltrado(newData)
-      setSearchText(text)
-    } else {
-      setHemocentroFiltrado(hemocentro)
-      setSearchText(text)
-    }
-  }
+  const renderSeparator = () => (
+    <View
+      style={{
+        backgroundColor: COLORS.branco,
+        height: 1.5,
+      }}
+    />
+  );
 
   return (
     <SafeAreaView style={estilos.container}>
-      <View style={{height: 150}}>
-        <Input
-          name={null}
-          placeholder="Pesquise hemocentros perto de você"
-          // value={inputs.nomeCompleto}
-          iconName="magnify"
-          // error={errors.nomeCompleto}
-          // onFocus={() => {
-          //   handleErrors(null, "nomeCompleto");
-          // }}
-          keyboardType="default"
-          onChangeText={(s) => searchFilterText(s)}
-          value={searchText}
-        />
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <FlatList
-          data={hemocentroFiltrado}
-          keyExtractor={(item) => `${item.id}`}
-          renderItem={({ item }) => <CardHemo data={item} />}
-          nestedScrollEnabled
-          showsVerticalScrollIndicator={true}
-        />
-      </View>
+      <FlatList
+        ItemSeparatorComponent={renderSeparator}
+        ListHeaderComponent={
+          <Input
+            inputPequeno
+            keyboardType="default"
+            onChangeText={(s) => searchFilterText(s)}
+            value={searchText}
+            iconName="magnify"
+            name={null}
+            placeholder="Pesquise hemocentros perto de você"
+          />
+        }
+        ListHeaderComponentStyle={{
+          backgroundColor: COLORS.vermelhoClaro,
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 30,
+        }}
+        data={hemocentroFiltrado}
+        keyExtractor={(item) => `${item.id}`}
+        renderItem={({ item }) => <CardHemo data={item} />}
+        nestedScrollEnabled
+        showsVerticalScrollIndicator={true}
+      />
     </SafeAreaView>
   );
 };
@@ -84,55 +95,11 @@ const estilos = StyleSheet.create({
   container: {
     flex: 1,
     alignContent: "center",
-  },
-  textTitle: {
-    display: "flex",
     justifyContent: "center",
-    textAlign: "center",
-    alignItems: "center",
-    color: COLORS.vermelhoPrincipal,
-    fontWeight: "bold",
-    fontSize: 25,
-  },
-  containerText: {
-    borderColor: COLORS.preto,
-    borderStyle: "solid",
-    borderRadius: 5,
-    borderWidth: 1,
-    width: 330,
-    height: 140,
-    paddingHorizontal: 17,
-    borderWidth: 1,
-    borderRadius: 20,
-    left: 50,
-    justifyContent: "center",
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  descricao: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "regular",
-    fontSize: 15,
   },
   image: {
     width: 60,
     height: 60,
-  },
-  tituloCor: {
-    backgroundColor: COLORS.vermelhoClaro,
-    borderRadius: 5,
-    width: 220,
-    left: -20,
-  },
-  titulo: {
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    textAlign: "center",
   },
 });
 
