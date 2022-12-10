@@ -21,7 +21,7 @@ const Perfil = ({ route, key }) => {
     apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {
       console.log(data.data);
       setPessoa(data.data);
-    });    
+    });
     apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data[0]);
@@ -34,6 +34,9 @@ const Perfil = ({ route, key }) => {
       console.log(data.data[0][0]);
       setSangue(data.data[0][0]);
     });
+    apiBlood.get(`/ListarConsultasPorId/${userInfo.id}`).then((data) => {
+      console.log(data.data[0]);
+    });
   }, []);
 
   return (
@@ -44,7 +47,9 @@ const Perfil = ({ route, key }) => {
         gender={sexo.sexo === "Feminino" ? "gender-female" : "gender-male"}
         iconNameSangue="water"
         tipoSanguineo={sangue.tipo_sanguineo}
-        onPress={() => {navigation.navigate("EditarPerfil")}}
+        onPress={() => {
+          navigation.navigate("EditarPerfil");
+        }}
       />
       <View>
         <DadosPerfil
@@ -52,7 +57,6 @@ const Perfil = ({ route, key }) => {
           celular={pessoa.telefone_doador}
           cidadesEscolhidas={cidade.map((cidade) => cidade.cidade).join(" | ")}
           data_nascimento={pessoa.data_nascimento}
-          
         />
       </View>
     </ScrollView>

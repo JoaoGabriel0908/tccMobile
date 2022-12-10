@@ -16,7 +16,6 @@ import Button from "../components/Button";
 import apiBlood from "../service/apiBlood";
 import CardCampanha from "../components/CardCampanha";
 
-const fundo = "../assets/fundo.png";
 const hemocentroImagem = "../assets/Ellipse8.png";
 const vazio = "../assets/vazio.png";
 const meioCheio = "../assets/meio-cheio.png";
@@ -25,16 +24,14 @@ import { useNavigation } from "@react-navigation/native";
 
 const PerfilHemo = ({ route }) => {
   const navigation = useNavigation();
-
-  console.log(route);
-
   const { id } = route.params;
 
   const [hemocentro, setHemocentro] = useState([]);
-
   const [servico, setServico] = useState([]);
   const [estoque, setEstoque] = useState([]);
   const [campanha, setCampanha] = useState([]);
+
+  console.log(estoque);
 
   useEffect(() => {
     apiBlood.get(`/listarHemocentroPorId/${id}`).then((hemocentro) => {
@@ -84,9 +81,7 @@ const PerfilHemo = ({ route }) => {
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento",  
-                { id: hemocentro.id }
-              );
+              navigation.navigate("TelaAgendamento", { id: hemocentro.id });
             }}
           />
         </View>
@@ -131,15 +126,17 @@ const PerfilHemo = ({ route }) => {
           {estoque.map((estoque) => {
             if (estoque.nivel === "Alerta") {
               return (
-                <View style={estilos.contentEstoque}>
-                  <Image key={estoque.id} source={require(meioCheio)} />
-                  <Text key={estoque.id}>{estoque.tipo_sanguineo}</Text>
+                <View key={estoque.tipo_sanguineo} style={estilos.contentEstoque}>
+                  <Image source={require(meioCheio)} />
+                  <Text>
+                    {estoque.tipo_sanguineo}
+                  </Text>
                   <Text
                     style={{
                       color: COLORS.vermelhoEscuro,
                       fontFamily: "Poppins_600SemiBold",
                     }}
-                    key={estoque.nivel}
+                    
                   >
                     {estoque.nivel}
                   </Text>
@@ -147,15 +144,17 @@ const PerfilHemo = ({ route }) => {
               );
             } else if (estoque.nivel === "Crítico") {
               return (
-                <View style={estilos.contentEstoque}>
+                <View key={estoque.tipo_sanguineo} style={estilos.contentEstoque}>
                   <Image source={require(vazio)} />
-                  <Text>{estoque.tipo_sanguineo}</Text>
+                  <Text>
+                    {estoque.tipo_sanguineo}
+                  </Text>
                   <Text
                     style={{
                       color: COLORS.vermelhoEscuro,
                       fontFamily: "Poppins_700Bold",
                     }}
-                    key={estoque.id}
+                    
                   >
                     {estoque.nivel}!
                   </Text>
@@ -163,10 +162,13 @@ const PerfilHemo = ({ route }) => {
               );
             } else {
               return (
-                <View style={estilos.contentEstoque}>
+                <View key={estoque.tipo_sanguineo} style={estilos.contentEstoque}>
                   <Image source={require(cheio)} />
-                  <Text>{estoque.tipo_sanguineo}</Text>
+                  <Text>
+                    {estoque.tipo_sanguineo}
+                  </Text>
                   <Text
+                    
                     style={{
                       color: COLORS.vermelhoEscuro,
                       fontFamily: "Poppins_400Regular",
@@ -250,7 +252,8 @@ const estilos = StyleSheet.create({
   },
   containerEstoque: {
     flexDirection: "row",
-    width: 360,
+    width: 340,
+    flexWrap: "wrap",
     alignItems: "center",
     borderWidth: 2,
     borderColor: COLORS.vermelhoEscuro,

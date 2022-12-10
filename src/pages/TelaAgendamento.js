@@ -27,15 +27,14 @@ const TelaAgendamento = ({ route }) => {
   const { id } = route.params;
   const { userInfo } = useContext(AuthContext);
 
+  const {idDoador} = userInfo
+
   const navigation = useNavigation();
 
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-  const [text, setText] = useState("");
-  const [hour, setHour] = useState("");
   const [hemocentro, setHemocentro] = useState([]);
+  const [selected, setSelected] = useState([]);
   const [dias, setDias] = useState([]);
+  const [hora, setHora] = useState([]);
 
   useEffect(() => {
     apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
@@ -45,41 +44,24 @@ const TelaAgendamento = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    apiBlood.get("/diasDisponiveis").then((data) => {
-      // console.log(data.data);
+    apiBlood.get(`/diasDisponiveis/${id}`).then((data) => {
+      console.log(data.data);
       setDias(data.data);
     });
   }, []);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShow(Platform.OS === "ios");
-    setDate(currentDate);
-
-    let tempDate = new Date(currentDate);
-    let formatDate =
-      tempDate.getFullYear() +
-      "-" +
-      (tempDate.getMonth() + 1) +
-      "-" +
-      tempDate.getDate();
-
-    let formatTime =
-      tempDate.getHours() + ":" + tempDate.getMinutes() + tempDate.getSeconds();
-
-    setText(formatDate);
-    setHour(formatTime);
-
-    handleChangeInputs("hora_agenda", hour);
-    handleChangeInputs("data_agenda", text);
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
   const handleChangeInputs = (key, value) => {
+    setInputs({
+      ...inputs,
+      [key]: value,
+    });
+  };
+
+  const handleChangeAgends = (key, value) => {
+    apiBlood.get(`/listarHorariosPorData/${id}/${value}`).then((data) => {
+      console.log(data.data[0]);
+      setHora(data.data[0]);
+    });
     setInputs({
       ...inputs,
       [key]: value,
@@ -90,7 +72,7 @@ const TelaAgendamento = ({ route }) => {
     hemocentro: id,
     data_agenda: "",
     hora_agenda: "",
-    id_doador: userInfo.id,
+    id_doador: idDoador,
     tipoServico: 0,
   });
 
@@ -109,12 +91,11 @@ const TelaAgendamento = ({ route }) => {
         data_agendada_doador: inputs.data_agenda,
         hora: inputs.hora_agenda,
         id_tipo_servico: inputs.tipoServico,
-        id_doador: inputs.userInfo.id,
+        id_doador: userInfo.id,
         id_unidade_hemocentro: inputs.hemocentro,
       });
-      console.log(response);
     } catch (error) {
-      error.response.data;
+      console.log(error);
     }
   };
 
@@ -127,22 +108,7 @@ const TelaAgendamento = ({ route }) => {
     };
   });
 
-  const [hora, setHora] = useState({
-    hora_coleta: "",
-  });
-
-  const filterHours = useMemo(() => {
-    return hora
-      ? dias.filter((dia) => dia.data_coleta.includes(hora.hora_coleta))
-      : dias;
-  }, [dias, hora.hora_coleta]);
-
-  filterHours.map((item) => {
-    console.log(item);
-  });
-
-  const initDate = "2022-12-01";
-  const [selected, setSelected] = useState(initDate);
+  console.log(inputs);
 
   function CustomCalendar(props) {
     const marked = useMemo(
@@ -157,7 +123,6 @@ const TelaAgendamento = ({ route }) => {
     );
     return (
       <Calendar
-        initialDate={initDate}
         markedDates={marked}
         enableSwipeMonths={true}
         onDayPress={(day) => {
@@ -178,18 +143,23 @@ const TelaAgendamento = ({ route }) => {
             <View style={estilos.dia}>
               <CustomCalendar
                 onDaySelect={(day) =>
-                  handleChangeInputs("data_agenda", day.dateString)
+                  handleChangeAgends("data_agenda", day.dateString)
                 }
               />
             </View>
             <View style={estilos.hora}>
-              <Picker>
-                {filterHours.map((day) => {
+              <Picker
+                selectedValue={inputs.tipoServico}
+                onValueChange={(itemValue) =>
+                  handleChangeInputs("hora_agenda", itemValue)
+                }
+              >
+                {hora.map((hora) => {
                   return (
                     <Picker.Item
-                      key={day.id}
-                      label={day.hora_coleta}
-                      value={day.hora_coleta}
+                      key={hora.id}
+                      label={hora.hora_coleta}
+                      value={hora.hora_coleta}
                     />
                   );
                 })}
@@ -221,15 +191,8 @@ const TelaAgendamento = ({ route }) => {
             </Picker>
           </View>
         </View>
-        <View>
-          <Picker style={{ backgroundColor: COLORS.vermelhoClaro, width: 300 }}>
-            {dias.map((dia) => {
-              return <Picker.Item label={dia.data_coleta} />;
-            })}
-          </Picker>
-        </View>
         <View style={estilos.button}>
-          <Button title="Agendar" onPress={validate} />
+          <Button title="Agendar" onPress={agendar} />
         </View>
       </View>
     </SafeAreaView>

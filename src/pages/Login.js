@@ -27,15 +27,8 @@ const Login = () => {
   const navigation = useNavigation();
   const { login, isLogin } = useContext(AuthContext);
 
-  const [pessoa, setPessoa] = useState([]);
   const [errors, setErrors] = React.useState([]);
 
-    useEffect(() => {
-    apiBlood.get("/listarDoador").then((data) => {
-      console.log(data.data[0]);
-      setPessoa(data.data[0]);
-    });
-  }, []);
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -99,7 +92,8 @@ const Login = () => {
     if (validate) {
       // console.log(inputs);
       // Envia os dados para a API cadastrar.
-      Logar();
+      login(inputs.cpf, inputs.senha);
+      navigation.navigate("Menu")
     }
   };
 
@@ -164,12 +158,10 @@ const Login = () => {
       </View>
       <View style={estilos.Button01}>
         <Button
-          key={pessoa.id}
           style={estilos.Button01}
           title="Entre"
           onPress={() => {
-            login(inputs.cpf, inputs.senha);
-            navigation.navigate("Menu")
+            validate()
           }}
         />
       </View>
