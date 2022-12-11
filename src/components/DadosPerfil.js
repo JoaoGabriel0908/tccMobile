@@ -70,7 +70,6 @@ const estilos = StyleSheet.create({
   container: {
     backgroundColor: COLORS.branco,
     paddingTop: 10,
-    paddingBottom: 100
   },
   primeiroContainer: {
     width: 360,

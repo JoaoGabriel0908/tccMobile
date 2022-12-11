@@ -43,8 +43,8 @@ const Login = () => {
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
-    cpf: "12345678910",
-    senha: "lourenco",
+    cpf: "25497863299",
+    senha: "conseguiPoha",
   });
 
   console.log(inputs);

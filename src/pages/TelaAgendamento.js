@@ -27,7 +27,7 @@ const TelaAgendamento = ({ route }) => {
   const { id } = route.params;
   const { userInfo } = useContext(AuthContext);
 
-  const {idDoador} = userInfo
+  console.log(id)
 
   const navigation = useNavigation();
 
@@ -58,7 +58,7 @@ const TelaAgendamento = ({ route }) => {
   };
 
   const handleChangeAgends = (key, value) => {
-    apiBlood.get(`/listarHorariosPorData/${id}/${value}`).then((data) => {
+    apiBlood.get(`/ListarHorariosPorData/${id}/${value}`).then((data) => {
       console.log(data.data[0]);
       setHora(data.data[0]);
     });
@@ -72,7 +72,7 @@ const TelaAgendamento = ({ route }) => {
     hemocentro: id,
     data_agenda: "",
     hora_agenda: "",
-    id_doador: idDoador,
+    id_doador: userInfo.id,
     tipoServico: 0,
   });
 

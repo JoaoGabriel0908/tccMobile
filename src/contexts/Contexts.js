@@ -25,7 +25,9 @@ export const AuthProvider = ({ children }) => {
         AsyncStorage.setItem("userToken", userInfo.token);
         console.log(userInfo);
         setisLogin(true);
+        console.log(response.status)
       })
+      
       .catch((e) => {
         console.log(e.response);
       });

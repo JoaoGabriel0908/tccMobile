@@ -42,7 +42,7 @@ const PerfilHemo = ({ route }) => {
 
   useEffect(() => {
     apiBlood.get(`/ListarTipoServicoPorHemocentro/${id}`).then((data) => {
-      // console.log(data.data);
+      console.log(data.data[0]);
       setServico(data.data[0]);
     });
   }, []);

@@ -17,6 +17,7 @@ import COLORS from "../const/Colors";
 import PaginaInicial from "../pages/PaginaInicial";
 import AgendamentoConcluido from "../pages/AgendamentoConcluido";
 import { NavigationContainer } from "@react-navigation/native";
+import EditandoAgendamento from "../pages/EditandoAgendamento";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,6 +82,11 @@ export default function Routes() {
           options={{ headerShown: false }}
         />
 
+        <Stack.Screen
+          name="DeletarConsulta"
+          component={Perfil}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="AgendamentoConcluido"
           component={AgendamentoConcluido}
@@ -150,6 +156,16 @@ export default function Routes() {
         <Stack.Screen
           name="TelaAgendamento"
           component={TelaAgendamento}
+          options={{
+            headerTitle: () => <Cabecalho name="Agendamento" />,
+            headerTitleAlign: "center",
+            headerTintColor: COLORS.vermelhoPrincipal,
+            headerTitle: "Agendamento",
+          }}
+        />
+        <Stack.Screen
+          name="EditandoAgendamento"
+          component={EditandoAgendamento}
           options={{
             headerTitle: () => <Cabecalho name="Agendamento" />,
             headerTitleAlign: "center",
