@@ -92,3 +92,6 @@ const estilos = StyleSheet.create({
 });
 
 export default Desativar;
+
+
+
