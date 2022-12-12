@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   FlatList,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 
 import React, { useEffect, useState } from "react";
@@ -237,7 +238,10 @@ const Cadastro = () => {
 
   const renderItem = ({ item, index }) => {
     return (
-      <View style={estilos.item}>
+      <TouchableOpacity
+        onPress={() => onChangeValue(item, index)}
+        style={estilos.item}
+      >
         <Text>{item.cidade}</Text>
         <Checkbox
           style={estilos.checkbox}
@@ -249,7 +253,7 @@ const Cadastro = () => {
           value={item.selected ? true : false}
           onValueChange={() => onChangeValue(item, index)}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -258,9 +262,9 @@ const Cadastro = () => {
       (item) => item.selected == true
     );
     console.log(listSelected);
-    let contentAlert = "";
+    let contentAlert = ""
     listSelected.forEach((item) => {
-      contentAlert = contentAlert + `${item.id} . ` + item.cidade + "\n";
+      contentAlert = contentAlert + item.cidade + " , ";
     });
     const uniqueId = listSelected.map((item) => item.id);
     console.log(uniqueId);
@@ -376,7 +380,7 @@ const Cadastro = () => {
                 renderItem={renderItem}
                 onChangeSelect={(id) => alert(id)}
                 data={cidadesFiltradas}
-                text="Selecione a cidade de doação"
+                text="Selecione as cidade (Máx 4)"
                 onPress={onPressShowItemSelected}
               />
             </View>
@@ -579,7 +583,6 @@ const estilos = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 3,
-    width: 200,
     textAlign: "center",
   },
   checkbox: {

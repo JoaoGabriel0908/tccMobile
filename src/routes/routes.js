@@ -25,6 +25,7 @@ export default function Routes() {
   return (
     <>
       <Stack.Navigator>
+
         <Stack.Screen
           name="Splash"
           component={Splash}

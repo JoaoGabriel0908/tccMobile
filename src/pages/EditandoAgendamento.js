@@ -27,10 +27,10 @@ const EditandoAgendamento = ({ route }) => {
   const navigation = useNavigation();
 
   const { id } = route.params;
-  const {idHemocentro} = route.params
+  const { idHemocentro } = route.params;
   const { userInfo } = useContext(AuthContext);
- 
-  console.log(id)
+
+  console.log(id);
 
   const [hemocentro, setHemocentro] = useState([]);
   const [selected, setSelected] = useState([]);
@@ -46,8 +46,8 @@ const EditandoAgendamento = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    apiBlood.get(`/diasDisponiveis/${id}`).then((data) => {
-      // console.log(data.data);
+    apiBlood.get(`/diasDisponiveis/${idHemocentro}`).then((data) => {
+      console.log(data.data);
       setDias(data.data);
     });
   }, []);
@@ -67,16 +67,17 @@ const EditandoAgendamento = ({ route }) => {
   };
 
   const handleChangeAgends = (key, value) => {
-    apiBlood.get(`/listarHorariosPorData/${idHemocentro}/${value}`).then((data) => {
-      // console.log(data.data[0]);
-      setHora(data.data[0]);
-    });
+    apiBlood
+      .get(`/listarHorariosPorData/${idHemocentro}/${value}`)
+      .then((data) => {
+        // console.log(data.data[0]);
+        setHora(data.data[0]);
+      });
     setInputs({
       ...inputs,
       [key]: value,
     });
   };
-
 
   const [inputs, setInputs] = React.useState({
     hemocentro: idHemocentro,
@@ -98,44 +99,49 @@ const EditandoAgendamento = ({ route }) => {
   // console.log(inputs);
   const agendar = () => {
     try {
-      const response = apiBlood.put("/AtualizarConsulta", {
-        id_agendamento_doador: inputs.idAgendamentoDoador,
-        data_agendada_doador: inputs.data_agenda,
-        hora: inputs.hora_agenda,
-        id_tipo_servico: inputs.tipoServico,
-        id_doador: userInfo.id,
-        id_unidade_hemocentro: inputs.hemocentro
-      });
+      const response = apiBlood
+        .put("/AtualizarConsulta", {
+          id_agendamento_doador: inputs.idAgendamentoDoador,
+          data_agendada_doador: inputs.data_agenda,
+          hora: inputs.hora_agenda,
+          id_tipo_servico: inputs.tipoServico,
+          id_doador: userInfo.id,
+          id_unidade_hemocentro: inputs.hemocentro,
+        })
+        .then((response) => {
+          // console.log(response.status);
+          if (response.status === 200) {
+            navigation.navigate("AgendamentoConcluido");
+          }
+        })
+        .catch((e) => {
+          console.log(error);
+        });
     } catch (error) {
       console.log(error);
     }
   };
 
-  let markedDay = {};
-
-  dias.map((item) => {
-    markedDay[item.data_coleta] = {
-      marked: true,
-      dotColor: "purple",
-    };
-  });
-
   console.log(inputs);
 
   function CustomCalendar(props) {
-    const marked = useMemo(
-      () => ({
-        [selected]: {
+    const markedDay = {};
+
+    dias.map((item) => {
+      (markedDay[item.data_coleta] = {
+        marked: true,
+        dotColor: "purple",
+        color: "purple",
+      }),
+        (markedDay[selected] = {
           selected: true,
           selectedColor: "#222222",
           selectedTextColor: "yellow",
-        },
-      }),
-      [selected]
-    );
+        });
+    });
     return (
       <Calendar
-        markedDates={marked}
+        markedDates={markedDay}
         enableSwipeMonths={true}
         onDayPress={(day) => {
           setSelected(day.dateString);
@@ -148,64 +154,66 @@ const EditandoAgendamento = ({ route }) => {
 
   return (
     <SafeAreaView style={estilos.container}>
-      <View style={estilos.content}>
-        <View style={estilos.containerData}>
+      <View style={estilos.containerData}>
+        <View style={estilos.dataAgenda}>
           <Text style={estilos.dateText}>Selecione uma data</Text>
-          <View style={estilos.dataAgenda}>
-            <View style={estilos.dia}>
-              <CustomCalendar
-                onDaySelect={(day) =>
-                  handleChangeAgends("data_agenda", day.dateString)
-                }
-              />
-            </View>
-            <View style={estilos.hora}>
-              <Picker
-                selectedValue={inputs.tipoServico}
-                onValueChange={(itemValue) =>
-                  handleChangeInputs("hora_agenda", itemValue)
-                }
-              >
-                {hora.map((hora) => {
-                  return (
-                    <Picker.Item
-                      key={hora.id}
-                      label={hora.hora_coleta}
-                      value={hora.hora_coleta}
-                    />
-                  );
-                })}
-              </Picker>
-            </View>
+
+          <View style={estilos.dia}>
+            <CustomCalendar
+              onDaySelect={(day) =>
+                handleChangeAgends("data_agenda", day.dateString)
+              }
+            />
           </View>
-        </View>
-        <View style={estilos.containerData}>
-          <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
-          <View style={estilos.picker}>
+          <Text style={estilos.dateText}>Selecione a hora</Text>
+
+          <View style={estilos.hora}>
             <Picker
-              placeholder="tipoServico"
-              // onFocus={() => {
-              //   handleErrors(null, "tipoServico");
-              // }}
               selectedValue={inputs.tipoServico}
               onValueChange={(itemValue) =>
-                handleChangeInputs("tipoServico", itemValue)
+                handleChangeInputs("hora_agenda", itemValue)
               }
             >
-              {consulta.map((consulta) => {
+              {hora.map((hora) => {
                 return (
                   <Picker.Item
-                    label={consulta.tipo_servico}
-                    value={consulta.id_tipo_servico}
+                    key={hora.id}
+                    label={hora.hora_coleta}
+                    value={hora.hora_coleta}
                   />
                 );
               })}
             </Picker>
           </View>
         </View>
-        <View style={estilos.button}>
-          <Button title="Agendar" onPress={agendar} />
+      </View>
+      <View style={estilos.containerData}>
+        <Text style={estilos.dateText}>Selecione o tipo de doação</Text>
+        <View style={estilos.picker}>
+          <Picker
+            placeholder="tipoServico"
+            // onFocus={() => {
+            //   handleErrors(null, "tipoServico");
+            // }}
+            selectedValue={inputs.tipoServico}
+            onValueChange={(itemValue) =>
+              handleChangeInputs("tipoServico", itemValue)
+            }
+          >
+            {consulta.map((consulta) => {
+              return (
+                <Picker.Item
+                  key={consulta.id_tipo_servico}
+                  label={consulta.tipo_servico}
+                  value={consulta.id_tipo_servico}
+                />
+              );
+            })}
+          </Picker>
         </View>
+      </View>
+      <View style={estilos.button}>
+        <Button title="Agendar" onPress={agendar} />
       </View>
     </SafeAreaView>
   );
@@ -214,21 +222,24 @@ const EditandoAgendamento = ({ route }) => {
 const estilos = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: "center",
   },
   dataAgenda: {
-    flexDirection: "row",
     width: 300,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 40,
+  },
+  containerData: {
+    alignItems: "center",
+    width: 360,
+    marginTop: 20,
   },
   dia: {
-    width: "55%",
-    marginRight: "5%",
+    width: "80%",
   },
   hora: {
-    width: "50%",
-    height: "50%",
+    width: "80%",
+    backgroundColor: COLORS.branco,
   },
   input: {
     borderWidth: 1,
@@ -237,20 +248,17 @@ const estilos = StyleSheet.create({
     borderRadius: 15,
     paddingHorizontal: 10,
   },
-  content: {
-    flex: 1,
-    alignItems: "center",
-  },
-  containerData: {
-    alignItems: "center",
-    width: 360,
-    marginTop: 30,
-  },
   dateText: {
     fontFamily: "Poppins_500Medium",
     fontSize: 20,
     color: COLORS.vermelhoPrincipal,
-    marginBottom: 10,
+    marginTop: 10,
+  },
+  dateHora: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: 20,
+    color: COLORS.vermelhoPrincipal,
+    marginTop: 20,
   },
   picker: {
     width: 350,
@@ -260,7 +268,7 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 15,
     borderRadius: 15,
     backgroundColor: COLORS.branco,
-    marginBottom: 40,
+    marginBottom: 10,
   },
   button: {
     width: 334,

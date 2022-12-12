@@ -24,11 +24,12 @@ import { AuthContext } from "../contexts/Contexts";
 import Select from "../components/Select";
 import Checkbox from "expo-checkbox";
 
-const person = "../assets/Ellipse8.png";
+const person = "../assets/perfil.png";
 
 const EditarPerfil = () => {
   const navigation = useNavigation();
 
+  const [searchText, setSearchText] = useState([]);
   const [cidades, setCidade] = useState([]);
   const [cidadesFiltradas, setCidadeFiltradas] = useState([]);
   const [sexo, setSexo] = useState([]);
@@ -71,17 +72,18 @@ const EditarPerfil = () => {
     });
   };
 
-  useEffect(() => {
-    apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
-      console.log(data.data[0]);
-      setCidadeFiltradas(data.data[0]);
-    });
-  }, []);
+  // useEffect(() => {
+  //   apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     setCidadeFiltradas(data.data[0]);
+  //   });
+  // }, []);
 
   const buscarCidades = (id) => {
     apiBlood.get(`/listarCidadesPorEstado/${id}`).then((data) => {
       console.log(data.data);
       setCidade(data.data);
+      setCidadeFiltradas(data.data);
     });
   };
 
@@ -188,7 +190,8 @@ const EditarPerfil = () => {
         id_estado: inputs.id_estado,
         id_sexo: inputs.id_sexo,
         id_tipo_sanguineo: inputs.id_tipo_sanguineo,
-        id_cidade: inputs.id_cidade_doacao
+        id_cidade: inputs.id_cidade_doacao,
+        senha: inputs.senha
       });
       navigation.goBack();
     } catch (error) {
@@ -197,26 +200,31 @@ const EditarPerfil = () => {
   };
 
   const onChangeValue = (itemSelected, index) => {
-    // console.log(itemSelected);
     const newCity = cidades.map((item) => {
       console.log(itemSelected.id);
       if (item.id == itemSelected.id) {
         return {
           ...item,
           selected: !item.selected,
+          setChecked: false,
         };
       }
       return {
         ...item,
         selected: item.selected,
+        setChecked: true,
       };
     });
     setCidade(newCity);
+    setCidadeFiltradas(newCity);
   };
 
   const renderItem = ({ item, index }) => {
     return (
-      <View style={estilos.item}>
+      <TouchableOpacity
+        onPress={() => onChangeValue(item, index)}
+        style={estilos.item}
+      >
         <Text>{item.cidade}</Text>
         <Checkbox
           style={estilos.checkbox}
@@ -228,7 +236,7 @@ const EditarPerfil = () => {
           value={item.selected ? true : false}
           onValueChange={() => onChangeValue(item, index)}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -246,11 +254,22 @@ const EditarPerfil = () => {
     return uniqueId;
   };
 
-  function search(s) {
-    let arr = JSON.parse(JSON.stringify(cidadesFiltradas));
-    setCidade(arr.filter((city) => city.cidade.includes(s)));
-    setCidade(arr);
-  }
+  const searchFilterText = (text) => {
+    if (text) {
+      const newData = cidades.filter((item) => {
+        const itemData = item.cidade
+          ? item.cidade.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          : "".normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        const textData = text.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return itemData.indexOf(textData) > -1;
+      });
+      setCidadeFiltradas(newData);
+      setSearchText(text);
+    } else {
+      setCidadeFiltradas(cidades);
+      setSearchText(text);
+    }
+  };
 
   return (
     <ScrollView>
@@ -348,16 +367,16 @@ const EditarPerfil = () => {
           />
         </View>
         {show && (
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={date}
-              mode={mode}
-              is24Hour={true}
-              display="default"
-              onChange={onChange}
-              dateFormat="dd/MM/yyyy"
-            />
-          )}
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={date}
+            mode={mode}
+            is24Hour={true}
+            display="default"
+            onChange={onChange}
+            dateFormat="dd/MM/yyyy"
+          />
+        )}
         <View style={estilos.cidadesEscolhidos}>
           <Text style={estilos.subtitle}>Localização</Text>
         </View>
@@ -396,7 +415,8 @@ const EditarPerfil = () => {
           <Text style={estilos.titleCidades}>Cidades que pretende doar </Text>
           <View style={{ height: 20 }}>
             <Select
-              onChangeText={(s) => search(s)}
+              onChangeText={(s) => searchFilterText(s)}
+              value={searchText}
               key={"cidades"}
               // options={cidades}
               keyExtractor={(item) => `key-${item.id}`}
@@ -562,6 +582,26 @@ const estilos = StyleSheet.create({
   btn: {
     alignItems: "center",
     justifyContent: "center",
+  },
+  item: {
+    flexDirection: "row",
+    marginTop: 8,
+    padding: 4,
+    paddingBottom: 10,
+    justifyContent: "space-between",
+    shadowColor: COLORS.preto,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 3,
+    textAlign: "center",
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
   },
 });
 

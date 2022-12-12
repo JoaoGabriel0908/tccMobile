@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import COLORS from "../const/Colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const person = "../assets/Ellipse8.png";
+const person = "../assets/perfil-de-usuario.png";
 
 const InfoPerfil = ({
   nameComplet,
@@ -32,13 +32,14 @@ const InfoPerfil = ({
           </Text>
         </View>
         <View>
+          
           <View style={estilos.pessoa}>
-            <Image source={require(person)} style={estilos.imagem} />
+            <Image style={estilos.imagem} source={require(person)}/>
             <Text style={{ marginTop: 20, fontSize: 18, fontFamily: 'Poppins_600SemiBold', color: COLORS.branco }}>
               {nameComplet}
             </Text>
+            
           </View>
-          <Image />
         </View>
         <View style={estilos.genero}>
           <Icon name={gender} style={{ fontSize: 50, color: COLORS.branco }} />

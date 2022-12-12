@@ -25,7 +25,7 @@ const fundo = "../assets/fundo.png";
 
 const Login = () => {
   const navigation = useNavigation();
-  const { login, isLogin } = useContext(AuthContext);
+  const {userInfo, login, isLogin } = useContext(AuthContext);
 
   const [errors, setErrors] = React.useState([]);
 
@@ -77,7 +77,7 @@ const Login = () => {
   };
   // 35789045773
   // Função de validação
-  const validate = () => {
+  const validate = async () => {
     let validate = true;
 
     if (!inputs.cpf) {
@@ -92,8 +92,9 @@ const Login = () => {
     if (validate) {
       // console.log(inputs);
       // Envia os dados para a API cadastrar.
-      login(inputs.cpf, inputs.senha);
-      navigation.navigate("Menu")
+      login(inputs.cpf, inputs.senha );
+      // {await userInfo !== null ? navigation.navigate("Menu") : console.log('erro')}
+      {isLogin === true ? navigation.navigate("Menu"): console.log('error')};
     }
   };
 

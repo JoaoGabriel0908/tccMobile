@@ -88,23 +88,6 @@ export default function Menu({ route, navigation }) {
           ),
         }}
       />
-      <Screen
-        name="Configurações"
-        component={Configuracao}
-        options={{
-          headerTitle: () => <Cabecalho name="Configurações" />,
-          headerTitleAlign: "center",
-          tabBarIcon: ({ focused }) => (
-            <>
-              <Icon
-                name="cog"
-                size={40}
-                color={focused ? COLORS.vermelhoPrincipal : COLORS.preto}
-              />
-            </>
-          ),
-        }}
-      />
     </Navigator>
   );
 }

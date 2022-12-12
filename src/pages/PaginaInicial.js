@@ -28,6 +28,14 @@ const PaginaInicial = ({ route }) => {
   const [refFlatList, setRefFlatList] = useState();
   const [campanha, setCampanha] = useState([]);
   const [hemocentro, setHemocentro] = useState([]);
+  const [pessoa, setPessoa] = useState([]);
+
+  // useEffect(() => {
+  //   apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {
+  //     console.log(data.data[0]);
+  //     setPessoa(data.data[0]);
+  //   });
+  // }, []);
 
   useEffect(() => {
     apiBlood.get("/listarHemocentro").then((data) => {
@@ -50,6 +58,7 @@ const PaginaInicial = ({ route }) => {
   return (
     <ScrollView style={estilos.containerPagina}>
       <ScrollView style={estilos.container}>
+        {/* <Text>Seja Bem-Vindo! {pessoa.nome_completo}</Text> */}
         <Text style={estilos.campanhaText}>Campanhas para você</Text>
         <FlatList
           data={campanha}

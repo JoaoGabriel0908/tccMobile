@@ -3,10 +3,6 @@ import React, { useContext } from "react";
 import { ActivityIndicator, StatusBar, View } from "react-native";
 import COLORS from "../const/Colors";
 import { AuthContext } from "../contexts/Contexts";
-import Configuracao from "../pages/Configuracao";
-import Login from "../pages/Login";
-import TelaAgendamento from "../pages/TelaAgendamento";
-import Menu from "./BottomTabs";
 import Routes from "./routes";
 import { useNavigation } from "@react-navigation/native";
 
@@ -25,6 +21,7 @@ const AppNav = () => {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor={COLORS.vermelhoClaro} />
+      
       <Routes />
     </NavigationContainer>
   );

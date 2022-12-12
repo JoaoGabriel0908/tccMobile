@@ -33,16 +33,6 @@ const Select = ({
     data.filter((d) => d.cidade.includes(pesquisa));
   }
 
-  const renderSeparator = () => (
-    <View
-      style={{
-        backgroundColor: COLORS.vermelhoClaro,
-        height: 1,
-        width: '50%'
-      }}
-    />
-  );
-
   return (
     <View>
       <TouchableOpacity
@@ -52,7 +42,7 @@ const Select = ({
         <Text style={estilos.texto} numberOfLines={1}>
           {txt}
         </Text>
-        <Icon name={"chevron-down"} style={estilos.icon} />
+
       </TouchableOpacity>
       <Modal
         animationType="slide"
@@ -60,32 +50,32 @@ const Select = ({
         onRequestClose={() => setModalVisible(false)}
       >
         <SafeAreaView>
-          <View>
+          <View style={estilos.headerModal}>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
               <Icon name="chevron-left" style={estilos.icon} />
             </TouchableOpacity>
-            <Text>{text}</Text>
+            <Text style={estilos.modalTitle}>{text}</Text>
             <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text>Cancelar</Text>
+              <Text style={estilos.modalCancel}>Cancelar</Text>
             </TouchableOpacity>
-            <Input
-              placeholder={"Pesquise sua cidade"}
-              value={value}
-              onChangeText={onChangeText}
-            />
-            <FlatList
-              ItemSeparatorComponent={renderSeparator}
-              style={estilos.list}
-              data={data}
-              renderItem={renderItem}
-              keyExtractor={keyExtractor}
-              options={options}
-            />
-            <View style={estilos.wrapButton}>
-              <TouchableOpacity style={estilos.button} onPress={onPress}>
-                <Text>Confirmar</Text>
-              </TouchableOpacity>
-            </View>
+          </View>
+
+          <Input
+            placeholder={"Pesquise sua cidade"}
+            value={value}
+            onChangeText={onChangeText}
+          />
+          <FlatList
+            style={estilos.list}
+            data={data}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            options={options}
+          />
+          <View style={estilos.wrapButton}>
+            <TouchableOpacity style={estilos.button} onPress={onPress}>
+              <Text>Confirmar</Text>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       </Modal>
@@ -107,16 +97,17 @@ const estilos = StyleSheet.create({
     paddingHorizontal: 10,
   },
   icon: {
-    fontSize: 20,
+    fontSize: 30,
   },
-  texto: {
-    color: "#555",
+  modalTitle:{
     fontSize: 16,
+    fontFamily: 'Poppins_500Medium',
   },
   list: {
-    height: "80%",
+    height: "70%",
     padding: 8,
     paddingBottom: 20,
+    marginTop: 20,
   },
   wrapButton: {
     width: "100%",
@@ -128,6 +119,21 @@ const estilos = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.vermelhoClaro,
   },
+  headerModal: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderBottomColor: COLORS.preto,
+    borderBottomWidth: .5,
+    height: '8%',
+  },
+  modalCancel:{
+    fontSize: 14,
+    color: COLORS.vermelhoPrincipal,
+    fontFamily: 'Poppins_700Bold',
+  }
 });
 
 export default Select;

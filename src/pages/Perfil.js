@@ -21,6 +21,7 @@ const Perfil = ({ route, key }) => {
   const [sexo, setSexo] = useState([]);
   const [sangue, setSangue] = useState([]);
   const [consulta, setConsulta] = useState([]);
+  const [cidadeResidente, setCidadeResidente] = useState([]);
 
   const { userInfo } = useContext(AuthContext);
 
@@ -43,11 +44,19 @@ const Perfil = ({ route, key }) => {
       console.log(data.data[0][0]);
       setSangue(data.data[0][0]);
     });
+    
+    apiBlood.get(`/listarEnderecoDoador/${userInfo.id}`).then((data) => {
+      console.log(`Cidade residente ${data.data}`);
+      setCidadeResidente(data.data);
+    });
+  }, []);
+
+  useEffect(() => {
     apiBlood.get(`/listarConsultaPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0]);
       setConsulta(data.data[0]);
     });
-  }, []);
+  },[])
 
   useEffect(() => {
     apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
 import apiBlood from "../service/apiBlood";
+// import { useNavigation } from "@react-navigation/native";
 
 export const AuthContext = createContext();
 
@@ -11,6 +12,8 @@ export const AuthProvider = ({ children }) => {
   const [isLogin, setisLogin] = useState(false);
 
   const login = (cpf, senha) => {
+  // const navigation = useNavigation();
+  
     setisLoading(true);
     apiBlood
       .post("/loginUsuario", {
@@ -23,15 +26,15 @@ export const AuthProvider = ({ children }) => {
         setUserToken(userInfo.token);
         AsyncStorage.setItem("userInfo", JSON.stringify(userInfo));
         AsyncStorage.setItem("userToken", userInfo.token);
-        console.log(userInfo);
-        setisLogin(true);
-        console.log(response.status)
+        console.log(userInfo)
+        // return navigation.navigate("Menu")
       })
-      
       .catch((e) => {
-        console.log(e.response);
+        console.log(`Login error ${e}`);
+        // console.log(userInfo);
       });
     setisLoading(false);
+    
   };
 
   const logout = () => {
@@ -52,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       setisLogin(true);
     } catch (e) {
       console.log("isLoggedIn error: " + e);
+      setisLogin(false);
     }
   };
 

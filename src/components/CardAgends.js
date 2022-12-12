@@ -24,10 +24,6 @@ const CardAgends = ({ data }) => {
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  const deletarConsulta = () => {};
-
-  console.log("Id do agendamento do doador " + data.id_agendamento_doador);
-
   return (
     <Card elevation={5} style={estilos.containerGeral}>
       <Card.Title
@@ -63,25 +59,41 @@ const CardAgends = ({ data }) => {
           onPress={() => setModalVisible(true)}
         />
         <View>
-          <TouchableOpacity style={estilos.container}>
-            <Text style={estilos.texto} numberOfLines={1}>
-              Sair
-            </Text>
-            <Icon name={"chevron-down"} style={estilos.icon} />
-          </TouchableOpacity>
           <Modal
             animationType="slide"
             visible={modalVisible}
             onRequestClose={() => setModalVisible(false)}
           >
-            <Text>Olá</Text>
-            <Button
-              onPress={() => {
-                apiBlood.delete(
-                  `/DeleteConsultas/${data.id_agendamento_doador}`
-                );
-              }}
-            />
+            <View style={estilos.containerModal}>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Icon style={estilos.close} name="close-circle" />
+              </TouchableOpacity>
+              <View style={estilos.content}>
+                <View style={estilos.containerTexto}>
+                  <Text style={estilos.texto}>
+                    Tem certeza que deseja cancelar sua consulta?
+                  </Text>
+                </View>
+                <View style={estilos.circleExclamation}>
+                  <Icon
+                    name="exclamation-thick"
+                    style={estilos.iconExclamation}
+                  />
+                </View>
+                <View style={estilos.botoes}>
+                  <Button title="Não, voltar" onPress={() => setModalVisible(false)}/>
+                  <Button
+                    title="Sim, cancelar"
+                    onPress={() => {
+                      apiBlood.delete(
+                        `/DeleteConsultas/${data.id_agendamento_doador}`
+                      );
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+            <Icon />
           </Modal>
         </View>
       </Card.Actions>
@@ -98,6 +110,11 @@ const estilos = StyleSheet.create({
     borderWidth: 2,
     marginTop: 26,
   },
+  containerModal: {
+    paddingHorizontal: 10,
+    backgroundColor: COLORS.branco,
+    flex: 1,
+  },
   container: {
     width: 360,
     alignItems: "center",
@@ -112,6 +129,39 @@ const estilos = StyleSheet.create({
     height: 50,
     width: 50,
     borderRadius: 50,
+  },
+  icon: {
+    fontSize: 20,
+  },
+  containerTexto: {
+    flexDirection: "row",
+  },
+  texto: {
+    color: "#555",
+    fontSize: 24,
+    textAlign: "center",
+  },
+  circleExclamation: {
+    width: 60,
+    height: 60,
+    borderRadius: 50,
+    backgroundColor: COLORS.cinza,
+  },
+  iconExclamation: {
+    fontSize: 60,
+  },
+  content: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    flexWrap: "wrap",
+  },
+  botoes: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  close: {
+    fontSize: 60,
   },
 });
 
