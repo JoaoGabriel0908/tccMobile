@@ -81,7 +81,7 @@ const PerfilHemo = ({ route }) => {
           <Button
             title="Agendar"
             onPress={() => {
-              navigation.navigate("TelaAgendamento", { id: hemocentro.id });
+              navigation.navigate("TelaAgendamento", { id: id });
             }}
           />
         </View>
