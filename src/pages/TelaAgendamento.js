@@ -127,6 +127,7 @@ const TelaAgendamento = ({ route }) => {
 
     return (
       <Calendar
+      initialDate={markedDay[0]}
         markedDates={markedDay}
         enableSwipeMonths={true}
         onDayPress={(day) => {
@@ -154,7 +155,7 @@ const TelaAgendamento = ({ route }) => {
 
           <View style={estilos.hora}>
             <Picker
-              selectedValue={inputs.tipoServico}
+              selectedValue={inputs.hora_agenda}
               onValueChange={(itemValue) =>
                 handleChangeInputs("hora_agenda", itemValue)
               }

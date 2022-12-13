@@ -56,14 +56,14 @@ const AgendamentoConcluido = () => {
           renderItem={({ item }) => <CardAgends data={item} />}
         />
       </View>
-      <TouchableOpacity
+      <Button
         style={{ height: '15%', width: 100, backgroundColor: COLORS.cinza }}
         onPress={() => {
           navigation.navigate("Menu");
         }}
+        title={'Tela inicial'}
       >
-        <Text>Voltar para a página inicial</Text>
-      </TouchableOpacity>
+      </Button>
     </SafeAreaView>
   );
 };

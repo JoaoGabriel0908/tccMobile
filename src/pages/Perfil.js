@@ -22,41 +22,58 @@ const Perfil = ({ route, key }) => {
   const [sangue, setSangue] = useState([]);
   const [consulta, setConsulta] = useState([]);
   const [cidadeResidente, setCidadeResidente] = useState([]);
+  const [stop, setStop] = useState(false);
 
   const { userInfo } = useContext(AuthContext);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {
-      console.log(data.data);
-      setPessoa(data.data);
-    });
     apiBlood.get(`/listarCidadesPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0]);
       setCidade(data.data[0]);
-    });
+    })
+  }, []);
+
+  useEffect(() => {
     apiBlood.get(`/listarSexoPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0][0]);
       setSexo(data.data[0][0]);
     });
+  }, [])
+
+  useEffect(() => {
     apiBlood.get(`/listarSanguePorUsuario/${userInfo.id}`).then((data) => {
       console.log(data.data[0][0]);
       setSangue(data.data[0][0]);
     });
-    
+  }, [])
+
+  useEffect(() => {
     apiBlood.get(`/listarEnderecoDoador/${userInfo.id}`).then((data) => {
       console.log(`Cidade residente ${data.data}`);
       setCidadeResidente(data.data);
     });
-  }, []);
+  }, [])
 
   useEffect(() => {
     apiBlood.get(`/listarConsultaPorDoador/${userInfo.id}`).then((data) => {
       console.log(data.data[0]);
       setConsulta(data.data[0]);
     });
-  },[])
+  }, []);
+
+  let trazendoConclusao = setTimeout(() => {
+    apiBlood.get(`/listarConsultaPorDoador/${userInfo.id}`).then((data) => {
+      console.log(data.data[0]);
+      setConsulta(data.data[0]);
+      setStop(true);
+    });
+  }, 4000);
+  if (stop === true) {
+    clearTimeout(trazendoConclusao);
+    console.log(stop);
+  }
 
   useEffect(() => {
     apiBlood.get(`/listarDoadorId/${userInfo.id}`).then((data) => {

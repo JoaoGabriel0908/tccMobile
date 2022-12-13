@@ -88,6 +88,7 @@ export default function Routes() {
           component={Perfil}
           options={{ headerShown: false }}
         />
+        
         <Stack.Screen
           name="AgendamentoConcluido"
           component={AgendamentoConcluido}

@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   SafeAreaView,
+  LogBox,
 } from "react-native";
 
 import React, { useState, useEffect, useContext, useRef } from "react";
@@ -28,7 +29,7 @@ const Login = () => {
   const {userInfo, login, isLogin } = useContext(AuthContext);
 
   const [errors, setErrors] = React.useState([]);
-
+  LogBox.ignoreAllLogs();
 
   // Função Handler que configura as mensagens de erros na state
   // Pegando as mensagens de erros e onde ocorreu (input)
@@ -43,8 +44,8 @@ const Login = () => {
   const [inputs, setInputs] = React.useState({
     // O useState sempre representa essa estrutura
     // Chave = inputs / valor = inputs
-    cpf: "25497863299",
-    senha: "conseguiPoha",
+    cpf: "",
+    senha: "",
   });
 
   console.log(inputs);
@@ -94,7 +95,8 @@ const Login = () => {
       // Envia os dados para a API cadastrar.
       login(inputs.cpf, inputs.senha );
       // {await userInfo !== null ? navigation.navigate("Menu") : console.log('erro')}
-      {isLogin === true ? navigation.navigate("Menu"): console.log('error')};
+      // {isLogin === true ? : console.log('error')};
+      navigation.navigate("Menu")
     }
   };
 

@@ -6,6 +6,7 @@ import {
   ImageBackground,
   SafeAreaView,
   TouchableOpacity,
+  LogBox,
 } from "react-native";
 import React from "react";
 import Button from "../components/Button";
@@ -16,6 +17,8 @@ const fundo = "../assets/fundo.png";
 
 const Splash = () => {
   const navigation = useNavigation();
+
+  LogBox.ignoreAllLogs()
 
   return (
     <SafeAreaView style={estilos.container}>

@@ -169,7 +169,7 @@ const EditandoAgendamento = ({ route }) => {
 
           <View style={estilos.hora}>
             <Picker
-              selectedValue={inputs.tipoServico}
+              selectedValue={inputs.hora_agenda}
               onValueChange={(itemValue) =>
                 handleChangeInputs("hora_agenda", itemValue)
               }
