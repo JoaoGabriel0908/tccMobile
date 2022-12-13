@@ -31,7 +31,7 @@ const PerfilHemo = ({ route }) => {
   const [estoque, setEstoque] = useState([]);
   const [campanha, setCampanha] = useState([]);
 
-  console.log(hemocentro.id);
+  console.log(id);
 
   useEffect(() => {
     apiBlood.get(`/listarHemocentroPorId/${id}`).then((hemocentro) => {
